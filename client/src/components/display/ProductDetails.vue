@@ -1,0 +1,186 @@
+<template>
+  <div>
+    <div class="main">
+      <div class="favorite-box">
+        <div class="top-img">
+          <div class="top">
+            <div class="iconfont icon-fanhui icon" style="font-size:30px;line-height: 60px;" @click="goback"></div>
+          </div>
+        </div>
+        <div class="bottom-tab">
+          <div class="like-btn">
+            <span class="iconfont icon-aixin like-icon"></span>
+          </div>
+          <div class="like-product-title">
+            {{product.name}}
+          </div>
+          <div class="like-num">
+            <span class="iconfont icon-xingxing" v-for="item in product.likenum" :key="item"></span>
+          </div>
+          <div class="like-description">
+            <div class="like-description-top">
+              <div>描述</div>
+              <div>{{product.price}}</div>
+            </div>
+            <div class="like-desc">
+              {{product.desc}}
+            </div>
+          </div>
+          <div class="btn-group">
+            <div class="btn-item btn-left" @click="goto('/main/cart')">购买</div>
+            <div class="btn-item btn-right" @click="addCart">加入购物车</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+// 引入头部组件
+import TopBar from '@/components/topbar/TopBar'
+// 引入内容部分
+import MyContent from '@/components/content/MyContent'
+// 引入本地存储
+import { setCacheVal, getCacheVal } from '@/kits/LocalStorage'
+export default {
+  data () {
+    return {
+      product: {
+        id: 0,
+        name: '早餐类',
+        price: '$12.00',
+        likenum: 5,
+        desc: 'sdnkadjadnashbdjwqhbdjhbhsdhavdsdadafsdfseascewewfjhagdjKWsdnkadjadnashbdjwqhbdjhbhsdhasdnkadjadnashbdjwqhbdjhbhsdha'
+      },
+    }
+  },
+  created () {
+    // this.product = this.$route.params.content;
+  },
+  methods: {
+    // 返回上一级
+    goback () {
+      this.$router.go(-1)
+    },
+    // 页面跳转
+    goto (path) {
+      this.$router.push({
+        path
+      })
+    },
+    // 加入购物车
+    addCart (product) {
+      console.log('添加到购物车');
+    },
+  },
+  components: {
+    TopBar,
+    MyContent
+  }
+}
+</script>
+<style scoped>
+.main {
+  padding: 24px;
+  overflow-x: hidden; /* 防止横向滚动条 */
+  background-color: #f5f5f5;
+}
+.favorite-box {
+  position: relative;
+}
+.top-img {
+  height: 360px;
+  width: 120%;
+  background-color: #ccc;
+  margin: -24px;
+}
+.top-img .top {
+  padding-left: 20px;
+  color: #fff;
+  display: flex;
+}
+.top-img .top .icon {
+  flex: 1;
+}
+.bottom-tab {
+  margin: -24px;
+  width: 115%;
+  height: 360px;
+  z-index: 9999;
+  background-color: #fff;
+  border-radius: 31px 31px 0 0;
+  padding: 20px;
+  position: relative;
+}
+.like-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  position: absolute;
+  top: -30px;
+  right: 30px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}
+.like-btn .iconfont {
+  color: #845747;
+  font-size: 30px !important;
+}
+.like-product-title {
+  font-size: 30px;
+  font-weight: bold;
+  color: #000;
+  margin: 10px 0px;
+}
+.like-num .iconfont {
+  font-size: 28px;
+  color: #f59d2d;
+}
+.like-num span {
+  padding: 10px 5px 20px 0px;
+}
+.like-description {
+  margin-top: 15px;
+}
+.like-description .like-description-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #000;
+  font-size: 18px;
+  font-weight: bold;
+}
+.like-desc {
+  padding: 10px 10px 10px 0px;
+  word-wrap: break-word;
+}
+.btn-group {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+}
+.btn-group .btn-item {
+  height: 50px;
+  width: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 11px;
+}
+.btn-group .btn-left {
+  border: solid 1px #ccc;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 50px;
+}
+.btn-group .btn-right {
+  background-color: #02d126;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 50px;
+}
+</style>
