@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <top-bar>
+  <div style="background-color: #f5f5f5;">
+    <top-bar style="background-color: #f5f5f5;">
       <div slot="left">
         <span class="iconfont icon-fanhui icon" style="font-size:30px;line-height: 60px;" @click="goback"></span>
       </div>
@@ -12,13 +12,13 @@
       </div>
     </top-bar>
     <my-content>
-      <div class="product-card">
-        <div class="procuct-img"></div>
+      <div class="product-card" v-if="category.length != 0">
+        <div class="procuct-img" :style="imgStyle(category[0].cate_pic)"></div>
         <div class="product-desc">
-          <div class="desc-title">{{showgood.name}}</div>
-          <div class="desc-details">{{showgood.desc}}</div>
+          <div class="desc-title">{{ category[0].name }}</div>
+          <div class="desc-details">{{ category[0].desc }}</div>
         </div>
-        <div class="more-button" @click="goto('categorydetails',{content:showgood})">
+        <div class="more-button">
           更多菜单
         </div>
       </div>
@@ -30,42 +30,70 @@
 import TopBar from '@/components/topbar/TopBar'
 // 引入内容组件
 import MyContent from '@/components/content/MyContent'
+import { HttpGql, ImgUrl } from '@/kits/Http'
 export default {
   name: 'ProductShow',
-  data () {
+  data() {
     return {
-      showgood: null
+      category: [],
     }
   },
   methods: {
-    goback () {
+    goback() {
       this.$router.go(-1)
     },
-    goto (name, params) {
+    goto(name, params) {
       this.$store.commit('setSearchInput', name)
       this.$router.push({
-        name, params
+        name,
+        params,
       })
-    }
+    },
+    async initData() {
+      let gql = {
+        query: `
+          {
+            category(typeid:[${this.$route.params.id}]){
+              typeid
+              name
+              cate_pic
+              desc
+              }
+          }
+        `,
+      }
+      let res = await HttpGql(gql)
+      this.category = res.data.category.map((item) => {
+        item.cate_pic = ImgUrl + item.cate_pic
+        return item
+      })
+    },
   },
-  created () {
-    // 页面创建时从vuex的state状态中获取传递的参数
-    this.showgood = this.$store.state.routerVal
+  created() {
+    this.initData()
   },
   components: {
     TopBar,
-    MyContent
-  }
+    MyContent,
+  },
+  computed: {
+    imgStyle() {
+      return (url) => {
+        return {
+          backgroundImage: `url(${url})`,
+          backgroundSize: 'cover',
+        }
+      }
+    },
+  },
 }
 </script>
 <style scoped>
 .product-card {
   position: relative;
-  width: 330px;
   height: 550px;
   background-color: #fff;
   border-radius: 27.5px;
-  margin-top: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;

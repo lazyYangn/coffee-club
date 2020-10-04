@@ -27,8 +27,8 @@ const routes = [
     ],
   },
   { path: '/search', name: 'search', component: Search },
-  { path: '/productshow', name: 'productshow', component: ProductShow },
-  { path: '/productdetails', name: 'productdetails', component: ProductDetails },
+  { path: '/productshow/:id', name: 'productshow', component: ProductShow },
+  { path: '/productdetails/:id', name: 'productdetails', component: ProductDetails },
   { path: '/categorydetails', name: 'categorydetails', component: CategoryDetails },
   { path: '/searchresult', name: 'searchresult', component: SearchResult },
 ]

@@ -24,7 +24,7 @@ export const foods = async (parent: any, args: any, context: any, info: any) => 
     sql += args.typeid ? " and typeid = '" + args.typeid + "' " : ''
     sql += ' and ( 1=1  '
     sql += args.food_name ? " and  food_name like '%" + args.food_name + "%' " : ''
-    sql += args.food_desc ? " and food_desc like '%" + args.food_desc + "%'  " : ''
+    sql += args.food_desc ? " or food_desc like '%" + args.food_desc + "%'  " : ''
     sql += ' ) '
     sql += ' limit ?,?'
     let res = await Do(sql, [args.start, args.count])

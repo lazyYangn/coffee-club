@@ -1,35 +1,32 @@
 <template>
   <div>
-    <div class="main">
-      <div class="favorite-box">
-        <div class="top-img">
-          <div class="top">
-            <div class="iconfont icon-fanhui icon" style="font-size:30px;line-height: 60px;" @click="goback"></div>
+    <TopBar style="backgroundColor:rgb(0 0 0 /0)">
+      <div slot="left" class="iconfont icon-fanhui icon" style="font-size:30px;line-height: 60px;" @click="goback"></div>
+    </TopBar>
+    <div class="favorite-box">
+      <div class="top-img" :style="imgStyle(product.food_pic)"></div>
+      <div class="bottom-tab">
+        <div class="like-btn">
+          <span class="iconfont icon-aixin like-icon"></span>
+        </div>
+        <div class="like-product-title">
+          {{ product.food_name }}
+        </div>
+        <div class="like-num">
+          <span class="iconfont icon-xingxing" v-for="item in product.food_rate" :key="item"></span>
+        </div>
+        <div class="like-description">
+          <div class="like-description-top">
+            <div>描述</div>
+            <div>￥ {{ product.food_price }}</div>
+          </div>
+          <div class="like-desc">
+            {{ product.food_desc }}
           </div>
         </div>
-        <div class="bottom-tab">
-          <div class="like-btn">
-            <span class="iconfont icon-aixin like-icon"></span>
-          </div>
-          <div class="like-product-title">
-            {{product.name}}
-          </div>
-          <div class="like-num">
-            <span class="iconfont icon-xingxing" v-for="item in product.likenum" :key="item"></span>
-          </div>
-          <div class="like-description">
-            <div class="like-description-top">
-              <div>描述</div>
-              <div>{{product.price}}</div>
-            </div>
-            <div class="like-desc">
-              {{product.desc}}
-            </div>
-          </div>
-          <div class="btn-group">
-            <div class="btn-item btn-left" @click="goto('/main/cart')">购买</div>
-            <div class="btn-item btn-right" @click="addCart">加入购物车</div>
-          </div>
+        <div class="btn-group">
+          <div class="btn-item btn-left" @click="goto('/main/cart')">购买</div>
+          <div class="btn-item btn-right" @click="addCart">加入购物车</div>
         </div>
       </div>
     </div>
@@ -42,57 +39,82 @@ import TopBar from '@/components/topbar/TopBar'
 import MyContent from '@/components/content/MyContent'
 // 引入本地存储
 import { setCacheVal, getCacheVal } from '@/kits/LocalStorage'
+import { HttpGql, ImgUrl } from '@/kits/Http'
+
 export default {
-  data () {
+  data() {
     return {
-      product: {
-        id: 0,
-        name: '早餐类',
-        price: '$12.00',
-        likenum: 5,
-        desc: 'sdnkadjadnashbdjwqhbdjhbhsdhavdsdadafsdfseascewewfjhagdjKWsdnkadjadnashbdjwqhbdjhbhsdhasdnkadjadnashbdjwqhbdjhbhsdha'
-      },
+      product: {},
+      foodId: '',
     }
   },
-  created () {
-    // this.product = this.$route.params.content;
+  created() {
+    this.foodId = this.$route.params.id
+    this.initData()
+  },
+  computed: {
+    imgStyle() {
+      return (url) => {
+        return {
+          backgroundImage: `url(${url})`,
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
+        }
+      }
+    },
   },
   methods: {
     // 返回上一级
-    goback () {
+    goback() {
       this.$router.go(-1)
     },
     // 页面跳转
-    goto (path) {
+    goto(path) {
       this.$router.push({
-        path
+        path,
       })
     },
     // 加入购物车
-    addCart (product) {
-      console.log('添加到购物车');
+    addCart(product) {
+      console.log('添加到购物车')
+    },
+    async initData() {
+      let gql = {
+        query: `
+          {
+            food(food_id:${this.foodId}){
+              food_name
+              food_price
+              food_rate
+              food_desc
+              food_pic
+            }
+          }
+        `,
+      }
+      let res = await HttpGql(gql)
+      res.data.food.food_pic = ImgUrl + res.data.food.food_pic
+      this.product = res.data.food
     },
   },
   components: {
     TopBar,
-    MyContent
-  }
+    MyContent,
+  },
 }
 </script>
 <style scoped>
 .main {
-  padding: 24px;
   overflow-x: hidden; /* 防止横向滚动条 */
-  background-color: #f5f5f5;
 }
 .favorite-box {
   position: relative;
 }
 .top-img {
   height: 360px;
-  width: 120%;
   background-color: #ccc;
-  margin: -24px;
+  margin: -24px 0;
 }
 .top-img .top {
   padding-left: 20px;
@@ -103,9 +125,7 @@ export default {
   flex: 1;
 }
 .bottom-tab {
-  margin: -24px;
-  width: 115%;
-  height: 360px;
+  height: 350px;
   z-index: 9999;
   background-color: #fff;
   border-radius: 31px 31px 0 0;

@@ -8,15 +8,10 @@ export default new Vuex.Store({
     // 搜索框内容
     searchInput: '',
     // 路由跳转需要传递的参数
-    routerVal: null,
   },
   mutations: {
     setSearchInput(state, newVal) {
       state.searchInput = newVal
-    },
-    // 路由跳转参数
-    setRouterVal(state, newVal) {
-      state.routerVal = newVal
     },
   },
 })

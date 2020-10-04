@@ -1,9 +1,6 @@
 <template>
-  <div>
-    <top-bar>
-      <!-- <div slot="left" class="top-left">
-        <span class="iconfont icon-caidan"></span>
-      </div> -->
+  <div class="home">
+    <top-bar style="background-color: #f5f5f5;">
       <div slot="middle">
         <div style="font-weight: blod; font-size: 20px; line-height: 60px">
           菜单
@@ -14,13 +11,11 @@
       </div>
     </top-bar>
     <my-content>
-      <div style="margin-top: 66px">
-        <a-list :grid="{ gutter: 16, column: 2 }" :data-source="homecategory">
-          <a-list-item slot="renderItem" slot-scope="item" @click="goto('productshow', { content: item })">
-            <display-item :project="item"></display-item>
-          </a-list-item>
-        </a-list>
-      </div>
+      <a-list :grid="{ gutter: 16, column: 2 }" :data-source="homecategory">
+        <a-list-item slot="renderItem" slot-scope="item" @click="goto(item.typeid)">
+          <display-item :project="item"></display-item>
+        </a-list-item>
+      </a-list>
     </my-content>
   </div>
 </template>
@@ -43,10 +38,8 @@ export default {
     search(path) {
       this.$router.push(path)
     },
-    goto(name, params) {
-      // 路由跳转时，将需要传递的参数存到vux中
-      this.$store.commit('setRouterVal', params.content)
-      this.$router.push({ name })
+    goto(typeid) {
+      this.$router.push({ path: '/productshow/' + typeid })
     },
     async initData() {
       let gql = {
@@ -57,6 +50,7 @@ export default {
                       name
                       title
                       cate_pic
+                      desc
                       }
                 }
             `,
@@ -83,5 +77,8 @@ export default {
 .ant-col-12  {
     display: flex !important;
     justify-content: center !important;
+}
+.home {
+  background-color: #f5f5f5;
 }
 </style>

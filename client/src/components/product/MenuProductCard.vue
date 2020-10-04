@@ -1,73 +1,98 @@
 <template>
-  <div>
-    <div class="product-card" @click="goto">
-      <div class="pro-img"></div>
-      <div class="product-text">
-        <div class="product-name-price">
-          <div class="title">披萨</div>
-          <div class="price">$12.00</div>
-        </div>
-        <div class="desc">
-          sdadsdakjdhaskDHWIUBDSDKBsdadsdakjdhaskDHWIUBDSDKB
-        </div>
+  <div class="product-edit" @click="goto">
+    <div class="pic" :style="imgStyle(product.food_pic)"></div>
+    <div class="wrapper-right">
+      <div class="product-name-price">
+        <div class="title">{{ product.food_name }}</div>
+        <div class="price">￥ {{ product.food_price }}</div>
       </div>
+      <div class="desc">{{ product.food_desc }}</div>
     </div>
   </div>
 </template>
 <script>
-
 export default {
   name: 'MenuProductCard',
-  data () {
+  data() {
     return {}
   },
+  props: { product: Object },
   methods: {
-    goto () {
+    goto() {
       this.$router.push({
-        name: 'productdetails'
+        path: '/productdetails/' + this.product.food_id,
       })
-    }
+    },
   },
-  components: {}
+  components: {},
+  computed: {
+    imgStyle() {
+      return (item) => {
+        return {
+          backgroundImage: `url(${item})`,
+          backgroundSize: '109px 109px',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
+        }
+      }
+    },
+  },
 }
 </script>
 <style scoped>
-.product-card {
-  width: 100%;
-  padding: 10px 20px;
+.product-edit {
   display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
 }
-.pro-img {
-  width: 100px;
-  height: 100px;
-  background-color: #ccc;
-  border-radius: 10px;
+
+.pic {
+  width: 109px;
+  height: 112px;
+  border-radius: 16px;
+  background: #f6f6f6;
+  margin-right: auto;
   flex: 2;
 }
-.product-text {
-  flex: 4;
-  margin-left: 20px;
-  margin-top: 5px;
+
+.wrapper-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 4.5;
+  margin-left: 10px;
 }
 .product-name-price {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
-.product-name-price .title {
+.title {
+  width: 94px;
+  height: 48px;
+  transform: rotate(-1deg);
+  color: #1e1e1e;
+  font-family: 'Inter-Bold';
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 400;
+  line-height: 24px;
 }
-.product-name-price .price {
-  font-size: 18px;
-  font-weight: bold;
+.price {
   color: #02d126;
+  font-family: 'Inter-Bold';
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19px;
 }
-.product-text .desc {
-  margin-top: 5px;
-  color: #ccc;
-  max-width: 200px !important;
-  padding-left: 20px;
-  word-wrap: break-word;
+.desc {
+  width: 215px;
+  height: 38px;
+  color: #bab9c0;
+  font-family: 'Inter-Medium';
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

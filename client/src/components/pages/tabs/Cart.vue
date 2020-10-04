@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <top-bar>
+  <div style="background-color: #f5f5f5;">
+    <top-bar style="background-color: #f5f5f5;">
       <div slot="left"></div>
       <div slot="middle">
         <div style="font-weight:blod;font-size:18px;line-height: 60px;">购物袋</div>
       </div>
     </top-bar>
     <my-content>
-      <div class="main-box">
+      <div>
         <cart-product-card></cart-product-card>
         <cart-product-card></cart-product-card>
       </div>
@@ -57,9 +57,6 @@ export default {
 }
 </script>
 <style scoped>
-.main-box {
-  margin-top: 80px;
-}
 .price-box {
   display: flex;
   flex-direction: column;

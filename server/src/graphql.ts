@@ -33,6 +33,7 @@ const typeDefs = gql`
     typeid: Int
     name: String
     title: String
+    desc: String
     cate_pic: String
     foods(count: Int!): [Food]
   }

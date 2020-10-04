@@ -2,26 +2,23 @@
   <div>
     <top-bar>
       <div slot="left">
-        <div class="iconfont icon-fanhui" @click="goBack" style="font-size:30px;line-height: 60px;"></div>
+        <div class="iconfont icon-fanhui" @click="goBack" style="font-size: 30px; line-height: 60px"></div>
       </div>
       <div slot="middle">
-        <a-input ref="searchinput" placeholder="请输入搜索内容" size="large">
-        </a-input>
+        <a-input ref="searchinput" placeholder="请输入搜索内容" size="large" v-model="searchInput"></a-input>
       </div>
       <div slot="right">
-        <span class="iconfont icon-chazhao" @click="search"></span>
+        <span class="iconfont icon-chazhao" @click="searchAgain"></span>
       </div>
     </top-bar>
-    <my-content>
-      <div class="main">
-        <div style="color:rgb(0 0 0 /0.5),font-size:15px;font-weight:bold">有{{data.length}}个商品符合要求</div>
-        <div style="margin-top:16px">
-          <a-list :grid="{gutter:16,column:2}" :data-source='data'>
-            <a-list-item slot="renderItem" slot-scope="item">
-              <menu-product-card :product="item"></menu-product-card>
-            </a-list-item>
-          </a-list>
-        </div>
+    <my-content :refreshFunc="refresh" pull class="main">
+      <div style="color:rgb(0 0 0 /0.5),font-size:15px;font-weight:bold">有{{ FoodData.length }}个商品符合要求</div>
+      <div style="margin-top: 16px" v-infinite-scroll="handleInfiniteOnLoad" :infinite-scroll-disabled="busy" :infinite-scroll-distance="10">
+        <a-list :grid="{ gutter: 24, column: 1 }" :data-source="FoodData">
+          <a-list-item slot="renderItem" slot-scope="item">
+            <menu-product-card :product="item"></menu-product-card>
+          </a-list-item>
+        </a-list>
       </div>
     </my-content>
   </div>
@@ -31,29 +28,71 @@ import TopBar from '@/components/topbar/TopBar'
 import { setArray, getArray } from '@/kits/LocalStorage'
 import MyContent from '@/components/content/MyContent'
 import { HttpGql, ImgUrl } from '@/kits/Http'
-import infiniteScroll from 'vue-infinite-scroll';
+import infiniteScroll from 'vue-infinite-scroll'
+import MenuProductCard from '@/components/product/MenuProductCard'
 export default {
   directives: { infiniteScroll },
   name: 'Search',
-  data () {
+  data() {
     return {
-      data: [],
+      FoodData: [],
       busy: false,
-      searchInput: "",
+      searchInput: '',
       historySearch: getArray('historySearch'),
+      start: 0,
     }
   },
   methods: {
-    goBack () {
+    goBack() {
       this.$router.go(-1)
     },
+    searchAgain() {
+      this.FoodData = []
+      this.start = 0
+      this.search()
+    },
     // 点击进行搜索
-    search () {
-      console.log('搜索');
-    }
+    async search() {
+      let count = 10
+      let gql = {
+        query: `
+          {
+            foods(start:${this.start},count:${count},food_name:"${this.searchInput}",food_desc:"${this.searchInput}"){
+                food_id
+                food_name
+                food_pic
+                food_price
+                food_desc
+              }
+          }
+        `,
+      }
+      try {
+        let res = await HttpGql(gql)
+        this.FoodData = this.FoodData.concat(
+          res.data.foods.map((item) => {
+            item.food_pic = ImgUrl + item.food_pic
+            return item
+          })
+        )
+        this.start += count
+        return true
+      } catch (error) {
+        return false
+      }
+    },
+    refresh() {
+      this.FoodData = []
+      this.start = 0
+      return this.search()
+    },
+    handleInfiniteOnLoad() {
+      this.loading = true
+      this.search()
+    },
   },
   // 页面创建时
-  created () {
+  created() {
     // 上一个页面的参数
     // 进行搜索
     this.searchInput = this.$store.state.searchInput
@@ -61,13 +100,11 @@ export default {
   components: {
     TopBar,
     MyContent,
-  }
+    MenuProductCard,
+  },
 }
 </script>
 <style scoped>
-.main {
-  margin-top: 60px;
-}
 .history-search-content {
   margin-top: 10px;
   display: flex;

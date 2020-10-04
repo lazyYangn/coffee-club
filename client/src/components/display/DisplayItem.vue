@@ -7,7 +7,7 @@
     </div>
   </div>
   <div class="product-card" v-else-if="likeProduct">
-    <div class="product-img" :style="imgStyle(likeProduct.food_pic)"></div>
+    <div class="product-img" :style="imgLikeStyle(likeProduct.food_pic)"></div>
     <div class="product-desc">
       <div>{{ likeProduct.food_name }}</div>
       <div>{{ likeProduct.food_title }}</div>
@@ -29,6 +29,18 @@ export default {
           ? {
               backgroundImage: `url(${url})`,
               backgroundSize: 'cover',
+            }
+          : ''
+      }
+    },
+    imgLikeStyle() {
+      return (url) => {
+        return url && url !== ''
+          ? {
+              backgroundImage: `url(${url})`,
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center center',
             }
           : ''
       }
