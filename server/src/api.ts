@@ -1,6 +1,5 @@
 import { Do, FindFrist } from './mysql'
 import crypto from 'crypto'
-const config = require('../config')
 
 export const root = (req: any, resp: any) => {
   resp.send('hello coffee-club')

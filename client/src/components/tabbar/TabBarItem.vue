@@ -7,35 +7,35 @@
 </template>
 <script>
 export default {
-  name: "TabBarItem",
+  name: 'TabBarItem',
   props: {
     icon: {
       type: String,
-      default: 'iconfont icon-caidaniconwodehui'
+      default: 'iconfont icon-caidaniconwodehui',
     },
     activeColor: {
       type: String,
-      default: '#02D126'
+      default: '#02D126',
     },
-    path: String
+    path: String,
   },
-  data () {
+  data() {
     return {
-      isActive: false
+      isActive: false,
     }
   },
   methods: {
-    doActive () {
+    doActive() {
       // router跳转
       if (this.$route.path != this.path) {
         this.$router.replace({ path: this.path })
       }
-    }
+    },
   },
   computed: {
-    avtiveStyle () {
+    avtiveStyle() {
       return this.$route.path.indexOf(this.path) > -1 ? { color: '#02D126' } : null
-    }
+    },
   },
 }
 </script>

@@ -1,9 +1,7 @@
 <template>
   <div>
     <top-bar>
-      <div slot="left">
-        <span class="iconfont icon-fanhui" style="font-weight:blod;font-size:24px;line-height: 60px;" @click="goto"></span>
-      </div>
+      <div slot="left"></div>
       <div slot="middle">
         <div style="font-weight:blod;font-size:18px;line-height: 60px;">购物袋</div>
       </div>
@@ -43,19 +41,19 @@ import MyContent from '@/components/content/MyContent'
 // 引入购物车单品组件
 import CartProductCard from '@/components/product/CartProductCard'
 export default {
-  data () {
+  data() {
     return {}
   },
   methods: {
-    goto () {
+    goto() {
       this.$router.go(-1)
-    }
+    },
   },
   components: {
     TopBar,
     MyContent,
-    CartProductCard
-  }
+    CartProductCard,
+  },
 }
 </script>
 <style scoped>

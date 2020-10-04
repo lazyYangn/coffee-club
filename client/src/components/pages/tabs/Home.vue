@@ -1,18 +1,20 @@
 <template>
   <div>
     <top-bar>
-      <div slot="left" class="top-left">
+      <!-- <div slot="left" class="top-left">
         <span class="iconfont icon-caidan"></span>
-      </div>
+      </div> -->
       <div slot="middle">
-        <div style="font-weight:blod;font-size:20px;line-height: 60px;">菜单</div>
+        <div style="font-weight: blod; font-size: 20px; line-height: 60px">
+          菜单
+        </div>
       </div>
       <div slot="right">
         <span class="iconfont icon-chazhao" @click="search('/search')"></span>
       </div>
     </top-bar>
     <my-content>
-      <div style="margin-top:66px;">
+      <div style="margin-top: 66px">
         <a-list :grid="{ gutter: 16, column: 2 }" :data-source="homecategory">
           <a-list-item slot="renderItem" slot-scope="item" @click="goto('productshow', { content: item })">
             <display-item :project="item"></display-item>
@@ -52,7 +54,6 @@ export default {
                 {
                     homecategory{
                       typeid
-                      parent_id
                       name
                       title
                       cate_pic
@@ -79,8 +80,8 @@ export default {
 ::-webkit-scrollbar {
   display: none;
 }
-.ant-col-12 {
-  display: flex !important;
-  justify-content: center !important;
+.ant-col-12  {
+    display: flex !important;
+    justify-content: center !important;
 }
 </style>

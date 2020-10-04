@@ -1,7 +1,14 @@
 <template>
   <div class="top">
     <div class="top-left">
-      <slot name="left"></slot>
+      <slot name="left">
+        <span class="iconfont icon-caidan" @click="showDrawer"></span>
+        <a-drawer width="280px" placement="left" title="Basic Drawer" :closable="false" :visible="visible" @close="onClose">
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </a-drawer>
+      </slot>
     </div>
     <div class="top-middle">
       <slot name="middle"></slot>
@@ -13,13 +20,22 @@
 </template>
 <script>
 export default {
-  data () {
-    return {}
+  data() {
+    return {
+      visible: false,
+    }
   },
-  methods: {},
-  components: {}
+  methods: {
+    showDrawer() {
+      this.visible = true
+    },
+    onClose() {
+      this.visible = false
+    },
+  },
+  components: {},
 }
- </script>
+</script>
 <style scoped>
 body {
   margin: 0;
