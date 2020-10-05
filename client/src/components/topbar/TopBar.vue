@@ -51,7 +51,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 0px 18px;
-  background-color: #fff;
+  background-color: #f5f5f5;
 }
 .top-left {
   font-weight: bold;

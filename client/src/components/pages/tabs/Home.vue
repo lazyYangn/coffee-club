@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <top-bar style="background-color: #f5f5f5;">
+    <top-bar>
       <div slot="middle">
         <div style="font-weight: blod; font-size: 20px; line-height: 60px">
           菜单
@@ -69,16 +69,9 @@ export default {
   },
 }
 </script>
-<style>
+<style scoped>
 /* 隐藏滚动进度条 */
 ::-webkit-scrollbar {
   display: none;
-}
-.ant-col-12  {
-    display: flex !important;
-    justify-content: center !important;
-}
-.home {
-  background-color: #f5f5f5;
 }
 </style>

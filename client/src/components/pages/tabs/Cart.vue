@@ -1,13 +1,16 @@
 <template>
-  <div style="background-color: #f5f5f5;">
-    <top-bar style="background-color: #f5f5f5;">
-      <div slot="left"></div>
+  <div>
+    <top-bar>
+      <div slot="left">
+        <span class="iconfont icon-fanhui" style="font-weight:blod;font-size:24px;line-height: 60px;" @click="goto"></span>
+      </div>
       <div slot="middle">
         <div style="font-weight:blod;font-size:18px;line-height: 60px;">购物袋</div>
       </div>
     </top-bar>
     <my-content>
-      <div>
+      <div class="main-box">
+        <cart-product-card></cart-product-card>
         <cart-product-card></cart-product-card>
         <cart-product-card></cart-product-card>
       </div>
@@ -60,16 +63,16 @@ export default {
 .price-box {
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 .price-item {
   display: flex;
-  padding: 10px 0px;
+  padding: 3px 0px;
 }
 .price-total {
   display: flex;
-  padding: 10px 0px;
   font-weight: bold;
+  padding: 3px 0px;
   font-size: 16px;
 }
 .item-s1 {
@@ -83,9 +86,9 @@ export default {
   justify-content: flex-end;
 }
 .pay-btn {
-  margin-top: 15px;
+  margin-top: 10px;
   width: 100%;
-  height: 56px;
+  height: 50px;
   background-color: #02d126;
   border-radius: 10px;
   display: flex;

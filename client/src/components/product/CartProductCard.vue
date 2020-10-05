@@ -33,7 +33,7 @@ export default {
   background-color: #fff;
   margin-top: 20px;
   width: 100%;
-  height: 130px;
+  height: 105px;
   border-radius: 15px;
   display: flex;
   position: relative;
@@ -51,21 +51,21 @@ export default {
   margin-left: 20px;
 }
 .text-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
-  margin-top: 10px;
-  flex: 2;
+  margin-top: 5px;
+  flex: 1;
 }
 .text-desc {
   color: #ccc;
   font-size: 16px;
-  flex: 4;
+  flex: 2;
   max-width: 230px !important;
   word-wrap: break-word;
   word-break: normal;
 }
 .text-price {
-  flex: 2;
+  flex: 1;
   font-size: 18px;
   font-weight: bold;
   color: #02d126;
@@ -79,7 +79,7 @@ export default {
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 80px;
+  top: 65px;
   right: -15px;
 }
 .del-btn .iconfont {

@@ -6,11 +6,11 @@
 <script>
 export default {
   name: 'TabBar',
-  data () {
+  data() {
     return {}
   },
   methods: {},
-  components: {}
+  components: {},
 }
 </script>
 <style>
@@ -30,5 +30,6 @@ export default {
   background: #ffffff;
   border-radius: 100px 100px 0px 0px;
   z-index: 999;
+  box-shadow: 0px -1px 4px rgb(100 100 100 / 0.1);
 }
 </style>

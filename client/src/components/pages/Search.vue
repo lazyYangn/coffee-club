@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top-bar>
+    <top-bar style="backgroundColor:#fff;box-shadow: 0px 1px 1px rgb(40 40 40 / 0.2);">
       <div slot="left" class="top-left">
         <span class="iconfont icon-fanhui" style="font-size: 30px; line-height: 60px" @click="goback"></span>
       </div>

@@ -18,7 +18,7 @@
           <div class="desc-title">{{ category[0].name }}</div>
           <div class="desc-details">{{ category[0].desc }}</div>
         </div>
-        <div class="more-button">
+        <div class="more-button" @click="goto()">
           更多菜单
         </div>
       </div>
@@ -36,24 +36,21 @@ export default {
   data() {
     return {
       category: [],
+      categoryId: '',
     }
   },
   methods: {
     goback() {
       this.$router.go(-1)
     },
-    goto(name, params) {
-      this.$store.commit('setSearchInput', name)
-      this.$router.push({
-        name,
-        params,
-      })
+    goto() {
+      this.$router.push({ path: '/categorydetails/' + this.categoryId })
     },
     async initData() {
       let gql = {
         query: `
           {
-            category(typeid:[${this.$route.params.id}]){
+            category(typeid:[${this.categoryId}]){
               typeid
               name
               cate_pic
@@ -70,6 +67,7 @@ export default {
     },
   },
   created() {
+    this.categoryId = this.$route.params.id
     this.initData()
   },
   components: {

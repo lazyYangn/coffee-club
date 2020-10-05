@@ -11,9 +11,13 @@
 // 引用组件
 import Main from '@/components/pages/Main'
 export default {
-  name: "app",
+  name: 'app',
 }
 </script>
-<style scoped>
-@import "./assets/css/common.css";
+<style>
+@import './assets/css/common.css';
+.ant-col-12  {
+  display: flex !important;
+  justify-content: center !important;
+}
 </style>

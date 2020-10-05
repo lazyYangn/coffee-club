@@ -1,6 +1,6 @@
 <template>
-  <div style="background-color: #f5f5f5;">
-    <top-bar style="background-color: #f5f5f5;">
+  <div>
+    <top-bar>
       <div slot="left" class="top-left">
         <span class="iconfont icon-fanhui" style="font-size:30px;line-height: 60px;" @click="goto('/main/home')"></span>
       </div>

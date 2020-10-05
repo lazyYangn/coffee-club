@@ -52,14 +52,12 @@ export default {
   border-radius: 16px;
   background: #f6f6f6;
   margin-right: auto;
-  flex: 2;
 }
 
 .wrapper-right {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  flex: 4.5;
   margin-left: 10px;
 }
 .product-name-price {

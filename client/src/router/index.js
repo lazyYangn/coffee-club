@@ -9,8 +9,9 @@ import Search from '@/components/pages/Search.vue'
 import ProductShow from '@/components/display/ProductShow.vue'
 import ProductDetails from '@/components/display/ProductDetails.vue'
 import CategoryDetails from '@/components/categorydetails/CategoryDetails.vue'
-import CartProductCard from '@/components/product/CartProductCard.vue'
-import SearchResult from '../components/pages/SearchResult.vue'
+import SearchResult from '@/components/pages/SearchResult.vue'
+import Login from '@/components/pages/Login.vue'
+import Register from '@/components/pages/Register.vue'
 Vue.use(VueRouter)
 
 // 分配路由
@@ -29,8 +30,10 @@ const routes = [
   { path: '/search', name: 'search', component: Search },
   { path: '/productshow/:id', name: 'productshow', component: ProductShow },
   { path: '/productdetails/:id', name: 'productdetails', component: ProductDetails },
-  { path: '/categorydetails', name: 'categorydetails', component: CategoryDetails },
+  { path: '/categorydetails/:id', name: 'categorydetails', component: CategoryDetails },
   { path: '/searchresult', name: 'searchresult', component: SearchResult },
+  { path: '/login', name: 'login', component: Login },
+  { path: '/register', name: 'register', component: Register },
 ]
 
 const router = new VueRouter({
