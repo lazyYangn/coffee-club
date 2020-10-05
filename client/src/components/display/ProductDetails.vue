@@ -178,9 +178,12 @@ export default {
   word-wrap: break-word;
 }
 .btn-group {
-  margin-top: 20px;
   display: flex;
   justify-content: space-evenly;
+  position: fixed;
+  bottom: 10px;
+  left: 0;
+  right: 0;
 }
 .btn-group .btn-item {
   height: 50px;
@@ -189,6 +192,7 @@ export default {
   justify-content: center;
   align-items: center;
   border-radius: 11px;
+  margin: 0 20px;
 }
 .btn-group .btn-left {
   border: solid 1px #ccc;

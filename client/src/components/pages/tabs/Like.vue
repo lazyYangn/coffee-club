@@ -10,7 +10,7 @@
     </top-bar>
     <my-content :refreshFunc="refresh" pull>
       <a-list :grid="{ gutter: 16, column: 2 }" :data-source="likegoods">
-        <a-list-item slot="renderItem" slot-scope="item" @click="goDetail(item)">
+        <a-list-item slot="renderItem" slot-scope="item">
           <display-item :likeProduct="item"></display-item>
         </a-list-item>
       </a-list>
@@ -39,9 +39,7 @@ export default {
     goto(path) {
       this.$router.replace(path)
     },
-    goDetail(item) {
-      this.$router.push({ path: '/productdetails/' + item.food_id })
-    },
+
     async initData() {
       let sql = {
         query: `

@@ -6,7 +6,7 @@
       <div>{{ project.title }}</div>
     </div>
   </div>
-  <div class="product-card" v-else-if="likeProduct">
+  <div class="product-card" v-else-if="likeProduct" @click="goDetail(likeProduct)">
     <div class="product-img" :style="imgLikeStyle(likeProduct.food_pic)"></div>
     <div class="product-desc">
       <div>{{ likeProduct.food_name }}</div>
@@ -44,6 +44,11 @@ export default {
             }
           : ''
       }
+    },
+  },
+  methods: {
+    goDetail(item) {
+      this.$router.push({ path: '/productdetails/' + item.food_id })
     },
   },
 }
