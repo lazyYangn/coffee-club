@@ -2,9 +2,16 @@
   <div>
     <top-bar>
       <div slot="left">
-        <span class="iconfont icon-fanhui" style="font-size:30px;line-height: 60px;" @click="goback"></span>
+        <span
+          class="iconfont icon-fanhui"
+          style="font-size: 30px; line-height: 60px"
+          @click="goback"
+        ></span>
       </div>
-      <div slot="middle" style="font-size:20px;line-height: 60px;font-weight:bold;">
+      <div
+        slot="middle"
+        style="font-size: 20px; line-height: 60px; font-weight: bold"
+      >
         {{ categoryObj.name }}
       </div>
     </top-bar>
@@ -13,11 +20,12 @@
         <div class="favorite-section">
           <div class="menu-title">收藏</div>
         </div>
-        <div class="product-card-list line">
-          <favorite-product-card></favorite-product-card>
-          <favorite-product-card></favorite-product-card>
-          <favorite-product-card></favorite-product-card>
-          <favorite-product-card></favorite-product-card>
+        <div
+          class="product-card-list line"
+          v-for="item in likegoods"
+          :key="item.food_id"
+        >
+          <favorite-product-card :likeGood="item"></favorite-product-card>
         </div>
       </div>
       <div class="menu-section">
@@ -31,36 +39,46 @@
 </template>
 <script>
 // 引入头部组件
-import TopBar from '@/components/topbar/TopBar'
+import TopBar from "@/components/topbar/TopBar";
 // 引入内容组件
-import MyContent from '@/components/content/MyContent'
+import MyContent from "@/components/content/MyContent";
 
-import FavoriteProductCard from '@/components/product/FavoriteProductCard'
-import MenuProductCard from '@/components/product/MenuProductCard'
-import { HttpGql, ImgUrl } from '@/kits/Http'
+import FavoriteProductCard from "@/components/product/FavoriteProductCard";
+import MenuProductCard from "@/components/product/MenuProductCard";
+import { HttpGql, ImgUrl } from "@/kits/Http";
 
 export default {
-  name: 'CategoryDetails',
+  name: "CategoryDetails",
   data() {
     return {
       categoryObj: {},
-      categoryId: '',
+      categoryId: "",
       foods: [],
-    }
+      likegoods: [],
+    };
+  },
+  mounted() {
+    this.initData();
   },
   methods: {
     // 返回到上一个页面
     goback() {
-      this.$router.go(-1)
+      this.$router.go(-1);
     },
     // 路由跳转
     goto(name, params) {
-      this.$router.push({})
+      this.$router.push({});
     },
     async initData() {
       let gql = {
         query: `
           {
+             favorite{
+                    food_name
+                    food_title
+                    food_pic
+                    food_id
+                  }
              category(typeid:[${this.categoryId}]){
                   typeid
                   name
@@ -74,14 +92,17 @@ export default {
                 }
           }
         `,
-      }
-      let res = await HttpGql(gql)
-      console.log(res)
-      this.categoryObj = res.data.category[0]
+      };
+      let res = await HttpGql(gql);
+      this.categoryObj = res.data.category[0];
       this.foods = res.data.category[0].foods.map((item) => {
-        item.food_pic = ImgUrl + item.food_pic
-        return item
-      })
+        item.food_pic = ImgUrl + item.food_pic;
+        return item;
+      });
+      this.likegoods = res.data.favorite.map((item) => {
+        item.food_pic = ImgUrl + item.food_pic;
+        return item;
+      });
     },
   },
   components: {
@@ -92,10 +113,10 @@ export default {
   },
 
   created() {
-    this.categoryId = this.$route.params.id
-    this.initData()
+    this.categoryId = this.$route.params.id;
+    // this.initData();
   },
-}
+};
 </script>
 <style>
 body {

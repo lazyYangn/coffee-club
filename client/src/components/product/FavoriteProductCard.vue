@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="product-card" @click="goto">
-      <div class="product-img"></div>
+      <div class="product-img" :style="imgStyle(likeGood.food_pic)"></div>
       <div class="product-text">
-        <div class="title">面包</div>
-        <div class="desc">这是面包这是面包这是面包这是面包这是面包</div>
+        <div class="title">{{ likeGood.food_name }}</div>
+        <div class="desc">{{ likeGood.food_title }}</div>
       </div>
       <div class="product-like-price">
         <div class="like-start">
@@ -21,19 +21,31 @@
 </template>
 <script>
 export default {
-  name: 'ProductCard',
-  data () {
-    return {}
+  name: "ProductCard",
+  data() {
+    return {};
+  },
+  props: {
+    likeGood: {},
   },
   methods: {
-    goto (name) {
+    goto(name) {
       this.$router.push({
-        name: 'productdetails'
-      })
-    }
+        name: "productdetails",
+      });
+    },
   },
-  components: {}
-}
+  computed: {
+    imgStyle() {
+      return (url) => {
+        return {
+          backgroundImage: `url(${url})`,
+          backgroundSize: "cover",
+        };
+      };
+    },
+  },
+};
 </script>
 <style scoped>
 .product-card {

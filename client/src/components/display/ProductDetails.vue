@@ -1,19 +1,32 @@
 <template>
   <div>
-    <TopBar style="backgroundColor:rgb(0 0 0 /0)">
-      <div slot="left" class="iconfont icon-fanhui icon" style="font-size:30px;line-height: 60px;" @click="goback"></div>
+    <TopBar style="background-color: unset">
+      <div
+        slot="left"
+        class="iconfont icon-fanhui icon"
+        style="font-size: 30px; line-height: 60px"
+        @click="goback"
+      ></div>
     </TopBar>
     <div class="favorite-box">
       <div class="top-img" :style="imgStyle(product.food_pic)"></div>
       <div class="bottom-tab">
-        <div class="like-btn">
-          <span class="iconfont icon-aixin like-icon"></span>
+        <div class="like-btn" @click="like">
+          <a-icon
+            type="heart"
+            style="font-size: 28px; color: #845747"
+            :theme="isLike ? 'filled' : 'outlined'"
+          />
         </div>
         <div class="like-product-title">
           {{ product.food_name }}
         </div>
         <div class="like-num">
-          <span class="iconfont icon-xingxing" v-for="item in product.food_rate" :key="item"></span>
+          <span
+            class="iconfont icon-xingxing"
+            v-for="item in product.food_rate"
+            :key="item"
+          ></span>
         </div>
         <div class="like-description">
           <div class="like-description-top">
@@ -34,50 +47,51 @@
 </template>
 <script>
 // 引入头部组件
-import TopBar from '@/components/topbar/TopBar'
+import TopBar from "@/components/topbar/TopBar";
 // 引入内容部分
-import MyContent from '@/components/content/MyContent'
+import MyContent from "@/components/content/MyContent";
 // 引入本地存储
-import { setCacheVal, getCacheVal } from '@/kits/LocalStorage'
-import { HttpGql, ImgUrl } from '@/kits/Http'
+import { setCacheVal, getCacheVal } from "@/kits/LocalStorage";
+import { HttpGql, ImgUrl } from "@/kits/Http";
 
 export default {
   data() {
     return {
       product: {},
-      foodId: '',
-    }
+      foodId: "",
+      isLike: false,
+    };
   },
   created() {
-    this.foodId = this.$route.params.id
-    this.initData()
+    this.foodId = this.$route.params.id;
+    this.initData();
   },
   computed: {
     imgStyle() {
       return (url) => {
         return {
           backgroundImage: `url(${url})`,
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center center',
-        }
-      }
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center center",
+        };
+      };
     },
   },
   methods: {
     // 返回上一级
     goback() {
-      this.$router.go(-1)
+      this.$router.go(-1);
     },
     // 页面跳转
     goto(path) {
       this.$router.push({
         path,
-      })
+      });
     },
     // 加入购物车
     addCart(product) {
-      console.log('添加到购物车')
+      console.log("添加到购物车");
     },
     async initData() {
       let gql = {
@@ -92,17 +106,20 @@ export default {
             }
           }
         `,
-      }
-      let res = await HttpGql(gql)
-      res.data.food.food_pic = ImgUrl + res.data.food.food_pic
-      this.product = res.data.food
+      };
+      let res = await HttpGql(gql);
+      res.data.food.food_pic = ImgUrl + res.data.food.food_pic;
+      this.product = res.data.food;
+    },
+    like() {
+      this.isLike = !this.isLike;
     },
   },
   components: {
     TopBar,
     MyContent,
   },
-}
+};
 </script>
 <style scoped>
 .main {

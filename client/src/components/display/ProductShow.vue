@@ -1,11 +1,17 @@
 <template>
-  <div style="background-color: #f5f5f5;">
-    <top-bar style="background-color: #f5f5f5;">
+  <div style="background-color: #f5f5f5">
+    <top-bar style="background-color: #f5f5f5">
       <div slot="left">
-        <span class="iconfont icon-fanhui icon" style="font-size:30px;line-height: 60px;" @click="goback"></span>
+        <span
+          class="iconfont icon-fanhui icon"
+          style="font-size: 30px; line-height: 60px"
+          @click="goback"
+        ></span>
       </div>
       <div slot="middle">
-        <div style="font-weight:blod;font-size:20px;line-height: 60px;">菜单</div>
+        <div style="font-weight: blod; font-size: 20px; line-height: 60px">
+          菜单
+        </div>
       </div>
       <div slot="right">
         <span class="iconfont icon-chazhao" @click="goto('search')"></span>
@@ -18,33 +24,35 @@
           <div class="desc-title">{{ category[0].name }}</div>
           <div class="desc-details">{{ category[0].desc }}</div>
         </div>
-        <div class="more-button" @click="goto()">
-          更多菜单
-        </div>
+        <div class="more-button" @click="goto()">更多菜单</div>
       </div>
     </my-content>
   </div>
 </template>
 <script>
 // 引入头部组件
-import TopBar from '@/components/topbar/TopBar'
+import TopBar from "@/components/topbar/TopBar";
 // 引入内容组件
-import MyContent from '@/components/content/MyContent'
-import { HttpGql, ImgUrl } from '@/kits/Http'
+import MyContent from "@/components/content/MyContent";
+import { HttpGql, ImgUrl } from "@/kits/Http";
 export default {
-  name: 'ProductShow',
+  name: "ProductShow",
   data() {
     return {
       category: [],
-      categoryId: '',
-    }
+      categoryId: "",
+    };
   },
   methods: {
     goback() {
-      this.$router.go(-1)
+      this.$router.go(-1);
     },
     goto() {
-      this.$router.push({ path: '/categorydetails/' + this.categoryId })
+      if (this.categoryId == 1000) {
+        this.$router.push({ path: "/selectcoffee/" + this.categoryId });
+      } else {
+        this.$router.push({ path: "/categorydetails/" + this.categoryId });
+      }
     },
     async initData() {
       let gql = {
@@ -58,17 +66,17 @@ export default {
               }
           }
         `,
-      }
-      let res = await HttpGql(gql)
+      };
+      let res = await HttpGql(gql);
       this.category = res.data.category.map((item) => {
-        item.cate_pic = ImgUrl + item.cate_pic
-        return item
-      })
+        item.cate_pic = ImgUrl + item.cate_pic;
+        return item;
+      });
     },
   },
   created() {
-    this.categoryId = this.$route.params.id
-    this.initData()
+    this.categoryId = this.$route.params.id;
+    this.initData();
   },
   components: {
     TopBar,
@@ -79,12 +87,12 @@ export default {
       return (url) => {
         return {
           backgroundImage: `url(${url})`,
-          backgroundSize: 'cover',
-        }
-      }
+          backgroundSize: "cover",
+        };
+      };
     },
   },
-}
+};
 </script>
 <style scoped>
 .product-card {

@@ -3,7 +3,14 @@
     <div class="top-left">
       <slot name="left">
         <span class="iconfont icon-caidan" @click="showDrawer"></span>
-        <a-drawer width="280px" placement="left" title="Basic Drawer" :closable="false" :visible="visible" @close="onClose">
+        <a-drawer
+          width="280px"
+          placement="left"
+          title="Basic Drawer"
+          :closable="false"
+          :visible="visible"
+          @close="onClose"
+        >
           <p>Some contents...</p>
           <p>Some contents...</p>
           <p>Some contents...</p>
@@ -23,18 +30,18 @@ export default {
   data() {
     return {
       visible: false,
-    }
+    };
   },
   methods: {
     showDrawer() {
-      this.visible = true
+      this.visible = true;
     },
     onClose() {
-      this.visible = false
+      this.visible = false;
     },
   },
   components: {},
-}
+};
 </script>
 <style scoped>
 body {

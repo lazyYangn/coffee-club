@@ -1,33 +1,46 @@
 <template>
   <div>
     <top-bar class="top-bar">
-      <!-- <div slot="left" class="top-left"></div> -->
       <div slot="middle">
-        <div style="font-weight:blod;font-size:20px;line-height: 60px; ">菜单</div>
+        <div style="font-weight: blod; font-size: 20px; line-height: 60px">
+          菜单
+        </div>
       </div>
       <div slot="right">
-        <span class="iconfont icon-shezhi"> </span>
+        <span class="iconfont icon-shezhi" @click="goSetting"></span>
       </div>
     </top-bar>
     <my-content class="my-content">
       <div class="img-content" :style="imgPath">
         <div class="user_ava">
-          <a-avatar :size="180" icon="user" class="user_ava" v-if="imageUrl" :src="imageUrl" />
+          <a-avatar
+            :size="180"
+            icon="user"
+            class="user_ava"
+            v-if="imageUrl"
+            :src="userAva"
+          />
           <a-avatar icon="user" class="user_ava" v-else>
             <a-icon :type="loading ? 'loading' : 'plus'" />
-            <div class="ant-upload-text">
-              Upload
-            </div>
+            <div class="ant-upload-text">Upload</div>
           </a-avatar>
         </div>
         <div class="user">
-          <div class="user-name">张三</div>
-          <div class="user-desc">asdfghjkl;'wertyui</div>
+          <div class="user-name">{{ userName }}</div>
+          <div class="user-desc">{{ userId }}</div>
         </div>
         <div class="zx-box">
-          <span class="iconfont icon-zhaoxiangji" style="font-size: 56px;" @click="showModal"></span>
+          <span
+            class="iconfont icon-zhaoxiangji"
+            style="font-size: 56px"
+            @click="showModal"
+          ></span>
           <a-modal :visible="visible" @ok="handleOk" @cancel="handleCancel">
-            <div v-for="(item, index) in imgs" :key="item + index" class="ava-list">
+            <div
+              v-for="(item, index) in imgs"
+              :key="item + index"
+              class="ava-list"
+            >
               <img src="../../../../public/imgs/ava01.png" alt="" />
             </div>
           </a-modal>
@@ -36,104 +49,119 @@
       <div class="btn-content">
         <div class="user-menu">
           <div class="menu-item">
-            <div class="item-num">33</div>
-            <div class="item-title">喜欢</div>
+            <div class="item-num">0 元</div>
+            <div class="item-title">账户余额</div>
           </div>
           <div class="menu-item">
-            <div class="item-num">33</div>
-            <div class="item-title">喜欢</div>
+            <div class="item-num">0 张</div>
+            <div class="item-title">咖啡钱包</div>
           </div>
           <div class="menu-item">
-            <div class="item-num">33</div>
-            <div class="item-title">喜欢</div>
+            <div class="item-num">4 张</div>
+            <div class="item-title">优惠券</div>
           </div>
           <div class="menu-item">
-            <div class="item-num">33</div>
-            <div class="item-title">喜欢</div>
+            <div class="item-num">0 张</div>
+            <div class="item-title">礼品卡</div>
           </div>
         </div>
-        <div class="user-desc-box">
-          1ssssqwertyuiopasdfghjklzxcvbnm,.wertyu1ssssqwertyuiopasdfghjklzxcvbnm,.wertyu1ssssqwertyuiopasdfghjklzxcvbnm,
-        </div>
-        <div class="btn-box">
-          关注
-        </div>
+        <div class="user-desc-box"></div>
+        <!-- <div class="btn-box">关注</div> -->
       </div>
     </my-content>
   </div>
 </template>
 <script>
 // 引入头部组件
-import TopBar from '@/components/topbar/TopBar'
+import TopBar from "@/components/topbar/TopBar";
 // 引入内容组件
-import MyContent from '@/components/content/MyContent'
+import MyContent from "@/components/content/MyContent";
+import { getCacheVal, getArray, clearCache } from "@/kits/LocalStorage";
 function getBase64(img, callback) {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => callback(reader.result))
-  reader.readAsDataURL(img)
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result));
+  reader.readAsDataURL(img);
 }
 let imgs = [
-  '../../../../public/imgs/ava01.png',
-  '../../../../public/imgs/ava02.png',
-  '../../../../public/imgs/ava03.png',
-  '../../../../public/imgs/ava04.png',
-  '../../../../public/imgs/ava05.png',
-  '../../../../public/imgs/ava06.png',
-  '../../../../public/imgs/ava07.png',
-  '../../../../public/imgs/ava08.png',
-  '../../../../public/imgs/ava09.png',
-]
+  "../../../../public/imgs/ava01.png",
+  "../../../../public/imgs/ava02.png",
+  "../../../../public/imgs/ava03.png",
+  "../../../../public/imgs/ava04.png",
+  "../../../../public/imgs/ava05.png",
+  "../../../../public/imgs/ava06.png",
+  "../../../../public/imgs/ava07.png",
+  "../../../../public/imgs/ava08.png",
+  "../../../../public/imgs/ava09.png",
+];
 export default {
-  name: 'Account',
+  name: "Account",
   data() {
     return {
       imgs,
       loading: false,
-      imageUrl: '',
-      ModalText: 'Content of the modal',
+      imageUrl: "",
+      ModalText: "Content of the modal",
       visible: false,
       confirmLoading: false,
-    }
+      userName: "",
+      userAva: "",
+      userId: "",
+    };
+  },
+  created() {
+    this.userName = getCacheVal("username")
+      ? getCacheVal("username")
+      : "咖啡小强";
+    this.userAva = getCacheVal("userAva")
+      ? ImgUrl + getCacheVal("userAva")
+      : "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=476262993,2239475519&fm=11&gp=0.jpg";
+    this.userId = getCacheVal("userId")
+      ? getCacheVal("userId")
+      : "coffeeClub@qq.com";
   },
   methods: {
     showModal() {
-      this.visible = true
+      this.visible = true;
     },
     handleOk(e) {
-      this.ModalText = 'The modal will be closed after two seconds'
-      this.confirmLoading = true
+      this.ModalText = "The modal will be closed after two seconds";
+      this.confirmLoading = true;
       setTimeout(() => {
-        this.visible = false
-        this.confirmLoading = false
-      }, 2000)
+        this.visible = false;
+        this.confirmLoading = false;
+      }, 2000);
     },
     handleCancel(e) {
-      console.log('Clicked cancel button')
-      this.visible = false
+      console.log("Clicked cancel button");
+      this.visible = false;
     },
     handleChange(info) {
-      if (info.file.status === 'uploading') {
-        this.loading = true
-        return
+      if (info.file.status === "uploading") {
+        this.loading = true;
+        return;
       }
-      if (info.file.status === 'done') {
+      if (info.file.status === "done") {
         // Get this url from response in real world.
         getBase64(info.file.originFileObj, (imageUrl) => {
-          this.imageUrl = imageUrl
-          this.loading = false
-        })
+          this.imageUrl = imageUrl;
+          this.loading = false;
+        });
       }
     },
     beforeUpload(file) {
-      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+      const isJpgOrPng =
+        file.type === "image/jpeg" || file.type === "image/png";
       if (!isJpgOrPng) {
-        this.$message.error('You can only upload JPG file!')
+        this.$message.error("You can only upload JPG file!");
       }
-      const isLt2M = file.size / 1024 / 1024 < 2
+      const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
-        this.$message.error('Image must smaller than 2MB!')
+        this.$message.error("Image must smaller than 2MB!");
       }
-      return isJpgOrPng && isLt2M
+      return isJpgOrPng && isLt2M;
+    },
+    goSetting() {
+      this.$router.push({ name: "setting" });
     },
   },
   components: {
@@ -144,13 +172,13 @@ export default {
     imgPath() {
       return () => {
         return {
-          backgroundImage: `url(${this.imageUrl})`,
-          backgroundSize: 'cover',
-        }
-      }
+          backgroundImage: `url(${this.userAva})`,
+          backgroundSize: "cover",
+        };
+      };
     },
   },
-}
+};
 </script>
 <style scoped>
 .top-bar {
@@ -232,7 +260,7 @@ export default {
   flex: 1;
 }
 .item-num {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
 }
 .item-title {

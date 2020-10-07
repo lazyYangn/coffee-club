@@ -12,6 +12,8 @@ import CategoryDetails from '@/components/categorydetails/CategoryDetails.vue'
 import SearchResult from '@/components/pages/SearchResult.vue'
 import Login from '@/components/pages/Login.vue'
 import Register from '@/components/pages/Register.vue'
+import Setting from '@/components/pages/Setting.vue'
+import SelectCoffee from '@/components/pages/SelectCoffee.vue'
 Vue.use(VueRouter)
 
 // 分配路由
@@ -34,6 +36,8 @@ const routes = [
   { path: '/searchresult', name: 'searchresult', component: SearchResult },
   { path: '/login', name: 'login', component: Login },
   { path: '/register', name: 'register', component: Register },
+  { path: '/setting', name: 'setting', component: Setting },
+  { path: '/selectcoffee/:id', name: 'selectcoffee', component: SelectCoffee },
 ]
 
 const router = new VueRouter({

@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-export const ImgUrl = 'http://127.0.0.1:3001/imgs/'
+export const ImgUrl = 'http://127.0.0.1:3002/imgs/'
 
 // 创建axios单例
 const instance = axios.create({
-  baseURL: 'http://127.0.0.1:3001',
+  baseURL: 'http://127.0.0.1:3002',
   // 设置超时时间
   timeout: 1000,
   // 设置请求头
