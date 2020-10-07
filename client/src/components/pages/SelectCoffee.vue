@@ -11,15 +11,10 @@
     </top-bar>
     <my-content class="my-content">
       <div class="img-box" :style="imgStyle">
-        <div class="title-box">{{ topImg[activeKey - 1].name }}</div>
+        <!-- <div class="title-box">{{ topImg[activeKey - 1].name }}</div> -->
       </div>
       <div class="content-box">
-        <a-tabs
-          default-active-key="1"
-          :tabBarGutter="num"
-          v-model="activeKey"
-          defaultActiveKey="1"
-        >
+        <a-tabs default-active-key="1" :tabBarGutter="num" v-model="activeKey">
           <a-tab-pane key="1" tab="全部">
             <div class="coffee-box-all">
               <div v-for="item in allCoffee" :key="item.food_name">
@@ -64,8 +59,8 @@ export default {
       allCoffee: [],
       hotCoffee: [],
       codeCoffee: [],
-      activeKey: "",
-      topImg: [{ name: "精美咖啡", cate_pic: "allCoffee.png" }],
+      activeKey: "1",
+      topImg: ["allCoffee.png"],
     };
   },
   created() {
@@ -94,6 +89,7 @@ export default {
               food_pic
               food_title
               food_price
+              food_id
             }
           }
         }
@@ -102,7 +98,7 @@ export default {
       let res = await HttpGql(gql);
       console.log(res);
       res.data.category.map((item) => {
-        this.topImg.push({ name: item.name, cate_pic: item.cate_pic });
+        this.topImg.push(item.cate_pic);
       });
       this.hotCoffee = res.data.category[0].foods.map((item) => {
         item.imgpath = ImgUrl + item.imgpath;
@@ -113,15 +109,12 @@ export default {
         return item;
       });
       this.allCoffee = [...this.hotCoffee, ...this.codeCoffee];
-      console.log(this.topImg);
     },
   },
   computed: {
     imgStyle() {
       return {
-        backgroundImage: `url(${
-          ImgUrl + this.topImg[this.activeKey - 1].cate_pic
-        })`,
+        backgroundImage: `url(${ImgUrl + this.topImg[this.activeKey - 1]})`,
       };
     },
   },
@@ -137,28 +130,12 @@ export default {
   background-color: rgb(0 0 0 /0);
 }
 .my-content {
+  position: relative;
   padding: 0;
   margin: 0;
 }
 .img-box {
-  position: relative;
   height: 35%;
-}
-.title-box {
-  color: #fff;
-  font-size: 24px;
-  position: absolute;
-  z-index: 999;
-  bottom: 70px;
-  left: 10px;
-}
-.desc-box {
-  color: #fff;
-  font-size: 20px;
-  position: absolute;
-  z-index: 99999;
-  bottom: 40px;
-  left: 10px;
 }
 .content-box {
   position: relative;
@@ -174,7 +151,7 @@ export default {
   height: 100px !important;
 }
 .coffee-box-all {
-  /* height: 350px; */
+  height: 350px;
   overflow-y: auto;
   white-space: nowrap;
 }

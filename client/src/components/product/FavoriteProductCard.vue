@@ -7,14 +7,14 @@
         <div class="desc">{{ likeGood.food_title }}</div>
       </div>
       <div class="product-like-price">
-        <div class="like-start">
-          <span class="iconfont icon-xingxing"></span>
-          <span class="iconfont icon-xingxing"></span>
-          <span class="iconfont icon-xingxing"></span>
-          <span class="iconfont icon-xingxing"></span>
+        <div
+          class="like-start"
+          v-for="item in likeGood.food_rate"
+          :key="item.food_id"
+        >
           <span class="iconfont icon-xingxing"></span>
         </div>
-        <div class="product-price">$12</div>
+        <div class="product-price">￥ {{ likeGood.food_price }}</div>
       </div>
     </div>
   </div>
@@ -29,9 +29,9 @@ export default {
     likeGood: {},
   },
   methods: {
-    goto(name) {
+    goto() {
       this.$router.push({
-        name: "productdetails",
+        path: "/productdetails/" + this.likeGood.food_id,
       });
     },
   },

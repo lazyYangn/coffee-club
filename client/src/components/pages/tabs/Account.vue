@@ -11,9 +11,9 @@
       </div>
     </top-bar>
     <my-content class="my-content">
-      <div class="img-content" :style="imgPath">
-        <div class="user_ava">
-          <a-avatar
+      <div class="img-content">
+        <div class="user_ava" :style="imgPath">
+          <!-- <a-avatar
             :size="180"
             icon="user"
             class="user_ava"
@@ -23,7 +23,7 @@
           <a-avatar icon="user" class="user_ava" v-else>
             <a-icon :type="loading ? 'loading' : 'plus'" />
             <div class="ant-upload-text">Upload</div>
-          </a-avatar>
+          </a-avatar> -->
         </div>
         <div class="user">
           <div class="user-name">{{ userName }}</div>
@@ -41,7 +41,7 @@
               :key="item + index"
               class="ava-list"
             >
-              <img src="../../../../public/imgs/ava01.png" alt="" />
+              <img :src="item" alt="" />
             </div>
           </a-modal>
         </div>
@@ -77,21 +77,16 @@ import TopBar from "@/components/topbar/TopBar";
 // 引入内容组件
 import MyContent from "@/components/content/MyContent";
 import { getCacheVal, getArray, clearCache } from "@/kits/LocalStorage";
+import { ImgUrl } from "@/kits/Http";
 function getBase64(img, callback) {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result));
   reader.readAsDataURL(img);
 }
 let imgs = [
-  "../../../../public/imgs/ava01.png",
-  "../../../../public/imgs/ava02.png",
-  "../../../../public/imgs/ava03.png",
-  "../../../../public/imgs/ava04.png",
-  "../../../../public/imgs/ava05.png",
-  "../../../../public/imgs/ava06.png",
-  "../../../../public/imgs/ava07.png",
-  "../../../../public/imgs/ava08.png",
-  "../../../../public/imgs/ava09.png",
+  "http://127.0.0.1:3002/imgs/ava01.png",
+  "http://127.0.0.1:3002/imgs/ava02.png",
+  "http://127.0.0.1:3002/imgs/ava03.png",
 ];
 export default {
   name: "Account",
@@ -115,9 +110,11 @@ export default {
     this.userAva = getCacheVal("userAva")
       ? ImgUrl + getCacheVal("userAva")
       : "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=476262993,2239475519&fm=11&gp=0.jpg";
+
     this.userId = getCacheVal("userId")
       ? getCacheVal("userId")
       : "coffeeClub@qq.com";
+    console.log(ImgUrl + getCacheVal("userAva"));
   },
   methods: {
     showModal() {
@@ -170,11 +167,9 @@ export default {
   },
   computed: {
     imgPath() {
-      return () => {
-        return {
-          backgroundImage: `url(${this.userAva})`,
-          backgroundSize: "cover",
-        };
+      return {
+        backgroundImage: `url(${this.userAva})`,
+        backgroundSize: "cover",
       };
     },
   },
@@ -224,6 +219,7 @@ export default {
   width: 180px;
   height: 180px;
   border-radius: 50%;
+  background-color: #e3e3e3;
 }
 .user-name {
   font-size: 24px;

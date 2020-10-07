@@ -20,12 +20,10 @@
         <div class="favorite-section">
           <div class="menu-title">收藏</div>
         </div>
-        <div
-          class="product-card-list line"
-          v-for="item in likegoods"
-          :key="item.food_id"
-        >
-          <favorite-product-card :likeGood="item"></favorite-product-card>
+        <div class="product-card-item">
+          <div v-for="item in likegoods" :key="item.food_id">
+            <favorite-product-card :likeGood="item"></favorite-product-card>
+          </div>
         </div>
       </div>
       <div class="menu-section">
@@ -73,12 +71,18 @@ export default {
       let gql = {
         query: `
           {
-             favorite{
-                    food_name
-                    food_title
-                    food_pic
-                    food_id
-                  }
+            user(u_id:"admin@mail.com"){
+                    u_id
+                    name
+                    favorite{
+                      food_name
+                      food_id
+                      food_pic
+                      food_title
+                      food_rate
+                      food_price
+                    }
+              }
              category(typeid:[${this.categoryId}]){
                   typeid
                   name
@@ -99,7 +103,7 @@ export default {
         item.food_pic = ImgUrl + item.food_pic;
         return item;
       });
-      this.likegoods = res.data.favorite.map((item) => {
+      this.likegoods = res.data.user.favorite.map((item) => {
         item.food_pic = ImgUrl + item.food_pic;
         return item;
       });
@@ -133,12 +137,7 @@ body {
   font-weight: bold;
   padding: 10px 0;
 }
-.line {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.product-card-list {
+.product-card-item {
   display: flex;
   overflow-x: auto;
 }

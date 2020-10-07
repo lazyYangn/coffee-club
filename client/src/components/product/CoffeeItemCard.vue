@@ -1,5 +1,5 @@
 <template>
-  <div class="coffee-box">
+  <div class="coffee-box" @click="goto">
     <div class="coffee-img"></div>
     <div class="coffee-desc">
       <div class="desc-title">{{ coffee.food_name }}</div>
@@ -7,7 +7,7 @@
       <div class="desc-price">￥ {{ coffee.food_price }}</div>
     </div>
     <div class="add-box">
-      <span class="iconfont icon-jia"></span>
+      <a-icon type="plus-circle" style="font-size: 20px" />
     </div>
   </div>
 </template>
@@ -18,7 +18,11 @@ export default {
     return {};
   },
   props: { coffee: Object },
-  methods: {},
+  methods: {
+    goto() {
+      this.$router.push({ path: "/productdetails/" + this.coffee.food_id });
+    },
+  },
   components: {},
 };
 </script>

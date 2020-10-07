@@ -10,7 +10,7 @@ const typeDefs = gql`
     foods(start: Int, count: Int, typeid: Int, food_name: String, food_desc: String): [Food]
     category(typeid: [Int]!): [Category]
     homecategory: [Category]
-    favorite: [Food]
+    user(u_id: String!): User
   }
   type Food {
     food_id: Int
@@ -37,6 +37,11 @@ const typeDefs = gql`
     cate_pic: String
     foods(count: Int!): [Food]
   }
+  type User {
+    u_id: String
+    name: String
+    favorite: [Food]
+  }
 `
 const resolvers = {
   Query: {
@@ -45,13 +50,16 @@ const resolvers = {
     foods: gr.foods,
     category: gr.category,
     homecategory: gr.homecategory,
-    favorite: gr.favorite,
+    user: gr.user,
   },
   Food: {
     type: gr.type,
   },
   Category: {
     foods: gr.foodsCategory,
+  },
+  User: {
+    favorite: gr.favorite,
   },
 }
 export const server = new ApolloServer({

@@ -1,14 +1,14 @@
 import { app, gql_server } from './server'
-// import {connection} from './mysql'
+import { Ping } from './mysql'
 const config = require('../config')
 
-// connection.connect((e)=>{
-//     if(e){
-//         console.warn("数据库连不上！！！！！！！！！！")
-//     }else{
-//         console.info("数据库连接成功！")
-//     }
-// })
+Ping()
+  .then((res) => {
+    console.log(res)
+  })
+  .catch((err) => {
+    console.log(err)
+  })
 
 app.listen(config.port, () =>
   console.log(`

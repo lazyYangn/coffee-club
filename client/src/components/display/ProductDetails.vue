@@ -52,7 +52,7 @@ import TopBar from "@/components/topbar/TopBar";
 import MyContent from "@/components/content/MyContent";
 // 引入本地存储
 import { setCacheVal, getCacheVal } from "@/kits/LocalStorage";
-import { HttpGql, ImgUrl } from "@/kits/Http";
+import { Http, HttpGql, ImgUrl } from "@/kits/Http";
 
 export default {
   data() {
@@ -111,8 +111,11 @@ export default {
       res.data.food.food_pic = ImgUrl + res.data.food.food_pic;
       this.product = res.data.food;
     },
-    like() {
+    async like() {
       this.isLike = !this.isLike;
+      let u_id = getCacheVal("userid");
+      let res = await Http("/userfoodlike", { u_id, food_id: this.foodId });
+      console.log(res);
     },
   },
   components: {

@@ -77,3 +77,19 @@ export const register = async (req: any, resp: any) => {
     })
   }
 }
+export const userfoodlike = async (req: any, resp: any) => {
+  const p = req.body
+  let res = await FindFrist('select * from user_actions where u_id = ? and food_id = ? and type = 1', [p.u_id, p.food_id])
+  console.log(res)
+  if (res) {
+    Do('delete from user_actions where u_id = ? and food_id = ? and type = 1', [p.u_id, p.food_id])
+  } else {
+    Do('insert into user_actions (u_id,food_id,type,sysdate) values (?,?,?,(select now()))', [p.u_id, p.food_id, 1])
+  }
+
+  resp.json({
+    code: 3,
+    msg: '成功',
+    data: {},
+  })
+}

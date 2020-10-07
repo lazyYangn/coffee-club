@@ -2,10 +2,19 @@
   <div>
     <top-bar>
       <div slot="left" class="top-left">
-        <span class="iconfont icon-fanhui" style="font-size:30px;line-height: 60px;" @click="goto('/main/home')"></span>
+        <span
+          class="iconfont icon-fanhui"
+          style="font-size: 30px; line-height: 60px"
+          @click="goto('/main/home')"
+        ></span>
       </div>
       <div slot="middle">
-        <div class="title" style="font-weight:blod;font-size:20px;line-height: 60px;">收藏夹</div>
+        <div
+          class="title"
+          style="font-weight: blod; font-size: 20px; line-height: 60px"
+        >
+          收藏夹
+        </div>
       </div>
     </top-bar>
     <my-content :refreshFunc="refresh" pull>
@@ -19,53 +28,58 @@
 </template>
 <script>
 // 引入顶部组件
-import TopBar from '@/components/topbar/TopBar'
+import TopBar from "@/components/topbar/TopBar";
 // 引入content组件
-import MyContent from '@/components/content/MyContent'
+import MyContent from "@/components/content/MyContent";
 // 引入商品卡片
-import DisplayItem from '@/components/display/DisplayItem'
-import { HttpGql, ImgUrl } from '@/kits/Http'
+import DisplayItem from "@/components/display/DisplayItem";
+import { HttpGql, ImgUrl } from "@/kits/Http";
 export default {
   data() {
     return {
       likegoods: [],
-    }
+    };
   },
   created() {
-    this.initData()
+    this.initData();
   },
   methods: {
     // 点击返回按钮
     goto(path) {
-      this.$router.replace(path)
+      this.$router.replace(path);
     },
 
     async initData() {
       let sql = {
         query: `
               {
-                 favorite{
-                    food_name
-                    food_title
-                    food_pic
-                    food_id
+                 user(u_id:"admin@mail.com"){
+                    u_id
+                    name
+                    favorite{
+                      food_name
+                      food_id
+                      food_pic
+                      food_title
+                    }
                   }
               }
           `,
-      }
+      };
       try {
-        let res = await HttpGql(sql)
-        this.likegoods = res.data.favorite.map((item) => {
-          item.food_pic = ImgUrl + item.food_pic
-          return item
-        })
-        return true
+        let res = await HttpGql(sql);
+        console.log(res);
+        this.likegoods = res.data.user.favorite.map((item) => {
+          item.food_pic = ImgUrl + item.food_pic;
+          return item;
+        });
+        return true;
       } catch (error) {
-        return false
+        return false;
       }
     },
     refresh() {
-      return this.initData()
+      return this.initData();
     },
   },
   components: {
@@ -73,7 +87,7 @@ export default {
     MyContent,
     DisplayItem,
   },
-}
+};
 </script>
 <style>
 .title {
