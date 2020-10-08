@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 05/10/2020 22:05:15
+ Date: 07/10/2020 22:00:29
 */
 
 SET NAMES utf8mb4;
@@ -60,8 +60,8 @@ CREATE TABLE `category`  (
 -- Records of category
 -- ----------------------------
 INSERT INTO `category` VALUES (1, 1000, 0, '咖啡', '咖啡要喝好', '纵享丝滑', 1, 'cate01.png');
-INSERT INTO `category` VALUES (2, 1010, 1000, '冷咖啡', NULL, '纵享丝滑', 2, '');
-INSERT INTO `category` VALUES (3, 1020, 1000, '热咖啡', NULL, '纵享丝滑', 3, '');
+INSERT INTO `category` VALUES (2, 1010, 1000, '冷咖啡', NULL, '纵享丝滑', 2, 'rate0101.jpg');
+INSERT INTO `category` VALUES (3, 1020, 1000, '热咖啡', NULL, '纵享丝滑', 3, 'rate0102.jpg');
 INSERT INTO `category` VALUES (4, 2000, 0, '早餐', '早餐要吃好', '纵享丝滑', 4, 'cate02.png');
 INSERT INTO `category` VALUES (5, 3000, 0, '小吃', '小吃要小点口吃', '纵享丝滑', 5, 'cate03.png');
 INSERT INTO `category` VALUES (6, 4000, 0, '午餐', '午餐要吃饱', '纵享丝滑', 6, 'cate04.png');
@@ -85,7 +85,7 @@ CREATE TABLE `favorite`  (
 -- ----------------------------
 -- Records of favorite
 -- ----------------------------
-INSERT INTO `favorite` VALUES (1, 'admin@mail.com', 1001, '食物1', '纵享丝滑', 'coffee.png');
+INSERT INTO `favorite` VALUES (1, 'admin@mail.com', 1001, '抹茶瑞纳冰', '纵享丝滑', 'coffee.png');
 
 -- ----------------------------
 -- Table structure for foods
@@ -141,12 +141,6 @@ INSERT INTO `foods` VALUES (27, 1027, '食物27', '纵享丝滑', 6000, 56.00, 5
 INSERT INTO `foods` VALUES (28, 1028, '食物28', '纵享丝滑', 6000, 57.00, 3, 77, '食物28很美味', NULL, 0, 'dinner.png', 1);
 INSERT INTO `foods` VALUES (29, 1029, '食物29', '纵享丝滑', 6000, 58.00, 5, 78, '食物29很美味', NULL, 0, 'dinner.png', 1);
 INSERT INTO `foods` VALUES (30, 1030, '食物30', '纵享丝滑', 6000, 59.00, 4, 79, '食物30很美味', NULL, 0, 'dinner.png', 1);
-INSERT INTO `foods` VALUES (31, 1001, '食物1', '纵享丝滑', 1000, 30.00, 5, 50, '食物1很美味', NULL, 0, 'coffee.png', 1);
-INSERT INTO `foods` VALUES (32, 1002, '食物2', '纵享丝滑', 1000, 31.00, 6, 51, '食物2很美味', NULL, 0, 'coffee.png', 1);
-INSERT INTO `foods` VALUES (33, 1003, '食物3', '纵享丝滑', 1000, 32.00, 7, 52, '食物3很美味', NULL, 0, 'coffee.png', 1);
-INSERT INTO `foods` VALUES (34, 1004, '食物4', '纵享丝滑', 1000, 33.00, 8, 53, '食物4很美味', NULL, 0, 'coffee.png', 1);
-INSERT INTO `foods` VALUES (35, 1005, '食物5', '纵享丝滑', 1000, 34.00, 9, 54, '食物5很美味', NULL, 0, 'coffee.png', 1);
-INSERT INTO `foods` VALUES (36, 1006, '食物6', '纵享丝滑', 1000, 35.00, 10, 55, '食物6很美味', NULL, 0, 'coffee.png', 1);
 
 -- ----------------------------
 -- Table structure for order_foods
@@ -219,19 +213,38 @@ INSERT INTO `skus` VALUES (4, 1001, '食物1 不加冰 不加糖 不加奶油', 
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
-  `id` int(4) NOT NULL,
+  `id` int(4) NOT NULL AUTO_INCREMENT,
   `u_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `pwd` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `avatar` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
 INSERT INTO `user` VALUES (1, 'admin@mail.com', 'admin', '000000', 'my.png');
-INSERT INTO `user` VALUES (2, 'lisi@mail.com', '李四', '000000', 'my.png');
-INSERT INTO `user` VALUES (3, 'zhang@mail.com', '张三', '000000', 'my.png');
+INSERT INTO `user` VALUES (4, 'li@mail.com', '李四', '0', NULL);
+
+-- ----------------------------
+-- Table structure for user_actions
+-- ----------------------------
+DROP TABLE IF EXISTS `user_actions`;
+CREATE TABLE `user_actions`  (
+  `u_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `food_id` int(10) NOT NULL,
+  `type` int(10) NOT NULL COMMENT '1-喜欢 2-购物车',
+  `num` int(100) NULL DEFAULT NULL,
+  `sysdate` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`u_id`, `food_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_actions
+-- ----------------------------
+INSERT INTO `user_actions` VALUES ('admin@mail.com', 1001, 1, NULL, '2020-10-07 20:53:12');
+INSERT INTO `user_actions` VALUES ('admin@mail.com', 1004, 1, NULL, '2020-10-07 21:58:40');
+INSERT INTO `user_actions` VALUES ('admin@mail.com', 1011, 1, NULL, '2020-10-07 21:13:43');
 
 SET FOREIGN_KEY_CHECKS = 1;
