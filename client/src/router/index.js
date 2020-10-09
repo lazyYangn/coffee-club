@@ -14,6 +14,7 @@ import Login from '@/components/pages/Login.vue'
 import Register from '@/components/pages/Register.vue'
 import Setting from '@/components/pages/Setting.vue'
 import SelectCoffee from '@/components/pages/SelectCoffee.vue'
+import Order from '@/components/order/Order.vue'
 Vue.use(VueRouter)
 
 // 分配路由
@@ -38,6 +39,7 @@ const routes = [
   { path: '/register', name: 'register', component: Register },
   { path: '/setting', name: 'setting', component: Setting },
   { path: '/selectcoffee/:id', name: 'selectcoffee', component: SelectCoffee },
+  { path: '/order', name: 'order', component: Order },
 ]
 
 const router = new VueRouter({

@@ -70,7 +70,7 @@ export const user = async (parent: any, args: any, context: any, info: any) => {
 }
 export const favorite = async (parent: any, args: any, context: any, info: any) => {
   try {
-    let res = await Do('select b.* from user_actions a,foods b where a.food_id = b.food_id and a.u_id = ? and a.type = 1  order by a.sysdate desc', [parent.u_id])
+    let res = await Do('select b.*,a.islike from favorite a,foods b where a.food_id = b.food_id and a.u_id = ? and a.islike = 1 order by a.sysdate desc', [parent.u_id])
     return res
   } catch (e) {
     return e

@@ -37,6 +37,39 @@
             {{ product.food_desc }}
           </div>
         </div>
+
+        <div :style="{ marginTop: '16px' }" class="radio-grounp">
+          <div class="radio-title">温度:</div>
+          <a-radio-group default-value="a">
+            <a-radio-button value="a"> 冷 </a-radio-button>
+            <a-radio-button value="b"> 热 </a-radio-button>
+          </a-radio-group>
+        </div>
+        <div :style="{ marginTop: '16px' }" class="radio-grounp">
+          <div class="radio-title">糖:</div>
+          <a-radio-group default-value="a">
+            <a-radio-button value="a"> 无糖 </a-radio-button>
+            <a-radio-button value="b"> 半糖 </a-radio-button>
+            <a-radio-button value="c"> 全糖 </a-radio-button>
+          </a-radio-group>
+        </div>
+        <div :style="{ marginTop: '16px' }" class="radio-grounp">
+          <div class="radio-title">奶油:</div>
+          <a-radio-group default-value="a">
+            <a-radio-button value="a"> 有奶油 </a-radio-button>
+            <a-radio-button value="b"> 无奶油 </a-radio-button>
+          </a-radio-group>
+        </div>
+        <div class="good-num">
+          数量:
+          <a-input-number
+            id="inputNumber"
+            v-model="value"
+            :min="1"
+            :max="100"
+            @change="onChange"
+          />
+        </div>
         <div class="btn-group">
           <div class="btn-item btn-left" @click="goto('/main/cart')">购买</div>
           <div class="btn-item btn-right" @click="addCart">加入购物车</div>
@@ -60,6 +93,8 @@ export default {
       product: {},
       foodId: "",
       isLike: false,
+      value: 3,
+      u_id: getCacheVal("userid"),
     };
   },
   created() {
@@ -79,6 +114,9 @@ export default {
     },
   },
   methods: {
+    onChange(value) {
+      console.log("changed", value);
+    },
     // 返回上一级
     goback() {
       this.$router.go(-1);
@@ -96,7 +134,12 @@ export default {
     async initData() {
       let gql = {
         query: `
-          {
+          {user(u_id:"${this.u_id}"){
+            favorite{
+              food_id
+              islike
+            }
+          }
             food(food_id:${this.foodId}){
               food_name
               food_price
@@ -110,12 +153,32 @@ export default {
       let res = await HttpGql(gql);
       res.data.food.food_pic = ImgUrl + res.data.food.food_pic;
       this.product = res.data.food;
+      res.data.user.favorite.forEach((item) => {
+        if (item.food_id == this.foodId) {
+          this.isLike = true;
+        }
+      });
     },
     async like() {
-      this.isLike = !this.isLike;
-      let u_id = getCacheVal("userid");
-      let res = await Http("/userfoodlike", { u_id, food_id: this.foodId });
-      console.log(res);
+      if (getCacheVal("userid")) {
+        if (this.isLike === false) {
+          await Http("/addfoodlike", {
+            u_id: this.u_id,
+            food_id: this.foodId,
+            islike: 0,
+          });
+          this.isLike = !this.isLike;
+        } else {
+          await Http("/addfoodlike", {
+            u_id: this.u_id,
+            food_id: this.foodId,
+            islike: 1,
+          });
+          this.isLike = !this.isLike;
+        }
+      } else {
+        console.log("请先登录");
+      }
     },
   },
   components: {
@@ -132,7 +195,7 @@ export default {
   position: relative;
 }
 .top-img {
-  height: 360px;
+  height: 250px;
   background-color: #ccc;
   margin: -24px 0;
 }
@@ -145,7 +208,7 @@ export default {
   flex: 1;
 }
 .bottom-tab {
-  height: 350px;
+  height: 465px;
   z-index: 9999;
   background-color: #fff;
   border-radius: 31px 31px 0 0;
@@ -201,9 +264,12 @@ export default {
   display: flex;
   justify-content: space-evenly;
   position: fixed;
-  bottom: 10px;
+  bottom: 5px;
   left: 0;
   right: 0;
+  z-index: 999;
+  background: #fff;
+  border: none;
 }
 .btn-group .btn-item {
   height: 50px;
@@ -226,5 +292,25 @@ export default {
   font-weight: bold;
   font-size: 16px;
   line-height: 50px;
+}
+.ant-radio-button-wrapper {
+  width: 74px;
+  margin: 0 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+.radio-grounp {
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
+}
+.radio-title {
+  width: 33px;
+  font-weight: bold;
+}
+.good-num {
+  margin-top: 10px;
+  position: absolute;
+  right: 10px;
 }
 </style>

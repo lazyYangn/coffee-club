@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Input, Icon, message, List, Carousel, Avatar, Skeleton, Button, FormModel, Modal, Card, Drawer, Upload, Spin, Tabs } from 'ant-design-vue'
+import { Input, Icon, message, List, Carousel, Avatar, Skeleton, Button, FormModel, Modal, Card, Drawer, Upload, Spin, Tabs, Radio, InputNumber, Steps, Collapse } from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 
 Vue.use(Input)
@@ -16,6 +16,10 @@ Vue.use(Drawer)
 Vue.use(Upload)
 Vue.use(Spin)
 Vue.use(Tabs)
+Vue.use(Radio)
+Vue.use(InputNumber)
+Vue.use(Steps)
+Vue.use(Collapse)
 message.config({
   top: '100px',
   duration: 2,

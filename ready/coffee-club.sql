@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 07/10/2020 22:00:29
+ Date: 09/10/2020 21:52:53
 */
 
 SET NAMES utf8mb4;
@@ -73,19 +73,28 @@ INSERT INTO `category` VALUES (8, 6000, 0, '晚餐', '晚餐要吃少', '纵享�
 -- ----------------------------
 DROP TABLE IF EXISTS `favorite`;
 CREATE TABLE `favorite`  (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `u_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `food_id` int(11) NOT NULL,
-  `food_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `food_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `food_pic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+  `islike` int(255) NULL DEFAULT 1 COMMENT '0-为收藏 1-已收藏',
+  `sysdate` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`, `u_id`, `food_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of favorite
 -- ----------------------------
-INSERT INTO `favorite` VALUES (1, 'admin@mail.com', 1001, '抹茶瑞纳冰', '纵享丝滑', 'coffee.png');
+INSERT INTO `favorite` VALUES (13, 'admin@mail.com', 1003, 0, '2020-10-09 20:25:54');
+INSERT INTO `favorite` VALUES (14, 'admin@mail.com', 1004, 0, '2020-10-09 20:26:15');
+INSERT INTO `favorite` VALUES (15, 'admin@mail.com', 1007, 0, '2020-10-09 20:54:34');
+INSERT INTO `favorite` VALUES (16, 'admin@mail.com', 1001, 0, '2020-10-09 21:06:58');
+INSERT INTO `favorite` VALUES (17, 'admin@mail.com', 1009, 0, '2020-10-09 21:15:47');
+INSERT INTO `favorite` VALUES (18, 'admin@mail.com', 1008, 1, '2020-10-09 21:18:03');
+INSERT INTO `favorite` VALUES (19, 'admin@mail.com', 1010, 1, '2020-10-09 21:18:15');
+INSERT INTO `favorite` VALUES (20, 'admin@mail.com', 1015, 1, '2020-10-09 21:18:50');
+INSERT INTO `favorite` VALUES (21, 'admin@mail.com', 1016, 1, '2020-10-09 21:18:52');
+INSERT INTO `favorite` VALUES (22, 'admin@mail.com', 1017, 1, '2020-10-09 21:19:00');
+INSERT INTO `favorite` VALUES (23, 'admin@mail.com', 1018, 0, '2020-10-09 21:19:03');
 
 -- ----------------------------
 -- Table structure for foods
@@ -101,46 +110,45 @@ CREATE TABLE `foods`  (
   `food_rate` int(11) NULL DEFAULT NULL,
   `food_count` int(11) NULL DEFAULT NULL,
   `food_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `islike` int(255) NULL DEFAULT 0 COMMENT '0-为收藏 1-已收藏',
   `food_skus` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '属性规格json格式',
-  `isLike` int(255) NULL DEFAULT 0 COMMENT '1-是收藏的商品 0-不是收藏的商品',
   `food_pic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `status` tinyint(255) NULL DEFAULT 1 COMMENT '1:正常 0 下架',
   PRIMARY KEY (`id`, `food_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of foods
 -- ----------------------------
-INSERT INTO `foods` VALUES (1, 1001, '抹茶瑞纳冰', '纵享丝滑', 1010, 30.00, 5, 50, '抹茶瑞纳冰很美味', '{“温度”:[\"冰\"],\"奶油\":[\"无奶油\"]}', 0, 'coffee.png', 1);
-INSERT INTO `foods` VALUES (2, 1002, '拿铁', '纵享丝滑', 1020, 31.00, 3, 51, '拿铁很美味', '{“温度”:[\"冰\",\"热\"],\"糖\":[\"无糖\",\"半分糖\",\"单份糖\"]}', 0, 'coffee.png', 1);
-INSERT INTO `foods` VALUES (3, 1003, '陨石拿铁', '纵享丝滑', 1010, 32.00, 4, 52, '陨石拿铁很美味', '{“温度”:[\"冰\"],\"糖\":[\"全糖\",\"半糖\"],\"奶油\":[\"无奶油\"]}', 0, 'coffee.png', 1);
-INSERT INTO `foods` VALUES (4, 1004, '厚乳拿铁', '纵享丝滑', 1020, 33.00, 5, 53, '厚乳拿铁很美味', '{“温度”:[\"冰\",\"热\"],\"糖\":[\"无糖\",\"半分糖\",\"单份糖\"]}', 0, 'coffee.png', 1);
-INSERT INTO `foods` VALUES (5, 1005, '醉心黑摩卡', '纵享丝滑', 1010, 34.00, 4, 54, '醉心黑摩卡很美味', '{“温度”:[\"冰\",\"热\"],\"奶油\":[\"无奶油\"]}', 0, 'coffee.png', 1);
-INSERT INTO `foods` VALUES (6, 1006, '精粹奥瑞白', '纵享丝滑', 1020, 35.00, 3, 55, '精粹奥瑞白很美味', '{“温度”:[\"热\"],\"糖\":[\"无糖\",\"半分糖\",\"单份糖\"]}', 0, 'coffee.png', 1);
-INSERT INTO `foods` VALUES (7, 1007, '食物7', '纵享丝滑', 2000, 36.00, 5, 56, '食物7很美味', NULL, 0, 'breakfast.png', 1);
-INSERT INTO `foods` VALUES (8, 1008, '食物8', '纵享丝滑', 2000, 37.00, 5, 57, '食物8很美味', NULL, 0, 'breakfast.png', 1);
-INSERT INTO `foods` VALUES (9, 1009, '食物9', '纵享丝滑', 2000, 38.00, 5, 58, '食物9很美味', NULL, 0, 'breakfast.png', 1);
-INSERT INTO `foods` VALUES (10, 1010, '食物10', '纵享丝滑', 2000, 39.00, 5, 59, '食物10很美味', NULL, 0, 'breakfast.png', 1);
-INSERT INTO `foods` VALUES (11, 1011, '食物11', '纵享丝滑', 3000, 40.00, 5, 60, '食物11很美味', NULL, 0, 'Munch.png', 1);
-INSERT INTO `foods` VALUES (12, 1012, '食物12', '纵享丝滑', 3000, 41.00, 4, 61, '食物12很美味', NULL, 0, 'Munch.png', 1);
-INSERT INTO `foods` VALUES (13, 1013, '食物13', '纵享丝滑', 3000, 42.00, 4, 62, '食物13很美味', NULL, 0, 'Munch.png', 1);
-INSERT INTO `foods` VALUES (14, 1014, '食物14', '纵享丝滑', 3000, 43.00, 4, 63, '食物14很美味', NULL, 0, 'Munch.png', 1);
-INSERT INTO `foods` VALUES (15, 1015, '食物15', '纵享丝滑', 4000, 44.00, 4, 64, '食物15很美味', NULL, 0, 'lunch.png', 1);
-INSERT INTO `foods` VALUES (16, 1016, '食物16', '纵享丝滑', 4000, 45.00, 4, 65, '食物16很美味', NULL, 0, 'lunch.png', 1);
-INSERT INTO `foods` VALUES (17, 1017, '食物17', '纵享丝滑', 4000, 46.00, 3, 66, '食物17很美味', NULL, 0, 'lunch.png', 1);
-INSERT INTO `foods` VALUES (18, 1018, '食物18', '纵享丝滑', 4000, 47.00, 3, 67, '食物18很美味', NULL, 0, 'lunch.png', 1);
-INSERT INTO `foods` VALUES (19, 1019, '食物19', '纵享丝滑', 5000, 48.00, 3, 68, '食物19很美味', NULL, 0, 'fries.png', 1);
-INSERT INTO `foods` VALUES (20, 1020, '食物20', '纵享丝滑', 5000, 49.00, 4, 69, '食物20很美味', NULL, 0, 'fries.png', 1);
-INSERT INTO `foods` VALUES (21, 1021, '食物21', '纵享丝滑', 5000, 50.00, 4, 70, '食物21很美味', NULL, 0, 'fries.png', 1);
-INSERT INTO `foods` VALUES (22, 1022, '食物22', '纵享丝滑', 5000, 51.00, 5, 71, '食物22很美味', NULL, 0, 'fries.png', 1);
-INSERT INTO `foods` VALUES (23, 1023, '食物23', '纵享丝滑', 6000, 52.00, 5, 72, '食物23很美味', NULL, 0, 'dinner.png', 1);
-INSERT INTO `foods` VALUES (24, 1024, '食物24', '纵享丝滑', 6000, 53.00, 5, 73, '食物24很美味', NULL, 0, 'dinner.png', 1);
-INSERT INTO `foods` VALUES (25, 1025, '食物25', '纵享丝滑', 6000, 54.00, 5, 74, '食物25很美味', NULL, 0, 'dinner.png', 1);
-INSERT INTO `foods` VALUES (26, 1026, '食物26', '纵享丝滑', 6000, 55.00, 5, 75, '食物26很美味', NULL, 0, 'dinner.png', 1);
-INSERT INTO `foods` VALUES (27, 1027, '食物27', '纵享丝滑', 6000, 56.00, 5, 76, '食物27很美味', NULL, 0, 'dinner.png', 1);
-INSERT INTO `foods` VALUES (28, 1028, '食物28', '纵享丝滑', 6000, 57.00, 3, 77, '食物28很美味', NULL, 0, 'dinner.png', 1);
-INSERT INTO `foods` VALUES (29, 1029, '食物29', '纵享丝滑', 6000, 58.00, 5, 78, '食物29很美味', NULL, 0, 'dinner.png', 1);
-INSERT INTO `foods` VALUES (30, 1030, '食物30', '纵享丝滑', 6000, 59.00, 4, 79, '食物30很美味', NULL, 0, 'dinner.png', 1);
+INSERT INTO `foods` VALUES (1, 1001, '抹茶瑞纳冰', '纵享丝滑', 1010, 30.00, 5, 50, '抹茶瑞纳冰很美味', 0, '{“温度”:[\"冰\"],\"奶油\":[\"无奶油\"]}', 'coffee.png');
+INSERT INTO `foods` VALUES (2, 1002, '拿铁', '纵享丝滑', 1020, 31.00, 3, 51, '拿铁很美味', 0, '{“温度”:[\"冰\",\"热\"],\"糖\":[\"无糖\",\"半分糖\",\"单份糖\"]}', 'coffee.png');
+INSERT INTO `foods` VALUES (3, 1003, '陨石拿铁', '纵享丝滑', 1010, 32.00, 4, 52, '陨石拿铁很美味', 0, '{“温度”:[\"冰\"],\"糖\":[\"全糖\",\"半糖\"],\"奶油\":[\"无奶油\"]}', 'coffee.png');
+INSERT INTO `foods` VALUES (4, 1004, '厚乳拿铁', '纵享丝滑', 1020, 33.00, 5, 53, '厚乳拿铁很美味', 0, '{“温度”:[\"冰\",\"热\"],\"糖\":[\"无糖\",\"半分糖\",\"单份糖\"]}', 'coffee.png');
+INSERT INTO `foods` VALUES (5, 1005, '醉心黑摩卡', '纵享丝滑', 1010, 34.00, 4, 54, '醉心黑摩卡很美味', 0, '{“温度”:[\"冰\",\"热\"],\"奶油\":[\"无奶油\"]}', 'coffee.png');
+INSERT INTO `foods` VALUES (6, 1006, '精粹奥瑞白', '纵享丝滑', 1020, 35.00, 3, 55, '精粹奥瑞白很美味', 0, '{“温度”:[\"热\"],\"糖\":[\"无糖\",\"半分糖\",\"单份糖\"]}', 'coffee.png');
+INSERT INTO `foods` VALUES (7, 1007, '食物7', '纵享丝滑', 2000, 36.00, 5, 56, '食物7很美味', 0, NULL, 'breakfast.png');
+INSERT INTO `foods` VALUES (8, 1008, '食物8', '纵享丝滑', 2000, 37.00, 5, 57, '食物8很美味', 0, NULL, 'breakfast.png');
+INSERT INTO `foods` VALUES (9, 1009, '食物9', '纵享丝滑', 2000, 38.00, 5, 58, '食物9很美味', 0, NULL, 'breakfast.png');
+INSERT INTO `foods` VALUES (10, 1010, '食物10', '纵享丝滑', 2000, 39.00, 5, 59, '食物10很美味', 0, NULL, 'breakfast.png');
+INSERT INTO `foods` VALUES (11, 1011, '食物11', '纵享丝滑', 3000, 40.00, 5, 60, '食物11很美味', 0, NULL, 'Munch.png');
+INSERT INTO `foods` VALUES (12, 1012, '食物12', '纵享丝滑', 3000, 41.00, 4, 61, '食物12很美味', 0, NULL, 'Munch.png');
+INSERT INTO `foods` VALUES (13, 1013, '食物13', '纵享丝滑', 3000, 42.00, 4, 62, '食物13很美味', 0, NULL, 'Munch.png');
+INSERT INTO `foods` VALUES (14, 1014, '食物14', '纵享丝滑', 3000, 43.00, 4, 63, '食物14很美味', 0, NULL, 'Munch.png');
+INSERT INTO `foods` VALUES (15, 1015, '食物15', '纵享丝滑', 4000, 44.00, 4, 64, '食物15很美味', 0, NULL, 'lunch.png');
+INSERT INTO `foods` VALUES (16, 1016, '食物16', '纵享丝滑', 4000, 45.00, 4, 65, '食物16很美味', 0, NULL, 'lunch.png');
+INSERT INTO `foods` VALUES (17, 1017, '食物17', '纵享丝滑', 4000, 46.00, 3, 66, '食物17很美味', 0, NULL, 'lunch.png');
+INSERT INTO `foods` VALUES (18, 1018, '食物18', '纵享丝滑', 4000, 47.00, 3, 67, '食物18很美味', 0, NULL, 'lunch.png');
+INSERT INTO `foods` VALUES (19, 1019, '食物19', '纵享丝滑', 5000, 48.00, 3, 68, '食物19很美味', 0, NULL, 'fries.png');
+INSERT INTO `foods` VALUES (20, 1020, '食物20', '纵享丝滑', 5000, 49.00, 4, 69, '食物20很美味', 0, NULL, 'fries.png');
+INSERT INTO `foods` VALUES (21, 1021, '食物21', '纵享丝滑', 5000, 50.00, 4, 70, '食物21很美味', 0, NULL, 'fries.png');
+INSERT INTO `foods` VALUES (22, 1022, '食物22', '纵享丝滑', 5000, 51.00, 5, 71, '食物22很美味', 0, NULL, 'fries.png');
+INSERT INTO `foods` VALUES (23, 1023, '食物23', '纵享丝滑', 6000, 52.00, 5, 72, '食物23很美味', 0, NULL, 'dinner.png');
+INSERT INTO `foods` VALUES (24, 1024, '食物24', '纵享丝滑', 6000, 53.00, 5, 73, '食物24很美味', 0, NULL, 'dinner.png');
+INSERT INTO `foods` VALUES (25, 1025, '食物25', '纵享丝滑', 6000, 54.00, 5, 74, '食物25很美味', 0, NULL, 'dinner.png');
+INSERT INTO `foods` VALUES (26, 1026, '食物26', '纵享丝滑', 6000, 55.00, 5, 75, '食物26很美味', 0, NULL, 'dinner.png');
+INSERT INTO `foods` VALUES (27, 1027, '食物27', '纵享丝滑', 6000, 56.00, 5, 76, '食物27很美味', 0, NULL, 'dinner.png');
+INSERT INTO `foods` VALUES (28, 1028, '食物28', '纵享丝滑', 6000, 57.00, 3, 77, '食物28很美味', 0, NULL, 'dinner.png');
+INSERT INTO `foods` VALUES (29, 1029, '食物29', '纵享丝滑', 6000, 58.00, 5, 78, '食物29很美味', 0, NULL, 'dinner.png');
+INSERT INTO `foods` VALUES (30, 1030, '食物30', '纵享丝滑', 6000, 59.00, 4, 79, '食物30很美味', 0, NULL, 'dinner.png');
 
 -- ----------------------------
 -- Table structure for order_foods
@@ -190,23 +198,18 @@ CREATE TABLE `orders`  (
 DROP TABLE IF EXISTS `skus`;
 CREATE TABLE `skus`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键自增id',
+  `u_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '用户id',
   `food_id` int(10) NOT NULL COMMENT '食物id',
-  `food_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '名称',
-  `food_c&h` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '食物的温度',
-  `food_sugar` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '是否糖度',
-  `food_cream` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '是否奶油',
-  `food_count` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '1' COMMENT '数量',
-  `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '状态 0为下架 1为上架',
-  PRIMARY KEY (`id`) USING BTREE
+  `food_c&h` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '食物的温度0-冷 1-热',
+  `food_sugar` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '是否糖度0-无糖 1-半糖 2-全糖',
+  `food_cream` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '是否奶油 0-无奶油 1-有奶油',
+  PRIMARY KEY (`id`, `u_id`, `food_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of skus
 -- ----------------------------
-INSERT INTO `skus` VALUES (1, 1001, '食物1 加冰 加糖 加奶油', '1', '1', '1', '1', 1);
-INSERT INTO `skus` VALUES (2, 1001, '食物1 不加冰 加糖 加奶油', '0', '1', '1', '1', 1);
-INSERT INTO `skus` VALUES (3, 1001, '食物1 不加冰 不加糖 加奶油', '0', '0', '1', '1', 1);
-INSERT INTO `skus` VALUES (4, 1001, '食物1 不加冰 不加糖 不加奶油', '0', '0', '0', '0', 1);
+INSERT INTO `skus` VALUES (1, 'admin@mail.com', 1001, '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for user
@@ -226,25 +229,5 @@ CREATE TABLE `user`  (
 -- ----------------------------
 INSERT INTO `user` VALUES (1, 'admin@mail.com', 'admin', '000000', 'my.png');
 INSERT INTO `user` VALUES (4, 'li@mail.com', '李四', '0', NULL);
-
--- ----------------------------
--- Table structure for user_actions
--- ----------------------------
-DROP TABLE IF EXISTS `user_actions`;
-CREATE TABLE `user_actions`  (
-  `u_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `food_id` int(10) NOT NULL,
-  `type` int(10) NOT NULL COMMENT '1-喜欢 2-购物车',
-  `num` int(100) NULL DEFAULT NULL,
-  `sysdate` datetime(0) NULL DEFAULT NULL,
-  PRIMARY KEY (`u_id`, `food_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of user_actions
--- ----------------------------
-INSERT INTO `user_actions` VALUES ('admin@mail.com', 1001, 1, NULL, '2020-10-07 20:53:12');
-INSERT INTO `user_actions` VALUES ('admin@mail.com', 1004, 1, NULL, '2020-10-07 21:58:40');
-INSERT INTO `user_actions` VALUES ('admin@mail.com', 1011, 1, NULL, '2020-10-07 21:13:43');
 
 SET FOREIGN_KEY_CHECKS = 1;

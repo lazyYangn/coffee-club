@@ -21,7 +21,7 @@ const typeDefs = gql`
     food_count: Int
     food_desc: String
     food_pic: String
-    status: Int
+    islike: Int
     type: Dict
   }
   type Dict {
@@ -40,7 +40,7 @@ const typeDefs = gql`
   type User {
     u_id: String
     name: String
-    favorite: [Food]
+    favorite(food_id: Int): [Food]
   }
 `
 const resolvers = {

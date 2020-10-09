@@ -10,5 +10,5 @@ export const router = (app: Express) => {
 
   app.post('/api/register', api.register)
 
-  app.post('/api/userfoodlike', api.userfoodlike)
+  app.post('/api/addfoodlike', api.addfoodlike)
 }

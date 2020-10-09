@@ -77,16 +77,19 @@ export const register = async (req: any, resp: any) => {
     })
   }
 }
-export const userfoodlike = async (req: any, resp: any) => {
+export const addfoodlike = async (req: any, resp: any) => {
   const p = req.body
-  let res = await FindFrist('select * from user_actions where u_id = ? and food_id = ? and type = 1', [p.u_id, p.food_id])
-  console.log(res)
-  if (res) {
-    Do('delete from user_actions where u_id = ? and food_id = ? and type = 1', [p.u_id, p.food_id])
+  let res = await FindFrist('select * from favorite where u_id = ? and food_id = ?', [p.u_id, p.food_id])
+  let jonsObj = JSON.parse(JSON.stringify(res))
+  if (jonsObj) {
+    if (p.islike == 1) {
+      Do('update favorite set islike = 0 and sysdate = (select now()) where u_id = ? and food_id = ?', [p.u_id, p.food_id])
+    } else if (p.islike == 0) {
+      Do('update favorite set islike = 1 and sysdate = (select now()) where u_id = ? and food_id = ?', [p.u_id, p.food_id])
+    }
   } else {
-    Do('insert into user_actions (u_id,food_id,type,sysdate) values (?,?,?,(select now()))', [p.u_id, p.food_id, 1])
+    Do('insert into favorite (u_id,food_id,islike,sysdate) values (?,?,1,(select now()))', [p.u_id, p.food_id])
   }
-
   resp.json({
     code: 3,
     msg: '成功',
