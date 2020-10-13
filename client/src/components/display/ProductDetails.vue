@@ -24,8 +24,8 @@
         <div class="like-num">
           <span
             class="iconfont icon-xingxing"
-            v-for="item in product.food_rate"
-            :key="item"
+            v-for="(item,index) in product.food_rate"
+            :key="item+index"
           ></span>
         </div>
         <div class="like-description">
@@ -37,34 +37,17 @@
             {{ product.food_desc }}
           </div>
         </div>
-
-        <div :style="{ marginTop: '16px' }" class="radio-grounp">
-          <div class="radio-title">温度:</div>
-          <a-radio-group default-value="a">
-            <a-radio-button value="a"> 冷 </a-radio-button>
-            <a-radio-button value="b"> 热 </a-radio-button>
-          </a-radio-group>
-        </div>
-        <div :style="{ marginTop: '16px' }" class="radio-grounp">
-          <div class="radio-title">糖:</div>
-          <a-radio-group default-value="a">
-            <a-radio-button value="a"> 无糖 </a-radio-button>
-            <a-radio-button value="b"> 半糖 </a-radio-button>
-            <a-radio-button value="c"> 全糖 </a-radio-button>
-          </a-radio-group>
-        </div>
-        <div :style="{ marginTop: '16px' }" class="radio-grounp">
-          <div class="radio-title">奶油:</div>
-          <a-radio-group default-value="a">
-            <a-radio-button value="a"> 有奶油 </a-radio-button>
-            <a-radio-button value="b"> 无奶油 </a-radio-button>
+        <div :style="{ marginTop: '16px' }" class="radio-grounp" v-for="item in skus" :key="item.id">
+          <div class="radio-title">{{item.name}}:</div>
+          <a-radio-group :default-value="item.dict_son[0].Cname" :name="item.name"  @change="onChangeRadio" >
+            <a-radio-button :value="item1.Cname" v-for="item1 in item.dict_son" :key="item1.id"> {{item1.Cname}} </a-radio-button>
           </a-radio-group>
         </div>
         <div class="good-num">
           数量:
           <a-input-number
             id="inputNumber"
-            v-model="value"
+            v-model="valuenum"
             :min="1"
             :max="100"
             @change="onChange"
@@ -93,8 +76,10 @@ export default {
       product: {},
       foodId: "",
       isLike: false,
-      value: 3,
+      valuenum: 1,
       u_id: getCacheVal("userid"),
+      skus:[],
+      skusSub:[]
     };
   },
   created() {
@@ -114,8 +99,22 @@ export default {
     },
   },
   methods: {
+    onChangeRadio(e){
+      this.skusSub.forEach((item)=>{
+        if(item.name === e.target.name){
+          this.skus.forEach(item1=>{
+            item1.dict_son.forEach(item2=>{
+              if(item2.Cname == e.target.value) {
+                 item.id =  item2.id
+                 item.Cname = item2.Cname
+              }
+            })
+          })
+        }
+      })
+    },
     onChange(value) {
-      console.log("changed", value);
+      // console.log("changed", value);
     },
     // 返回上一级
     goback() {
@@ -129,7 +128,13 @@ export default {
     },
     // 加入购物车
     addCart(product) {
-      console.log("添加到购物车");
+      console.log(this.product)
+       this.$store.commit("pushCart",{
+        ...this.product,
+        countbuy: this.valuenum,
+        skus:this.skusSub
+      });
+      this.$message.info('添加成功')
     },
     async initData() {
       let gql = {
@@ -146,11 +151,22 @@ export default {
               food_rate
               food_desc
               food_pic
+              food_id
+              typeid
+              skus{
+                id
+                name
+                dict_son{
+                  id
+                  Cname
+                }
+              }
             }
           }
         `,
       };
       let res = await HttpGql(gql);
+      console.log(res);
       res.data.food.food_pic = ImgUrl + res.data.food.food_pic;
       this.product = res.data.food;
       res.data.user.favorite.forEach((item) => {
@@ -158,17 +174,22 @@ export default {
           this.isLike = true;
         }
       });
+      this.skus = res.data.food.skus
+      res.data.food.skus.forEach(item=>{
+          this.skusSub.push({id:item.dict_son[0].id,name:item.name,Cname:item.dict_son[0].Cname})
+      })
+      // console.log(this.skusSub)
     },
     async like() {
-      if (getCacheVal("userid")) {
-        if (this.isLike === false) {
+      if (this.u_id) {
+        if (this.isLike == false) {
           await Http("/addfoodlike", {
             u_id: this.u_id,
             food_id: this.foodId,
             islike: 0,
           });
           this.isLike = !this.isLike;
-        } else {
+        } else if(this.isLike == true){
           await Http("/addfoodlike", {
             u_id: this.u_id,
             food_id: this.foodId,

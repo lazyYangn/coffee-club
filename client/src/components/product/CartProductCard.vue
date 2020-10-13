@@ -1,19 +1,30 @@
 <template>
   <div>
     <div class="product-card">
-      <div class="product-img"></div>
-      <div class="product-text">
-        <div class="text-title">
-          早餐
+      <div class="product-img" :style="imgStyle(product.food_pic)"></div>
+      <div class="product">
+        <div class="product-info">
+         <div class="product-text">
+            <div class="text-title">
+          {{product.food_name}}
         </div>
-        <div class="text-desc">
-          sdadajkfhwdwlhfkhjkekwsasdadajkfhwdwlhfkhjkekwsa
+        <div class="text-desc" >
+          <div class="desc-item" v-for="(item,index) in product.skus" :key="item+index">
+            {{item.Cname}}
+          </div>
         </div>
+         </div>
         <div class="text-price">
-          $12.00
+         {{ showPrice }}
         </div>
+        </div>
+        <div class="btn-group">
+        <div class="btn_g" @click="decreaseCart(index)"><a-icon class="aicon" type="minus-circle" /></div>
+        <div class="showprice">{{ product.countbuy }}</div>
+        <div class="btn_g" @click="increaseCart(index)"><a-icon class="aicon" type="plus-circle" /></div>
       </div>
-      <div class="del-btn">
+      </div>
+      <div class="del-btn"  @click="delCart(index)">
         <span class="iconfont icon-cha"></span>
       </div>
     </div>
@@ -24,7 +35,36 @@ export default {
   data () {
     return {}
   },
-  methods: {},
+  props:{
+    product:Object,
+    index:Number
+  },
+  computed: {
+    showPrice() {
+      return "￥" + this.product.food_price * this.product.countbuy;
+    },
+    imgStyle() {
+      return (url) => {
+        return {
+          backgroundImage: `url(${url})`,
+          backgroundSize: "75px 75px",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center  center",
+        };
+      };
+    },
+  },
+  methods: {
+    increaseCart() {
+      this.$store.dispatch("increaseCart",this.index)
+    },
+    decreaseCart() {
+      this.$store.dispatch("decreaseCart",this.index)
+    },
+    delCart(){
+      this.$store.dispatch('decreaseCart',this.index)
+    }
+  },
   components: {}
 }
 </script>
@@ -40,35 +80,49 @@ export default {
   box-shadow: 0px 1px 3px rgb(0 0 0 /0.1);
 }
 .product-img {
+  width: 85px;
+  height: 105px;
   background-color: #ccc;
-  flex: 3;
   border-radius: 15px 0 0 15px;
 }
-.product-text {
-  flex: 7;
+.product {
+  width: 213px;
   display: flex;
-  flex-direction: column;
   margin-left: 20px;
+  flex-direction: column;
+}
+.product-info{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 .text-title {
   font-size: 18px;
   font-weight: bold;
   margin-top: 5px;
-  flex: 1;
 }
 .text-desc {
   color: #ccc;
   font-size: 16px;
-  flex: 2;
-  max-width: 230px !important;
   word-wrap: break-word;
   word-break: normal;
+  display: flex;
+}
+.desc-item{
+  width: 50px;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #e3e3e3;
+  margin-right:5px;
+  font-size: 14px;
+  color:#000;
 }
 .text-price {
-  flex: 1;
   font-size: 18px;
   font-weight: bold;
   color: #02d126;
+  padding-top: 10px;
 }
 .del-btn {
   height: 30px;
@@ -85,5 +139,24 @@ export default {
 .del-btn .iconfont {
   color: #fff;
   font-size: 14px;
+}
+.btn-group {
+  display: flex;
+  margin-top: 10px;
+}
+.btn_g {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+.aicon{
+  font-size: 20px;
+}
+.showprice{
+  width: 30px;
+  text-align: center;
 }
 </style>

@@ -11,4 +11,6 @@ export const router = (app: Express) => {
   app.post('/api/register', api.register)
 
   app.post('/api/addfoodlike', api.addfoodlike)
+
+  app.post('/api/addfoodcart', api.addfoodcart)
 }

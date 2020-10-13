@@ -81,7 +81,7 @@ export default {
   },
   methods: {
     goback() {
-      this.$router.go(-1);
+      this.$router.go(-1)
     },
     sub(formName) {
       this.$refs[formName].validate(async (valid) => {

@@ -6,9 +6,6 @@
           菜单
         </div>
       </div>
-      <div slot="right">
-        <span class="iconfont icon-shezhi" @click="goSetting"></span>
-      </div>
     </top-bar>
     <my-content class="my-content">
       <div class="img-content">
@@ -114,7 +111,6 @@ export default {
     this.userId = getCacheVal("userId")
       ? getCacheVal("userId")
       : "coffeeClub@qq.com";
-    console.log(ImgUrl + getCacheVal("userAva"));
   },
   methods: {
     showModal() {

@@ -2,11 +2,6 @@
   <div>
     <top-bar>
       <div slot="left" class="top-left">
-        <span
-          class="iconfont icon-fanhui"
-          style="font-size: 30px; line-height: 60px"
-          @click="goto('/main/home')"
-        ></span>
       </div>
       <div slot="middle">
         <div
@@ -34,6 +29,8 @@ import MyContent from "@/components/content/MyContent";
 // 引入商品卡片
 import DisplayItem from "@/components/display/DisplayItem";
 import { HttpGql, ImgUrl } from "@/kits/Http";
+import { getCacheVal } from '@/kits/LocalStorage'
+
 export default {
   data() {
     return {
@@ -44,16 +41,14 @@ export default {
     this.initData();
   },
   methods: {
-    // 点击返回按钮
-    goto(path) {
-      this.$router.replace(path);
-    },
 
     async initData() {
-      let sql = {
+       if(getCacheVal("token") && getCacheVal("token").length > 0 ){
+          let userid = getCacheVal('userid')
+          let sql = {
         query: `
               {
-                 user(u_id:"admin@mail.com"){
+                 user(u_id:"${userid}"){
                     u_id
                     name
                     favorite{
@@ -68,7 +63,6 @@ export default {
       };
       try {
         let res = await HttpGql(sql);
-        console.log(res);
         this.likegoods = res.data.user.favorite.map((item) => {
           item.food_pic = ImgUrl + item.food_pic;
           return item;
@@ -77,6 +71,12 @@ export default {
       } catch (error) {
         return false;
       }
+      }else{
+        console.log('请登录')
+        //为了加载效果
+        return true
+      }
+      
     },
     refresh() {
       return this.initData();

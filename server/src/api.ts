@@ -1,4 +1,4 @@
-import { Do, FindFrist } from './mysql'
+import { Do, FindFrist,DoNoConn,DoTx } from './mysql'
 import crypto from 'crypto'
 
 export const root = (req: any, resp: any) => {
@@ -81,18 +81,45 @@ export const addfoodlike = async (req: any, resp: any) => {
   const p = req.body
   let res = await FindFrist('select * from favorite where u_id = ? and food_id = ?', [p.u_id, p.food_id])
   let jonsObj = JSON.parse(JSON.stringify(res))
-  if (jonsObj) {
-    if (p.islike == 1) {
-      Do('update favorite set islike = 0 and sysdate = (select now()) where u_id = ? and food_id = ?', [p.u_id, p.food_id])
-    } else if (p.islike == 0) {
-      Do('update favorite set islike = 1 and sysdate = (select now()) where u_id = ? and food_id = ?', [p.u_id, p.food_id])
+  if (jonsObj !== null) {
+    if (p.islike == 0) {
+     await Do('update favorite set islike = 1 where u_id = ? and food_id = ?', [p.u_id, p.food_id])
     }
+    else if (p.islike == 1) {
+      await Do('update favorite set islike = 0 where u_id = ? and food_id = ?', [p.u_id, p.food_id])
+    } 
   } else {
     Do('insert into favorite (u_id,food_id,islike,sysdate) values (?,?,1,(select now()))', [p.u_id, p.food_id])
   }
   resp.json({
     code: 3,
     msg: '成功',
+    data: {},
+  })
+}
+export const addfoodcart = async (req: any, resp: any) => {
+  let p = req.body
+  if (p.num === 0) {
+    Do("delete from carts where u_id= ? and food_id=?",[p.u_id,p.food_id])
+  }else{
+  DoTx((conn) => {
+    const a = DoNoConn({
+      conn,
+      sql:"delete from carts where u_id= ? and food_id = ?",
+      params:[p.u_id,p.food_id],
+    }).then(() => {
+      return DoNoConn({
+        conn,
+        sql:"insert into carts (u_id,food_id,num,sysdate) values (?,?,?,(select now())) ",
+        params:[p.u_id,p.food_id,p.num]
+    })
+    })
+    return [a]
+  })
+}
+  resp.json({
+    code: 1,
+    msg: '添加成功',
     data: {},
   })
 }

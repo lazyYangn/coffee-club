@@ -2,31 +2,26 @@
   <div>
     <top-bar>
       <div slot="left">
-        <span class="iconfont icon-fanhui" style="font-weight:blod;font-size:24px;line-height: 60px;" @click="goto"></span>
       </div>
       <div slot="middle">
         <div style="font-weight:blod;font-size:18px;line-height: 60px;">购物袋</div>
       </div>
     </top-bar>
-    <my-content>
+    <my-content class="mycontent">
       <div class="main-box">
-        <cart-product-card></cart-product-card>
-        <cart-product-card></cart-product-card>
-        <cart-product-card></cart-product-card>
+        <a-list :grid="{ gutter: 16, column: 1 }" :data-source="$store.state.cartData">
+        <a-list-item slot="renderItem" slot-scope="item,index">
+           <cart-product-card  
+        :index="index"
+        :product="item"></cart-product-card>
+        </a-list-item>
+      </a-list>
       </div>
       <div class="cart-footer">
         <div class="price-box">
-          <div class="price-item">
-            <div class="item-s1">包装费</div>
-            <div class="item-s2">$10.00</div>
-          </div>
-          <div class="price-item">
-            <div class="item-s1">小计</div>
-            <div class="item-s2">$10.00</div>
-          </div>
           <div class="price-total">
             <div class="item-s1">总价</div>
-            <div class="item-s2">$20.00</div>
+            <div class="item-s2">{{$store.getters.priceSum}}</div>
           </div>
         </div>
         <div class="pay-btn">
@@ -43,6 +38,9 @@ import TopBar from '@/components/topbar/TopBar'
 import MyContent from '@/components/content/MyContent'
 // 引入购物车单品组件
 import CartProductCard from '@/components/product/CartProductCard'
+import { getCacheVal } from '@/kits/LocalStorage'
+import { HttpGql, ImgUrl } from '@/kits/Http'
+
 export default {
   data() {
     return {}
@@ -51,15 +49,47 @@ export default {
     goto() {
       this.$router.go(-1)
     },
+   async initData(){
+       
+       if(getCacheVal("token") && getCacheVal("token").length > 0 ){
+        let userid = getCacheVal('userid')
+        let gql = {
+        query: `
+                {
+                    usercart(u_id:"${userid}"){
+                    food_name
+                    food_pic
+                    food_price
+                    countbuy
+                  }
+                }
+            `
+      }
+      let res = await HttpGql(gql)
+      this.$store.commit("initCart",res.data.usercart ? res.data.usercart.map((item)=>{
+          item.food_pic = ImgUrl + item.food_pic
+          return item
+        }) : [])
+      }else{
+        console.log('请登录')
+      }
+      
+    }
   },
   components: {
     TopBar,
     MyContent,
     CartProductCard,
   },
+  created () {
+    this.initData()
+  }
 }
 </script>
 <style scoped>
+.mycontent{
+  position: relative;
+}
 .price-box {
   display: flex;
   flex-direction: column;
@@ -97,5 +127,13 @@ export default {
   color: #fff;
   font-size: 20px;
   font-weight: bold;
+}
+.cart-footer{
+  width: 100%;
+  position: fixed;
+  bottom: 65px;
+  left:0px;
+  right: 0px;
+  padding: 10px 24px;
 }
 </style>

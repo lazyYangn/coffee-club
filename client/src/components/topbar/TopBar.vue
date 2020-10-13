@@ -6,38 +6,51 @@
         <a-drawer width="280px" placement="left" :closable="false" :visible="visible" @close="onClose">
           <div class="user-box">
             <div class="img-box" :style="imgPath"></div>
-            <div class="user-info">
-              <div class="user-name">{{userName}}</div>
-              <div class="user-id">id:{{userId}}</div>
-            </div>
+            <div class="user-name">{{userName}}</div>
+            <div class="user-id">id:{{userId}}</div>
           </div>
           <div class="user-list">
             <div class="order-box" @click="goto('/order')">
-              <div class="box-title">历史订单</div>
+              <div class="box-title">
+                <span class="iconfont icon-dingdan" style="font-size:16px;"></span>
+                <span style="padding-left:20px;">历史订单</span>
+              </div>
               <div class="box-icon">
                 <span class="iconfont icon-iconfontjiantou5"></span>
               </div>
             </div>
-            <div class="account-box">
-              <div class="box-title">账户</div>
+            <div class="account-box" @click="goto('/main/account')">
+              <div class="box-title">
+                <span class="iconfont icon-zhanghu" style="font-size:18px;line-height:24px;"></span>
+                <span style="padding-left:20px;">账户</span>
+              </div>
               <div class="box-icon">
                 <span class="iconfont icon-iconfontjiantou5"></span>
               </div>
             </div>
-            <div class="pay-box">
-              <div class="box-title">支付设置</div>
+            <div class="setting-box" @click="goto('/setting')">
+              <div class="box-title">
+                <span class="iconfont icon-shezhi1" style="font-size:20px;line-height:24px;"></span>
+                <span style="padding-left:20px;">设置</span>
+              </div>
               <div class="box-icon">
                 <span class="iconfont icon-iconfontjiantou5"></span>
               </div>
             </div>
-            <div class="question-box">
-              <div class="box-title">问题反馈</div>
+            <div class="question-box" @click="goto('/problemback')">
+              <div class="box-title">
+                <span class="iconfont icon-wenti" style="font-size:20px;"></span>
+                <span style="padding-left:20px;">问题反馈</span>
+              </div>
               <div class="box-icon">
                 <span class="iconfont icon-iconfontjiantou5"></span>
               </div>
             </div>
-            <div class="about-box">
-              <div class="box-title">关于</div>
+            <div class="about-box" @click="goto('/about')">
+              <div class="box-title">
+                <span class="iconfont icon-guanyu" style="font-size:20px;"></span>
+                <span style="padding-left:20px;">关于</span>
+              </div>
               <div class="box-icon">
                 <span class="iconfont icon-iconfontjiantou5"></span>
               </div>
@@ -49,7 +62,6 @@
           </div>
           <div class="btn-group" v-else>
             <div class="left-btn" @click="logout">退出</div>
-            <div class="right-btn" @click="goto('/setting')">设置</div>
           </div>
         </a-drawer>
       </slot>
@@ -117,8 +129,9 @@ export default {
 };
 </script>
 <style scoped>
-body {
-  margin: 0;
+.ant-drawer-body {
+  padding: 0 !important;
+  margin: 0 !important;
 }
 .top {
   z-index: 999;
@@ -147,22 +160,17 @@ body {
   padding: 0 !important;
 }
 .user-box {
+  padding: 20px 0;
   display: flex;
   position: relative;
-  padding: 0 0 10px 0;
-}
-.user-box::after {
-  content: "";
-  display: block;
-  width: 130%;
-  border-bottom: 1px solid #eee;
-  position: absolute;
-  left: -25px;
-  bottom: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
 }
 .img-box {
-  height: 60px;
-  width: 60px;
+  height: 100px;
+  width: 100px;
   border-radius: 50%;
   background-color: #ddd;
   color: #eee;
@@ -175,17 +183,14 @@ body {
 }
 .user-name {
   font-size: 16px;
-  margin-bottom: 5px;
+  margin-top: 10px;
   font-weight: bold;
 }
 .user-id {
   color: #ddd;
 }
-.ant-drawer-body {
-  background-color: greenyellow !important;
-}
 .order-box,
-.pay-box,
+.setting-box,
 .account-box,
 .question-box,
 .about-box {
@@ -194,64 +199,17 @@ body {
   align-items: center;
   justify-content: space-between;
   position: relative;
-}
-.order-box::after {
-  content: "";
-  display: block;
-  width: 130%;
-  border-bottom: 1px solid #eee;
-  position: absolute;
-  left: -25px;
-  bottom: 0;
-  box-shadow: 0px 1px 8px rgb(0 0 0 /0.2);
-}
-.account-box::after {
-  content: "";
-  display: block;
-  width: 130%;
-  border-bottom: 1px solid #eee;
-  position: absolute;
-  left: -25px;
-  bottom: 0;
-  box-shadow: 0px 1px 8px rgb(0 0 0 /0.2);
-}
-.pay-box::after {
-  content: "";
-  display: block;
-  width: 130%;
-  border-bottom: 1px solid #eee;
-  position: absolute;
-  left: -25px;
-  bottom: 0;
-  box-shadow: 0px 1px 8px rgb(0 0 0 /0.2);
-}
-.question-box::after {
-  content: "";
-  display: block;
-  width: 130%;
-  border-bottom: 1px solid #eee;
-  position: absolute;
-  left: -25px;
-  bottom: 0;
-  box-shadow: 0px 1px 8px rgb(0 0 0 /0.2);
-}
-.about-box::after {
-  content: "";
-  display: block;
-  width: 130%;
-  border-bottom: 1px solid #eee;
-  position: absolute;
-  left: -25px;
-  bottom: 0;
-  box-shadow: 0px 1px 8px rgb(0 0 0 /0.2);
+  font-size: 20px;
 }
 
 .box-title {
-  font-size: 14px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
 }
 .btn-group {
-  margin-top: 20px;
   display: flex;
+  margin-top: 10px;
 }
 .left-btn {
   flex: 1;
@@ -266,7 +224,7 @@ body {
 .right-btn {
   margin-left: 10px;
   flex: 1;
-  background-color: greenyellow;
+  background-color: #02d126;
   height: 44px;
   border-radius: 10px;
   display: flex;

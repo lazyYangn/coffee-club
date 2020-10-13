@@ -14,7 +14,7 @@
         </div>
       </div>
       <div slot="right">
-        <span class="iconfont icon-chazhao" @click="goto('search')"></span>
+        <span class="iconfont icon-chazhao" @click="goSearch('search')"></span>
       </div>
     </top-bar>
     <my-content>
@@ -46,6 +46,9 @@ export default {
   methods: {
     goback() {
       this.$router.go(-1);
+    },
+    goSearch(name){
+       this.$router.push({name});
     },
     goto() {
       if (this.categoryId == 1000) {

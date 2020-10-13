@@ -11,6 +11,7 @@ const typeDefs = gql`
     category(typeid: [Int]!): [Category]
     homecategory: [Category]
     user(u_id: String!): User
+    usercart(u_id:String!) : [Food]
   }
   type Food {
     food_id: Int
@@ -21,10 +22,24 @@ const typeDefs = gql`
     food_count: Int
     food_desc: String
     food_pic: String
+    typeid:String
     islike: Int
-    type: Dict
+    type: Cate
+    skus:[Dict]
+    countbuy:Int
   }
-  type Dict {
+  type Dict{
+    id:String
+    typeid:String
+    name:String
+    dict_son:[DictSon]
+  }
+  type DictSon{
+    id:String
+    dictid:String
+    Cname:String
+  }
+  type Cate {
     typeid: Int
     name: String
     title: String
@@ -51,9 +66,14 @@ const resolvers = {
     category: gr.category,
     homecategory: gr.homecategory,
     user: gr.user,
+    usercart:gr.usercart
   },
   Food: {
     type: gr.type,
+    skus:gr.skus,
+  },
+  Dict:{
+    dict_son:gr.dict_son
   },
   Category: {
     foods: gr.foodsCategory,

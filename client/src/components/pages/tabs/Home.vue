@@ -24,6 +24,7 @@ import TopBar from '@/components/topbar/TopBar'
 import MyContent from '@/components/content/MyContent'
 import DisplayItem from '@/components/display/DisplayItem'
 import { HttpGql, ImgUrl } from '@/kits/Http'
+import { getCacheVal } from '@/kits/LocalStorage'
 export default {
   data() {
     return {
@@ -42,6 +43,7 @@ export default {
       this.$router.push({ path: '/productshow/' + typeid })
     },
     async initData() {
+      let userid = getCacheVal('userid')
       let gql = {
         query: `
                 {

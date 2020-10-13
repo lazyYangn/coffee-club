@@ -8,6 +8,23 @@ export const food = async (parent: any, args: any, context: any, info: any) => {
     return e
   }
 }
+export const skus = async (parent: any, args: any, context: any, info: any) => {
+  try {
+    let typeid = Math.floor(parent.typeid / 1000)
+    let res = await Do('select * from dict where typeid like "'+[typeid]+'%" order by sort')
+    return res
+  } catch (e) {
+    return e
+  }
+}
+export const dict_son = async (parent: any, args: any, context: any, info: any) => {
+  try {
+    let res = await Do('select * from dict_son where dictid = ?', [parent.id])
+    return res
+  } catch (e) {
+    return e
+  }
+}
 
 export const type = async (parent: any, args: any, context: any, info: any) => {
   try {
@@ -71,6 +88,14 @@ export const user = async (parent: any, args: any, context: any, info: any) => {
 export const favorite = async (parent: any, args: any, context: any, info: any) => {
   try {
     let res = await Do('select b.*,a.islike from favorite a,foods b where a.food_id = b.food_id and a.u_id = ? and a.islike = 1 order by a.sysdate desc', [parent.u_id])
+    return res
+  } catch (e) {
+    return e
+  }
+}
+export const usercart = async (parent: any, args: any, context: any, info: any) => {
+  try {
+    let res = await Do('select b.*,a.num countbuy from carts a,foods b where a.food_id = b.food_id and a.u_id = ? order by a.sysdate desc', [args.u_id])
     return res
   } catch (e) {
     return e
