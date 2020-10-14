@@ -30,8 +30,7 @@ export default {
       return (item) => {
         return {
           backgroundImage: `url(${item})`,
-          backgroundSize: '109px 109px',
-          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
           backgroundPosition: 'center center',
         }
       }
@@ -44,6 +43,9 @@ export default {
   display: flex;
   justify-content: space-between;
   margin: 10px 0;
+  padding: 8px;
+  border-radius: 8px;
+  background-color: #fff;
 }
 
 .pic {
@@ -52,6 +54,7 @@ export default {
   border-radius: 16px;
   background: #f6f6f6;
   margin-right: auto;
+  box-shadow: 1px 1px 5px rgb(40 40 40 /0.2);
 }
 
 .wrapper-right {

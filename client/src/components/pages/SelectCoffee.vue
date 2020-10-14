@@ -96,16 +96,15 @@ export default {
         `,
       };
       let res = await HttpGql(gql);
-      console.log(res);
       res.data.category.map((item) => {
         this.topImg.push(item.cate_pic);
       });
       this.hotCoffee = res.data.category[0].foods.map((item) => {
-        item.imgpath = ImgUrl + item.imgpath;
+        item.food_pic = ImgUrl + item.food_pic;
         return item;
       });
       this.codeCoffee = res.data.category[1].foods.map((item) => {
-        item.imgpath = ImgUrl + item.imgpath;
+        item.food_pic = ImgUrl + item.food_pic;
         return item;
       });
       this.allCoffee = [...this.hotCoffee, ...this.codeCoffee];

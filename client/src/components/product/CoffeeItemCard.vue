@@ -1,6 +1,6 @@
 <template>
   <div class="coffee-box" @click="goto">
-    <div class="coffee-img"></div>
+    <div class="coffee-img" :style="imgStyle(coffee.food_pic)"></div>
     <div class="coffee-desc">
       <div class="desc-title">{{ coffee.food_name }}</div>
       <div class="desc-text">{{ coffee.food_title }}</div>
@@ -24,6 +24,17 @@ export default {
     },
   },
   components: {},
+  computed: {
+    imgStyle(){
+      return (url)=>{
+        return {
+          backgroundImage:`url(${url})`,
+          backgroundSize:'cover',
+          backgroundPosition: "center  center",
+        }
+      }
+    }
+  }
 };
 </script>
 <style scoped>
@@ -33,6 +44,9 @@ export default {
   height: 100px;
   justify-content: space-between;
   align-items: center;
+  border-radius: 8px;
+  box-shadow: 0px 1px 2px rgb(40 40 40 /0.2);
+  padding: 5px;
 }
 .coffee-img {
   background-color: #ccc;
@@ -55,7 +69,7 @@ export default {
   font-size: 16px;
 }
 .desc-price {
-  color: #1e1e1e;
+  color: #02d126;
   margin-top: 7px;
 }
 .add-box {

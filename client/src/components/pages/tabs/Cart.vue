@@ -21,10 +21,10 @@
         <div class="price-box">
           <div class="price-total">
             <div class="item-s1">总价</div>
-            <div class="item-s2">{{$store.getters.priceSum}}</div>
+            <div class="item-s2">￥ {{$store.getters.priceSum}}</div>
           </div>
         </div>
-        <div class="pay-btn">
+        <div class="pay-btn" @click="order" :style="bgcStyle">
           安全支付
         </div>
       </div>
@@ -50,7 +50,6 @@ export default {
       this.$router.go(-1)
     },
    async initData(){
-       
        if(getCacheVal("token") && getCacheVal("token").length > 0 ){
         let userid = getCacheVal('userid')
         let gql = {
@@ -61,6 +60,8 @@ export default {
                     food_pic
                     food_price
                     countbuy
+                    cartskus
+                    food_id
                   }
                 }
             `
@@ -68,13 +69,21 @@ export default {
       let res = await HttpGql(gql)
       this.$store.commit("initCart",res.data.usercart ? res.data.usercart.map((item)=>{
           item.food_pic = ImgUrl + item.food_pic
+          item.cartskus =  item.cartskus.split('_')
           return item
         }) : [])
       }else{
         console.log('请登录')
       }
       
-    }
+    },
+     order(){
+       if(this.$store.state.cartData.length<=0){
+         this.$message.info('您还没有选择任何商品')
+       }else{
+        this.$router.push({name:'orderaffirm'})
+       }
+     }
   },
   components: {
     TopBar,
@@ -83,6 +92,19 @@ export default {
   },
   created () {
     this.initData()
+  },
+  computed: {
+    bgcStyle(){
+      if(this.$store.state.cartData.length<=0){
+        return {
+          backgroundColor: "#e5e5e5",
+        }
+      }else{
+         return {
+           backgroundColor: " #02d126",
+        }
+      }
+    }
   }
 }
 </script>
@@ -111,7 +133,7 @@ export default {
   justify-content: flex-end;
 }
 .item-s2 {
-  flex: 2;
+  flex: 3;
   display: flex;
   justify-content: flex-end;
 }
@@ -119,7 +141,6 @@ export default {
   margin-top: 10px;
   width: 100%;
   height: 50px;
-  background-color: #02d126;
   border-radius: 10px;
   display: flex;
   justify-content: center;

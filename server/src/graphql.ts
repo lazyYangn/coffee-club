@@ -12,6 +12,7 @@ const typeDefs = gql`
     homecategory: [Category]
     user(u_id: String!): User
     usercart(u_id:String!) : [Food]
+    userOrder(u_id:String!,start:Int!,count:Int!) : [Order]
   }
   type Food {
     food_id: Int
@@ -27,11 +28,14 @@ const typeDefs = gql`
     type: Cate
     skus:[Dict]
     countbuy:Int
+    cartskus:String
+    id:Int
   }
   type Dict{
     id:String
     typeid:String
     name:String
+    Cname:String
     dict_son:[DictSon]
   }
   type DictSon{
@@ -57,6 +61,14 @@ const typeDefs = gql`
     name: String
     favorite(food_id: Int): [Food]
   }
+  type Order {
+    id:String,
+    pricesum:Float,
+    countsum:Int,
+    status:Int,
+    orderdate:String,
+    foodList:[Food]
+}
 `
 const resolvers = {
   Query: {
@@ -66,7 +78,8 @@ const resolvers = {
     category: gr.category,
     homecategory: gr.homecategory,
     user: gr.user,
-    usercart:gr.usercart
+    usercart:gr.usercart,
+    userOrder:gr.userOrder,
   },
   Food: {
     type: gr.type,
@@ -81,6 +94,10 @@ const resolvers = {
   User: {
     favorite: gr.favorite,
   },
+  Order:{
+    orderdate:gr.formatOrderdate,
+    foodList:gr.foodList
+  }
 }
 export const server = new ApolloServer({
   typeDefs,

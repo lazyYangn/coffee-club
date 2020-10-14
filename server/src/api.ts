@@ -99,27 +99,120 @@ export const addfoodlike = async (req: any, resp: any) => {
 }
 export const addfoodcart = async (req: any, resp: any) => {
   let p = req.body
+  console.log(p)
   if (p.num === 0) {
-    Do("delete from carts where u_id= ? and food_id=?",[p.u_id,p.food_id])
+    Do("delete from carts where u_id= ? and food_id=?",[p.userid,p.foodid])
   }else{
-  DoTx((conn) => {
-    const a = DoNoConn({
-      conn,
-      sql:"delete from carts where u_id= ? and food_id = ?",
-      params:[p.u_id,p.food_id],
-    }).then(() => {
-      return DoNoConn({
-        conn,
-        sql:"insert into carts (u_id,food_id,num,sysdate) values (?,?,?,(select now())) ",
-        params:[p.u_id,p.food_id,p.num]
-    })
-    })
-    return [a]
-  })
+    if(!p.skus || p.skus.length <= 0){
+      DoTx((conn) => {
+        console.log(p)
+        const a = DoNoConn({
+          conn,
+          sql:"delete from carts where u_id= ? and food_id = ?",
+          params:[p.userid,p.foodid],
+        }).then(() => {
+          return DoNoConn({
+            conn,
+            sql:"insert into carts (u_id,food_id,num,sysdate,skus) values (?,?,?,(select now()),?)",
+            params:[p.userid,p.foodid,p.num,'']
+        })
+        })
+        return [a]
+      })
+    }else{
+      DoTx((conn) => {
+        const a = DoNoConn({
+          conn,
+          sql:"delete from carts where u_id= ? and food_id = ?",
+          params:[p.userid,p.foodid],
+        }).then(() => {
+          let skus =  p.skus.map((item:any)=>{
+            return item.Cname
+           })
+           let sku = skus.join('_')
+           console.log(sku)
+          return DoNoConn({
+            conn,
+            sql:"insert into carts (u_id,food_id,num,sysdate,skus) values (?,?,?,(select now()),?)",
+            params:[p.userid,p.foodid,p.num,sku]
+        })
+        })
+        return [a]
+      })
+    }
+  
 }
   resp.json({
     code: 1,
     msg: '添加成功',
     data: {},
   })
+}
+
+export const delfoodcart = async (req: any, resp: any) => {
+  let p = resp.body
+  try {
+    Do("delete from carts where u_id= ? and food_id=?",[p.userid,p.foodid])
+  } catch (error) {
+    
+  }
+}
+
+export const resetcart = async (req:any,resp:any)=>{
+  let p = req.body
+  try {
+      let res = await Do("delete from carts where u_id= ?",[p.userid])
+      resp.json({
+          code:1,
+          msg:"操作成功",
+          data:res
+      })
+  } catch (error) {
+      resp.json({
+          code:3,
+          msg:"操作失败",
+          data:{
+              error
+          }
+      })
+  }
+  
+}
+
+export const createorder = async (req:any,resp:any) => {
+  const p = req.body
+  try {
+      let md5 = crypto.createHash('md5')
+      let date = new Date()
+      let id = md5.update(date.getUTCMilliseconds().toString()).digest('hex'); 
+      await DoTx((conn)=>{
+          return [DoNoConn({
+              conn,
+              sql:"insert into `order` values (?,?,?,?,?,(select now())) ",
+              params:[id,p.userid,1,p.countSum,p.priceSum]
+          }).then(()=>{
+              let arr : Promise<any>[]= []
+              for(let t of p.orderlist){
+                  let skus = t.cartskus.join('_')
+                  arr.push(DoNoConn({
+                      conn,
+                      sql:"insert into order_list (orderid,food_id,countbuy,food_name,price,skus,food_pic) values (?,?,?,?,?,?,?) ",
+                      params:[id,t.food_id,t.countbuy,t.food_name,t.food_price,skus,t.food_pic]       
+                  }))
+              }
+              return Promise.all(arr)
+          })]
+      })
+      resp.json({
+          code:1,
+          msg:"创建成功",
+          data:{}
+      })
+  } catch (e) {
+      resp.json({
+          code:2,
+          msg:"创建订单失败",
+          data:{}
+      })
+  }
 }

@@ -91,6 +91,7 @@ export default {
         return {
           backgroundImage: `url(${url})`,
           backgroundSize: "cover",
+          backgroundPosition: "center  center",
         };
       };
     },

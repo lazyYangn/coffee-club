@@ -38,8 +38,7 @@ export default {
         return url && url !== ''
           ? {
               backgroundImage: `url(${url})`,
-              backgroundSize: 'contain',
-              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover',
               backgroundPosition: 'center center',
             }
           : ''
@@ -60,6 +59,7 @@ export default {
   height: 178px;
   width: 147px;
   border-radius: 15px;
+  box-shadow: 0px 1px 8px rgb(40 40 40 / 0.2);
 }
 .product-img {
   background-color: #e5e5e5;

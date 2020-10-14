@@ -9,8 +9,8 @@
           {{product.food_name}}
         </div>
         <div class="text-desc" >
-          <div class="desc-item" v-for="(item,index) in product.skus" :key="item+index">
-            {{item.Cname}}
+          <div class="desc-item" v-for="(item,index) in product.cartskus" :key="item+index">
+            {{item}}
           </div>
         </div>
          </div>
@@ -31,6 +31,8 @@
   </div>
 </template>
 <script>
+import { Http, HttpGql, ImgUrl } from "@/kits/Http";
+import { setCacheVal, getCacheVal } from "@/kits/LocalStorage";
 export default {
   data () {
     return {}
@@ -38,6 +40,8 @@ export default {
   props:{
     product:Object,
     index:Number
+  },
+  created() {
   },
   computed: {
     showPrice() {
@@ -47,8 +51,7 @@ export default {
       return (url) => {
         return {
           backgroundImage: `url(${url})`,
-          backgroundSize: "75px 75px",
-          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
           backgroundPosition: "center  center",
         };
       };
@@ -62,7 +65,7 @@ export default {
       this.$store.dispatch("decreaseCart",this.index)
     },
     delCart(){
-      this.$store.dispatch('decreaseCart',this.index)
+     this.$store.dispatch("removeCart",this.index)
     }
   },
   components: {}
@@ -122,7 +125,8 @@ export default {
   font-size: 18px;
   font-weight: bold;
   color: #02d126;
-  padding-top: 10px;
+  padding-top: 6px;
+  margin-left: -20px;
 }
 .del-btn {
   height: 30px;

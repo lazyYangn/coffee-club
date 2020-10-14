@@ -92,7 +92,6 @@ export default {
         return {
           backgroundImage: `url(${url})`,
           backgroundSize: "contain",
-          backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
         };
       };
@@ -128,8 +127,7 @@ export default {
     },
     // 加入购物车
     addCart(product) {
-      console.log(this.product)
-       this.$store.commit("pushCart",{
+       this.$store.dispatch("pushCart",{
         ...this.product,
         countbuy: this.valuenum,
         skus:this.skusSub
@@ -166,7 +164,6 @@ export default {
         `,
       };
       let res = await HttpGql(gql);
-      console.log(res);
       res.data.food.food_pic = ImgUrl + res.data.food.food_pic;
       this.product = res.data.food;
       res.data.user.favorite.forEach((item) => {

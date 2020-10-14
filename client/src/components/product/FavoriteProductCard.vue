@@ -41,6 +41,7 @@ export default {
         return {
           backgroundImage: `url(${url})`,
           backgroundSize: "cover",
+          backgroundPosition: "center  center",
         };
       };
     },
@@ -49,15 +50,16 @@ export default {
 </script>
 <style scoped>
 .product-card {
-  width: 180px;
+  width: 190px;
   height: 220px;
   padding: 10px 20px;
 }
 .product-img {
   background-color: #ccc;
-  width: 140px;
+  width: 150px;
   height: 120px;
   border-radius: 10px;
+  box-shadow: 1px 1px 8px rgb(40 40 40 /0.2);
 }
 .product-text {
   margin-top: 10px;

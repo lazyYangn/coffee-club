@@ -15,7 +15,10 @@ import Register from '@/components/pages/Register.vue'
 import Setting from '@/components/pages/Setting.vue'
 import SelectCoffee from '@/components/pages/SelectCoffee.vue'
 import Order from '@/components/order/Order.vue'
+import OrderDetail from '@/components/order/OrderDetail.vue'
 import ProblemBack from '@/components/pages/ProblemBack.vue'
+import OrderAffirm from '@/components/order/OrderAffirm.vue'
+import Payment from '@/components/pages/Payment.vue'
 Vue.use(VueRouter)
 
 // 分配路由
@@ -41,7 +44,10 @@ const routes = [
   { path: '/setting', name: 'setting', component: Setting },
   { path: '/selectcoffee/:id', name: 'selectcoffee', component: SelectCoffee },
   { path: '/order', name: 'order', component: Order },
+  { path: '/orderdetail', name: 'orderdetail', component: OrderDetail },
   { path: '/problemback', name: 'problemback', component: ProblemBack },
+  { path: '/orderaffirm', name: 'orderaffirm', component: OrderAffirm },
+  { path: '/payment', name: 'payment', component: Payment },
 ]
 
 const router = new VueRouter({
