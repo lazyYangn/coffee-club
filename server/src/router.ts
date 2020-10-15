@@ -19,4 +19,6 @@ export const router = (app: Express) => {
   app.post('/api/createorder', api.createorder)
 
   app.post('/api/removeorder', api.removeorder)
+
+  app.post('/api/changestatus', api.changeStatus)
 }

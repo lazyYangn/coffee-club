@@ -12,7 +12,8 @@ const store = new Vuex.Store({
     // 路由跳转需要传递的参数
     cartData: [],
     orderInfo:{},
-    selectedOrder:{}
+    selectedOrder:{},
+    orderList:[]
   },
   mutations: {
     setSearchInput(state, newVal) {
@@ -60,30 +61,35 @@ const store = new Vuex.Store({
     },
     setSelectedOrder(state,item){
       state.selectedOrder = item
-  }
+    },
+    delorderitem(state,index){
+      state.orderList.splice(index,1)
+    },
+    initorderList(state,item){
+      state.orderList = item
+    },
     
   },
   actions: {
     pushCart(context,item){
-      console.log(item)
       context.commit("pushCart",item)
       let cartitem = context.state.cartData.filter((t)=>(t.food_id === item.food_id))
-      doCart(item.food_id,cartitem.length >0 ? cartitem[0].countbuy : 0,item.cartskus)
+      doCart(item.food_id,cartitem.length >0 ? cartitem[0].countbuy : 0,item.skus)
     },
     increaseCart(context,index){
       context.commit("increaseCart",index)
       let cartitem = context.state.cartData[index]
-      doCart(cartitem.food_id,cartitem.countbuy,cartitem.cartskus)
+      doCart(cartitem.food_id,cartitem.countbuy,cartitem.skus)
     },
     decreaseCart(context,index){
       context.commit("decreaseCart",index)
       let cartitem = context.state.cartData[index]
-      doCart(cartitem.food_id,cartitem.countbuy,cartitem.cartskus)
+      doCart(cartitem.food_id,cartitem.countbuy,cartitem.skus)
       context.commit("removeCart",index)
     },
     removeCart(context,index){
       let cartitem = context.state.cartData[index]
-      doCart(cartitem.food_id,0,cartitem.cartskus)
+      doCart(cartitem.food_id,0,cartitem.skus)
       context.state.cartData[index].countbuy = 0
       context.commit("removeCart",index)
     },
@@ -113,7 +119,7 @@ const store = new Vuex.Store({
   getters: {
     priceSum(state) {
       let total = 0
-      return state.cartData.reduce((pre, item) => pre + item.food_price * item.countbuy, total)
+      return state.cartData.reduce((pre, item) => pre + item.food_price*1 * item.countbuy, total)
     },
     countSum(state){
       let total = 0
@@ -121,12 +127,12 @@ const store = new Vuex.Store({
     }
   }
 })
-const doCart = (foodid,num,cartskus) => {
+const doCart = (foodid,num,skus) => {
   Http("/addfoodcart",{
       userid:getCacheVal("userid"),
       foodid,
       num,
-      cartskus
+      skus
   }) 
 }
 export default store

@@ -102,7 +102,7 @@ export const addfoodcart = async (req: any, resp: any) => {
   if (p.num === 0) {
     Do("delete from carts where u_id= ? and food_id=?",[p.userid,p.foodid])
   }else{
-    if(!p.cartskus || p.cartskus.length <= 0){
+    if(!p.skus || p.skus.length <= 0){
       DoTx((conn) => {
         const a = DoNoConn({
           conn,
@@ -124,10 +124,7 @@ export const addfoodcart = async (req: any, resp: any) => {
           sql:"delete from carts where u_id= ? and food_id = ?",
           params:[p.userid,p.foodid],
         }).then(() => {
-          let skus =  p.cartskus.map((item:any)=>{
-            return item.Cname
-           })
-           let sku = skus.join('_')
+           let sku = p.skus.join('_')
           return DoNoConn({
             conn,
             sql:"insert into carts (u_id,food_id,num,sysdate,skus) values (?,?,?,(select now()),?)",
@@ -190,7 +187,7 @@ export const createorder = async (req:any,resp:any) => {
           }).then(()=>{
               let arr : Promise<any>[]= []
               for(let t of p.orderlist){
-                  let skus = t.cartskus.join('_')
+                  let skus = t.skus.join('_')
                   arr.push(DoNoConn({
                       conn,
                       sql:"insert into order_list (orderid,food_id,countbuy,food_name,price,skus,food_pic) values (?,?,?,?,?,?,?) ",
@@ -239,6 +236,23 @@ export const removeorder = async (req:any,resp:any) => {
       resp.json({
           code:2,
           msg:"创建订单失败",
+          data:{}
+      })
+  }
+}
+export const changeStatus = async (req:any,resp:any) => {
+  const p = req.body
+  try {
+      await Do("update `order` set status = ? where u_id= ? and id = ?",[p.status,p.userid,p.id])
+      resp.json({
+          code:1,
+          msg:"修改成功",
+          data:{}
+      })
+  } catch (e) {
+      resp.json({
+          code:2,
+          msg:"修改失败",
           data:{}
       })
   }

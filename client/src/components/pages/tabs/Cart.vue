@@ -67,9 +67,9 @@ export default {
             `
       }
       let res = await HttpGql(gql)
-      this.$store.commit("initCart",res.data.usercart ? res.data.usercart.map((item)=>{
+      this.$store.commit("initCart", res.data.usercart ?  res.data.usercart.map((item)=>{
           item.food_pic = ImgUrl + item.food_pic
-          item.cartskus =  item.cartskus.split('_')
+          item.skus =  item.cartskus.split('_')
           return item
         }) : [])
       }else{

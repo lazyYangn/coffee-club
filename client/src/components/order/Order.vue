@@ -7,8 +7,18 @@
       </div>
     </top-bar>
     <my-content class="my-contnet">
-      <div class="order-box" v-for="item in orderList" :key="item.id">
-        <div @click="removeOrder(item.id)" class="del" v-if="item.status==3"><a-icon type="close" style="fontSize:18px;padding:5px;color:red"/></div>
+      <div class="order-box" v-for="(item,index) in orderList" :key="item.id">
+        <div @click="removeOrder(item.id,index)" class="del" v-if="item.status==3"><a-icon type="close" style="fontSize:18px;padding:5px;color:red"/></div>
+        <div class="quikly" v-if="item.status==1">
+           <a-button type="primary"  @click="changestatus(item.id,index,(item.status+1))" style="backgroundColor: #02d126">
+            催单
+        </a-button>
+        </div>
+        <div class="quikly" v-if="item.status==2">
+           <a-button type="primary"  @click="changestatus(item.id,index,(item.status+1))" style="backgroundColor: #02d126">
+            完成取餐
+        </a-button>
+        </div>
         <div class="order-item-box">
           <div class="goods-box" v-for="item1 in item.foodList" :key="item1.food_id">
             <div class="goods-img" :style="imgStyle(item1.food_pic)"></div>
@@ -100,21 +110,31 @@ export default {
         `
       }
       let res = await HttpGql(gql)
-      console.log(res)
       this.orderList = res.data.userOrder
       this.orderList.forEach(item => {
         item.foodList.forEach(item1=>{
-          item1.cartskus =  item1.cartskus.split('_')
+          item1.skus =  item1.cartskus.split('_')
         })
        
       });
+      this.$store.commit('initorderList',this.orderList)
     },
-    removeOrder(id){
+    removeOrder(id,index){
       Http('/removeorder',{
         id,
         userid:getCacheVal('userid'),
       })
-      this.initData()
+      this.$store.commit('delorderitem',index)
+    },
+    changestatus(id,index,status){
+      this.orderList[index].status = status
+      this.$store.commit('initorderList',this.orderList)
+      console.log(status)
+         Http('/changestatus',{
+        id,
+        userid:getCacheVal('userid'),
+        status
+       })
     }
   },
   components: {
@@ -175,6 +195,11 @@ export default {
   position: absolute;
   top: 10px;
   right: 10px;
+}
+.quikly{
+  position: absolute;
+  top: 10px;
+  right: 20px;
 }
 .order-item-box {
   display: flex;

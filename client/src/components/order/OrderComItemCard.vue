@@ -3,7 +3,7 @@
     <div class="good-img" :style="imgStyle(food.food_pic)"></div>
     <div class="good-info">
       <div class="good-name" style="font-size:16px;">{{food.food_name}}</div>
-      <div class="good-desc" style="color:#ccc;"><span style="margin:0px 3px" v-for="item in food.cartskus" :key="item">{{item}}</span></div>
+      <div class="good-desc" style="color:#ccc;"><span style="margin:0px 3px" v-for="item in food.skus" :key="item">{{item}}</span></div>
       <div class="good-num">× {{food.countbuy}}</div>
     </div>
     <div class="good-price">￥ {{food.food_price}}</div>
