@@ -65,9 +65,10 @@ const store = new Vuex.Store({
   },
   actions: {
     pushCart(context,item){
+      console.log(item)
       context.commit("pushCart",item)
       let cartitem = context.state.cartData.filter((t)=>(t.food_id === item.food_id))
-      doCart(item.food_id,cartitem.length >0 ? cartitem[0].countbuy : 0,item.skus)
+      doCart(item.food_id,cartitem.length >0 ? cartitem[0].countbuy : 0,item.cartskus)
     },
     increaseCart(context,index){
       context.commit("increaseCart",index)
@@ -120,12 +121,12 @@ const store = new Vuex.Store({
     }
   }
 })
-const doCart = (foodid,num,skus) => {
+const doCart = (foodid,num,cartskus) => {
   Http("/addfoodcart",{
       userid:getCacheVal("userid"),
       foodid,
       num,
-      skus
+      cartskus
   }) 
 }
 export default store

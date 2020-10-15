@@ -58,6 +58,7 @@ export default {
   },
   created() {
     this.orderlist = this.$store.state.cartData
+    console.log(this.orderlist)
   },
   methods: {
     goback () {

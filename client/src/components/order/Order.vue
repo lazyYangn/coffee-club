@@ -8,6 +8,7 @@
     </top-bar>
     <my-content class="my-contnet">
       <div class="order-box" v-for="item in orderList" :key="item.id">
+        <div @click="removeOrder(item.id)" class="del" v-if="item.status==3"><a-icon type="close" style="fontSize:18px;padding:5px;color:red"/></div>
         <div class="order-item-box">
           <div class="goods-box" v-for="item1 in item.foodList" :key="item1.food_id">
             <div class="goods-img" :style="imgStyle(item1.food_pic)"></div>
@@ -48,7 +49,7 @@
 import TopBar from '@/components/topbar/TopBar'
 // 引入内容组件
 import MyContent from '@/components/content/MyContent'
-import { HttpGql, ImgUrl } from '@/kits/Http'
+import { HttpGql,Http, ImgUrl } from '@/kits/Http'
 import { getCacheVal } from '@/kits/LocalStorage'
 export default {
   data () {
@@ -107,6 +108,13 @@ export default {
         })
        
       });
+    },
+    removeOrder(id){
+      Http('/removeorder',{
+        id,
+        userid:getCacheVal('userid'),
+      })
+      this.initData()
     }
   },
   components: {
@@ -162,6 +170,11 @@ export default {
 .order-box {
   background-color: #fff;
   position: relative;
+}
+.del{
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 .order-item-box {
   display: flex;

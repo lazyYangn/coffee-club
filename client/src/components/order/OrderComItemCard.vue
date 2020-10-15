@@ -18,6 +18,7 @@ export default {
     food:Object
   },
   created() {
+    console.log(this.food)
   },
   methods: {
     goDetail(id){

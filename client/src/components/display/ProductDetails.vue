@@ -37,7 +37,7 @@
             {{ product.food_desc }}
           </div>
         </div>
-        <div :style="{ marginTop: '16px' }" class="radio-grounp" v-for="item in skus" :key="item.id">
+        <div :style="{ marginTop: '16px' }" class="radio-grounp" v-for="item in cartskus" :key="item.id">
           <div class="radio-title">{{item.name}}:</div>
           <a-radio-group :default-value="item.dict_son[0].Cname" :name="item.name"  @change="onChangeRadio" >
             <a-radio-button :value="item1.Cname" v-for="item1 in item.dict_son" :key="item1.id"> {{item1.Cname}} </a-radio-button>
@@ -54,7 +54,7 @@
           />
         </div>
         <div class="btn-group">
-          <div class="btn-item btn-left" @click="goto('/main/cart')">购买</div>
+          <div class="btn-item btn-left" @click="order">购买</div>
           <div class="btn-item btn-right" @click="addCart">加入购物车</div>
         </div>
       </div>
@@ -78,7 +78,7 @@ export default {
       isLike: false,
       valuenum: 1,
       u_id: getCacheVal("userid"),
-      skus:[],
+      cartskus:[],
       skusSub:[]
     };
   },
@@ -101,15 +101,17 @@ export default {
     onChangeRadio(e){
       this.skusSub.forEach((item)=>{
         if(item.name === e.target.name){
-          this.skus.forEach(item1=>{
+          this.cartskus.forEach(item1=>{
             item1.dict_son.forEach(item2=>{
               if(item2.Cname == e.target.value) {
-                 item.id =  item2.id
                  item.Cname = item2.Cname
               }
             })
           })
         }
+      })
+     this.product.cartskus  =  this.skusSub.map(item=>{
+        return item.Cname
       })
     },
     onChange(value) {
@@ -130,7 +132,7 @@ export default {
        this.$store.dispatch("pushCart",{
         ...this.product,
         countbuy: this.valuenum,
-        skus:this.skusSub
+        cartskus:this.skusSub
       });
       this.$message.info('添加成功')
     },
@@ -164,6 +166,7 @@ export default {
         `,
       };
       let res = await HttpGql(gql);
+      console.log(res)
       res.data.food.food_pic = ImgUrl + res.data.food.food_pic;
       this.product = res.data.food;
       res.data.user.favorite.forEach((item) => {
@@ -171,11 +174,10 @@ export default {
           this.isLike = true;
         }
       });
-      this.skus = res.data.food.skus
+      this.cartskus = res.data.food.skus
       res.data.food.skus.forEach(item=>{
           this.skusSub.push({id:item.dict_son[0].id,name:item.name,Cname:item.dict_son[0].Cname})
       })
-      // console.log(this.skusSub)
     },
     async like() {
       if (this.u_id) {
@@ -198,6 +200,13 @@ export default {
         console.log("请先登录");
       }
     },
+    order(){
+      this.$store.dispatch("pushCart",{
+         ...this.product,
+        countbuy: this.valuenum,
+      })
+      this.$router.push({name:'orderaffirm'})
+    }
   },
   components: {
     TopBar,

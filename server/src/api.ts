@@ -99,13 +99,11 @@ export const addfoodlike = async (req: any, resp: any) => {
 }
 export const addfoodcart = async (req: any, resp: any) => {
   let p = req.body
-  console.log(p)
   if (p.num === 0) {
     Do("delete from carts where u_id= ? and food_id=?",[p.userid,p.foodid])
   }else{
-    if(!p.skus || p.skus.length <= 0){
+    if(!p.cartskus || p.cartskus.length <= 0){
       DoTx((conn) => {
-        console.log(p)
         const a = DoNoConn({
           conn,
           sql:"delete from carts where u_id= ? and food_id = ?",
@@ -126,11 +124,10 @@ export const addfoodcart = async (req: any, resp: any) => {
           sql:"delete from carts where u_id= ? and food_id = ?",
           params:[p.userid,p.foodid],
         }).then(() => {
-          let skus =  p.skus.map((item:any)=>{
+          let skus =  p.cartskus.map((item:any)=>{
             return item.Cname
            })
            let sku = skus.join('_')
-           console.log(sku)
           return DoNoConn({
             conn,
             sql:"insert into carts (u_id,food_id,num,sysdate,skus) values (?,?,?,(select now()),?)",
@@ -202,6 +199,36 @@ export const createorder = async (req:any,resp:any) => {
               }
               return Promise.all(arr)
           })]
+      })
+      resp.json({
+          code:1,
+          msg:"创建成功",
+          data:{}
+      })
+  } catch (e) {
+      resp.json({
+          code:2,
+          msg:"创建订单失败",
+          data:{}
+      })
+  }
+}
+export const removeorder = async (req:any,resp:any) => {
+  const p = req.body
+  try {
+      await DoTx((conn)=>{
+          const a = DoNoConn({
+              conn,
+              sql:"delete from `order` where u_id= ? and id = ?",
+              params:[p.userid,p.id]
+          }).then(()=>{
+                return DoNoConn({
+                      conn,
+                      sql:"delete from order_list where orderid= ?",
+                      params:[p.id]       
+                  })
+          })
+          return [a]
       })
       resp.json({
           code:1,

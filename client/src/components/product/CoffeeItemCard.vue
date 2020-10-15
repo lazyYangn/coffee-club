@@ -7,7 +7,7 @@
       <div class="desc-price">￥ {{ coffee.food_price }}</div>
     </div>
     <div class="add-box">
-      <a-icon type="plus-circle" style="font-size: 20px" />
+      <div class="iconfont icon-jia" style="font-size: 20px" />
     </div>
   </div>
 </template>
@@ -81,5 +81,6 @@ export default {
   align-items: center;
   border-radius: 5px;
   color: #fff;
+  padding-top: 1px;
 }
 </style>
