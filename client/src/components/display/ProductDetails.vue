@@ -4,14 +4,9 @@
       <div
         slot="left"
         class="iconfont icon-fanhui icon"
-        style="font-size: 30px; line-height: 60px;"
+        style="font-size: 30px; line-height: 60px"
         @click="goback"
       ></div>
-       <div
-        slot="right"
-        class="bar-right"
-        @click="goCart"
-      ><div v-if="$store.state.cartData.length>0" class="redball"></div><div class="cartIcon iconfont icon-gouwudai" style="color:#fff;font-size: 33px; line-height: 60px;"></div></div>
     </TopBar>
     <div class="favorite-box">
       <div class="top-img" :style="imgStyle(product.food_pic)"></div>
@@ -33,8 +28,7 @@
             :key="item+index"
           ></span>
         </div>
-        <div class="scroll">
-          <div class="like-description">
+        <div class="like-description">
           <div class="like-description-top">
             <div>描述</div>
             <div>￥ {{ product.food_price }}</div>
@@ -43,7 +37,7 @@
             {{ product.food_desc }}
           </div>
         </div>
-        <div :style="{ marginTop: '16px' }" class="radio-grounp" v-for="item in product.skus" :key="item.id">
+        <div :style="{ marginTop: '16px' }" class="radio-grounp" v-for="item in cartskus" :key="item.id">
           <div class="radio-title">{{item.name}}:</div>
           <a-radio-group :default-value="item.dict_son[0].Cname" :name="item.name"  @change="onChangeRadio" >
             <a-radio-button :value="item1.Cname" v-for="item1 in item.dict_son" :key="item1.id"> {{item1.Cname}} </a-radio-button>
@@ -58,7 +52,6 @@
             :max="100"
             @change="onChange"
           />
-        </div>
         </div>
         <div class="btn-group">
           <div class="btn-item btn-left" @click="order">购买</div>
@@ -85,7 +78,7 @@ export default {
       isLike: false,
       valuenum: 1,
       u_id: getCacheVal("userid"),
-      skus:[],
+      cartskus:[],
       skusSub:[]
     };
   },
@@ -106,11 +99,19 @@ export default {
   },
   methods: {
     onChangeRadio(e){
-      this.skus.forEach((item)=>{
+      this.skusSub.forEach((item)=>{
         if(item.name === e.target.name){
-          item.Cname = e.target.value
+          this.cartskus.forEach(item1=>{
+            item1.dict_son.forEach(item2=>{
+              if(item2.Cname == e.target.value) {
+                 item.Cname = item2.Cname
+              }
+            })
+          })
         }
-       
+      })
+     this.product.cartskus  =  this.skusSub.map(item=>{
+        return item.Cname
       })
     },
     onChange(value) {
@@ -126,21 +127,12 @@ export default {
         path,
       });
     },
-    goCart(){
-       this.$router.push({
-        path:'/main/cart'
-      });
-    },
     // 加入购物车
     addCart(product) {
-      this.skusSub = this.skus.map(item=>{
-       return item.Cname
-      })
-      console.log(this.valuenum)
        this.$store.dispatch("pushCart",{
         ...this.product,
         countbuy: this.valuenum,
-        skus:this.skusSub
+        cartskus:this.skusSub
       });
       this.$message.info('添加成功')
     },
@@ -182,8 +174,9 @@ export default {
           this.isLike = true;
         }
       });
+      this.cartskus = res.data.food.skus
       res.data.food.skus.forEach(item=>{
-          this.skus.push({id:item.dict_son[0].id,name:item.name,Cname:item.dict_son[0].Cname})
+          this.skusSub.push({id:item.dict_son[0].id,name:item.name,Cname:item.dict_son[0].Cname})
       })
     },
     async like() {
@@ -208,13 +201,9 @@ export default {
       }
     },
     order(){
-      this.skusSub = this.skus.map(item=>{
-       return item.Cname
-      })
       this.$store.dispatch("pushCart",{
          ...this.product,
         countbuy: this.valuenum,
-        skus:this.skusSub
       })
       this.$router.push({name:'orderaffirm'})
     }
@@ -228,27 +217,6 @@ export default {
 <style scoped>
 .main {
   overflow-x: hidden; /* 防止横向滚动条 */
-}
-.bar-right{
-  position: relative;
-  width: 50px;
-  height: 30px;
-}
-.cartIcon{
-  position: absolute;
-  top: -15px;
-  left: 10px;
-  right: -10px;
-}
-.redball{
-  position: absolute;
-  top: 1px;
-  left: 7px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color:#02d126;
-  z-index: 999;
 }
 .favorite-box {
   position: relative;
@@ -286,7 +254,6 @@ export default {
   justify-content: center;
   align-items: center;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-  z-index: 999;
 }
 .like-btn .iconfont {
   color: #845747;
@@ -306,7 +273,7 @@ export default {
   padding: 10px 5px 20px 0px;
 }
 .like-description {
-  margin-top: 10px;
+  margin-top: 15px;
 }
 .like-description .like-description-top {
   display: flex;
@@ -369,7 +336,7 @@ export default {
   font-weight: bold;
 }
 .good-num {
-  margin-top: 5px;
+  margin-top: 10px;
   position: absolute;
   right: 10px;
 }

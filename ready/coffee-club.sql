@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 15/10/2020 21:16:23
+ Date: 14/10/2020 20:42:19
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,6 @@ CREATE TABLE `carts`  (
 -- ----------------------------
 -- Records of carts
 -- ----------------------------
-INSERT INTO `carts` VALUES ('admin@mail.com', 1011, '无果碎', 4, '2020-10-15 21:02:58');
 
 -- ----------------------------
 -- Table structure for category
@@ -79,14 +78,9 @@ CREATE TABLE `dict`  (
 -- Records of dict
 -- ----------------------------
 INSERT INTO `dict` VALUES ('cream', '奶油', '3', 1000);
-INSERT INTO `dict` VALUES ('cream1', '奶油', '11', 3000);
 INSERT INTO `dict` VALUES ('fruit', '果碎', '5', 3000);
-INSERT INTO `dict` VALUES ('jiang', '酱料', '10', 5000);
 INSERT INTO `dict` VALUES ('order_status', '订单状态', '6', NULL);
 INSERT INTO `dict` VALUES ('size', '大小', '4', 2000);
-INSERT INTO `dict` VALUES ('size1', '大小', '7', 4000);
-INSERT INTO `dict` VALUES ('size2', '大小', '8', 6000);
-INSERT INTO `dict` VALUES ('size3', '大小', '9', 5000);
 INSERT INTO `dict` VALUES ('sugar', '糖', '2', 1000);
 INSERT INTO `dict` VALUES ('temp', '温度', '1', 1000);
 
@@ -108,24 +102,11 @@ CREATE TABLE `dict_son`  (
 INSERT INTO `dict_son` VALUES ('1', 'order_status', 'order_status1', '支付完成');
 INSERT INTO `dict_son` VALUES ('2', 'order_status', 'order_status2', '待取餐');
 INSERT INTO `dict_son` VALUES ('3', 'order_status', 'order_status3', '取餐完成');
-INSERT INTO `dict_son` VALUES ('c24', 'cream1', 'cream11', '加奶油');
-INSERT INTO `dict_son` VALUES ('c25', 'cream1', 'cream12', '无奶油');
-INSERT INTO `dict_son` VALUES ('j22', 'jiang', 'jiang1', '番茄酱');
-INSERT INTO `dict_son` VALUES ('j23', 'jiang', 'jiang2', '甜面酱');
 INSERT INTO `dict_son` VALUES ('s1', 'temp', 'temp0', '冷');
 INSERT INTO `dict_son` VALUES ('s10', 'size', 'size2', '大份');
 INSERT INTO `dict_son` VALUES ('s11', 'fruit', 'fruit0', '有果碎');
 INSERT INTO `dict_son` VALUES ('s12', 'fruit', 'fruit1', '无果碎');
-INSERT INTO `dict_son` VALUES ('s13', 'size1', 'size11', '小份');
-INSERT INTO `dict_son` VALUES ('s14', 'size1', 'size12', '中份');
-INSERT INTO `dict_son` VALUES ('s15', 'size1', 'size13', '大份');
-INSERT INTO `dict_son` VALUES ('s16', 'size2', 'size21', '小份');
-INSERT INTO `dict_son` VALUES ('s17', 'size2', 'size22', '中份');
-INSERT INTO `dict_son` VALUES ('s18', 'size2', 'size23', '大份');
-INSERT INTO `dict_son` VALUES ('s19', 'size3', 'size31', '小份');
 INSERT INTO `dict_son` VALUES ('s2', 'temp', 'temp1', '热');
-INSERT INTO `dict_son` VALUES ('s20', 'size3', 'size32', '中份');
-INSERT INTO `dict_son` VALUES ('s21', 'size3', 'size33', '大份');
 INSERT INTO `dict_son` VALUES ('s3', 'sugar', 'sugar0', '无糖');
 INSERT INTO `dict_son` VALUES ('s4', 'sugar', 'sugar1', '半糖');
 INSERT INTO `dict_son` VALUES ('s5', 'sugar', 'sugar2', '全糖');
@@ -149,11 +130,10 @@ CREATE TABLE `favorite`  (
 -- ----------------------------
 -- Records of favorite
 -- ----------------------------
-INSERT INTO `favorite` VALUES ('admin@mail.com', 1001, 0, '2020-10-15 16:12:58');
+INSERT INTO `favorite` VALUES ('admin@mail.com', 1001, 1, '2020-10-12 16:26:15');
 INSERT INTO `favorite` VALUES ('admin@mail.com', 1003, 0, '2020-10-12 16:05:59');
-INSERT INTO `favorite` VALUES ('admin@mail.com', 1011, 0, '2020-10-15 18:20:35');
 INSERT INTO `favorite` VALUES ('admin@mail.com', 1017, 0, '2020-10-12 16:26:06');
-INSERT INTO `favorite` VALUES ('admin@mail.com', 1030, 0, '2020-10-15 16:13:01');
+INSERT INTO `favorite` VALUES ('admin@mail.com', 1030, 1, '2020-10-12 15:59:53');
 
 -- ----------------------------
 -- Table structure for foods
@@ -183,11 +163,11 @@ INSERT INTO `foods` VALUES (4, 1004, '厚乳拿铁', '纵享丝滑', 1020, 16.77
 INSERT INTO `foods` VALUES (5, 1005, '醉心黑摩卡', '纵享丝滑', 1010, 21.00, 4, 54, 'espresso（浓缩）+热水  ', '1005.jpg');
 INSERT INTO `foods` VALUES (6, 1006, '精粹奥瑞白', '纵享丝滑', 1020, 18.50, 3, 55, 'espresso+牛奶+一勺奶泡 ', '1006.jpg');
 INSERT INTO `foods` VALUES (7, 1007, '法式闪电泡芙', '甜蜜丝滑', 2000, 23.80, 5, 56, '巧克力酱+espresso+牛奶+奶油 ', '1007.jpg');
-INSERT INTO `foods` VALUES (8, 1008, '心意巧克力蛋糕', '纵享丝滑', 2000, 33.40, 5, 57, '纯滑扎实的奶油与浓郁稠密的巧克力', '1008.jpg');
+INSERT INTO `foods` VALUES (8, 1008, '心意浓情巧克力蛋糕', '纵享丝滑', 2000, 33.40, 5, 57, '纯滑扎实的奶油与浓郁稠密的巧克力', '1008.jpg');
 INSERT INTO `foods` VALUES (9, 1009, '红莓慕斯杯蛋糕', '纵享丝滑', 2000, 26.70, 5, 58, '夹层中媚红的果酱配合红莓芬香', '1009.jpg');
-INSERT INTO `foods` VALUES (10, 1010, '杏果蛋糕热巧克力', '纵享丝滑', 2000, 31.50, 5, 59, '外层是轻轻的冰霜，冰唇滑舌', '1010.jpg');
+INSERT INTO `foods` VALUES (10, 1010, '幸运美杏果蛋糕热巧克力', '纵享丝滑', 2000, 31.50, 5, 59, '外层是轻轻的冰霜，冰唇滑舌', '1010.jpg');
 INSERT INTO `foods` VALUES (11, 1011, '抹茶蛋糕', '纵享丝滑', 3000, 25.70, 5, 60, '口感绵密，色彩艳丽。在炎热的夏天给人带来一股小清新。', '1011.jpg');
-INSERT INTO `foods` VALUES (12, 1012, '芝士火腿三明治', '纵享丝滑', 3000, 17.80, 4, 61, '芝士与火腿的搭配，味觉的盛宴', '1012.jpg');
+INSERT INTO `foods` VALUES (12, 1012, '高达芝士火腿三明治', '纵享丝滑', 3000, 17.80, 4, 61, '芝士与火腿的搭配，味觉的盛宴', '1012.jpg');
 INSERT INTO `foods` VALUES (13, 1013, '蜂蜜提子司康', '纵享丝滑', 3000, 25.50, 4, 62, '甜蜜的天然蜂蜜与奶油的碰撞', '1013.jpg');
 INSERT INTO `foods` VALUES (14, 1014, '火腿芝士可颂', '纵享丝滑', 3000, 30.70, 4, 63, '组织非常松软，火腿的绝美味道', '1014.jpg');
 INSERT INTO `foods` VALUES (15, 1015, '法式马卡龙', '纵享丝滑', 4000, 18.80, 4, 64, '蛋液经过搅打后产生的松软的泡沫，清爽酥人', '1015.jpg');
@@ -224,6 +204,12 @@ CREATE TABLE `order`  (
 -- ----------------------------
 -- Records of order
 -- ----------------------------
+INSERT INTO `order` VALUES ('35f4a8d465e6e1edc05f3d8ab658c551', 'admin@mail.com', 1, 1, '15.99', '2020-10-14 20:29:47');
+INSERT INTO `order` VALUES ('4f4adcbf8c6f66dcfc8a3282ac2bf10a', 'admin@mail.com', 1, 2, '53.4', '2020-10-14 20:35:11');
+INSERT INTO `order` VALUES ('9cfdf10e8fc047a44b08ed031e1f0ed1', 'admin@mail.com', 1, 1, '15.99', '2020-10-14 20:36:09');
+INSERT INTO `order` VALUES ('e5841df2166dd424a57127423d276bbe', 'admin@mail.com', 1, 4, '79.6', '2020-10-14 20:38:31');
+INSERT INTO `order` VALUES ('eae27d77ca20db309e056e3d2dcd7d69', 'admin@mail.com', 1, 2, '38.8', '2020-10-14 17:21:49');
+INSERT INTO `order` VALUES ('fccb60fb512d13df5083790d64c4d5dd', 'admin@mail.com', 1, 5, '103.39', '2020-10-14 16:59:33');
 
 -- ----------------------------
 -- Table structure for order_list
@@ -239,12 +225,20 @@ CREATE TABLE `order_list`  (
   `skus` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `food_pic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of order_list
 -- ----------------------------
+INSERT INTO `order_list` VALUES (9, 'fccb60fb512d13df5083790d64c4d5dd', 1007, 2, '法式闪电泡芙', 23.80, '小份', 'http://127.0.0.1:3002/imgs/1007.jpg');
+INSERT INTO `order_list` VALUES (10, 'fccb60fb512d13df5083790d64c4d5dd', 1030, 2, '红色麦芬蛋糕', 19.90, '', 'http://127.0.0.1:3002/imgs/1030.jpg');
+INSERT INTO `order_list` VALUES (11, 'fccb60fb512d13df5083790d64c4d5dd', 1001, 1, '抹茶瑞纳冰', 15.99, '冷_半糖_有奶油', 'http://127.0.0.1:3002/imgs/1001.jpg');
+INSERT INTO `order_list` VALUES (12, 'eae27d77ca20db309e056e3d2dcd7d69', 1019, 1, '法式薯条', 15.00, '', 'http://127.0.0.1:3002/imgs/1019.jpg');
+INSERT INTO `order_list` VALUES (13, 'eae27d77ca20db309e056e3d2dcd7d69', 1007, 1, '法式闪电泡芙', 23.80, '小份', 'http://127.0.0.1:3002/imgs/1007.jpg');
 INSERT INTO `order_list` VALUES (14, '35f4a8d465e6e1edc05f3d8ab658c551', 1001, 1, '抹茶瑞纳冰', 15.99, '冷_无糖_有奶油', 'http://127.0.0.1:3002/imgs/1001.jpg');
+INSERT INTO `order_list` VALUES (15, '4f4adcbf8c6f66dcfc8a3282ac2bf10a', 1009, 2, '红莓慕斯杯蛋糕', 26.70, '小份', 'http://127.0.0.1:3002/imgs/1009.jpg');
+INSERT INTO `order_list` VALUES (16, '9cfdf10e8fc047a44b08ed031e1f0ed1', 1001, 1, '抹茶瑞纳冰', 15.99, '冷_无糖_无奶油', 'http://127.0.0.1:3002/imgs/1001.jpg');
+INSERT INTO `order_list` VALUES (17, 'e5841df2166dd424a57127423d276bbe', 1030, 4, '红色麦芬蛋糕', 19.90, '', 'http://127.0.0.1:3002/imgs/1030.jpg');
 
 -- ----------------------------
 -- Table structure for user
@@ -257,7 +251,7 @@ CREATE TABLE `user`  (
   `pwd` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `avatar` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user

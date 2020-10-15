@@ -9,7 +9,7 @@
     <my-content class="my-contnet">
       <div class="top-box">
         <div class="order-state">
-          <div>订单明细</div>
+          <div>该订单已完成</div>
           <div class="iconfont icon-iconfontjiantou5"></div>
         </div>
       </div>
