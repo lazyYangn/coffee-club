@@ -108,8 +108,8 @@ export default {
     this.userName = getCacheVal("username")
       ? getCacheVal("username")
       : "咖啡小强";
-    this.userAva = getCacheVal("userAva")
-      ? ImgUrl + getCacheVal("userAva")
+    this.userAva = getCacheVal("imgpath")
+      ? getCacheVal("imgpath")
       : "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=476262993,2239475519&fm=11&gp=0.jpg";
 
     this.userId = getCacheVal("userId")

@@ -7,15 +7,27 @@
       </div>
     </top-bar>
     <my-content class="my-contnet">
-      <div class="order-box" v-for="item in orderList" :key="item.id">
-        <div @click="removeOrder(item.id)" class="del" v-if="item.status==3"><a-icon type="close" style="fontSize:18px;padding:5px;color:red"/></div>
+      <div class="order-box" v-for="(item,index) in orderList" :key="item.id">
+        <div @click="removeOrder(item.id,index)" class="del" v-if="item.status==3">
+          <a-icon type="close" style="fontSize:18px;padding:5px;color:red" />
+        </div>
+        <div class="quikly" v-if="item.status==1">
+          <a-button type="primary" @click="changestatus(item.id,index,(item.status+1))" style="backgroundColor: #02d126">
+            催单
+          </a-button>
+        </div>
+        <div class="quikly" v-if="item.status==2">
+          <a-button type="primary" @click="changestatus(item.id,index,(item.status+1))" style="backgroundColor: #02d126">
+            完成取餐
+          </a-button>
+        </div>
         <div class="order-item-box">
           <div class="goods-box" v-for="item1 in item.foodList" :key="item1.food_id">
             <div class="goods-img" :style="imgStyle(item1.food_pic)"></div>
             <div class="goods-name">{{item1.food_name}}</div>
           </div>
         </div>
-         <div class="text-order">
+        <div class="text-order">
           <div>订单号：{{item.id}}</div>
         </div>
         <div class="text-order">
@@ -31,9 +43,9 @@
             <a-collapse-panel key="1" header="订单状态">
               <div style="padding:0 10px">
                 <a-steps progress-dot :current="item.status" direction="vertical">
-                  <a-step title="支付完成" description="支付完成"  />
-                  <a-step title="备餐中" description="支付完成，后厨忙碌中"  />
-                  <a-step title="待取餐" description="支付完成,等待取餐"  />
+                  <a-step title="支付完成" description="支付完成" />
+                  <a-step title="备餐中" description="支付完成，后厨忙碌中" />
+                  <a-step title="待取餐" description="支付完成,等待取餐" />
                   <a-step title="取餐完成" description="您已取餐，订单已完成" />
                 </a-steps>
               </div>
@@ -49,33 +61,33 @@
 import TopBar from '@/components/topbar/TopBar'
 // 引入内容组件
 import MyContent from '@/components/content/MyContent'
-import { HttpGql,Http, ImgUrl } from '@/kits/Http'
+import { HttpGql, Http, ImgUrl } from '@/kits/Http'
 import { getCacheVal } from '@/kits/LocalStorage'
 export default {
   data () {
     return {
       expandIconPosition: 'right',
-      start:0,
-      count:5,
-      orderList:[]
+      start: 0,
+      count: 5,
+      orderList: []
     }
   },
-  created() {
+  created () {
     this.initData()
   },
   methods: {
     goback () {
       this.$router.go(-1)
     },
-    goto (name,item) {
-        this.$store.commit("setSelectedOrder",item)
-        this.$router.push({name})
+    goto (name, item) {
+      this.$store.commit("setSelectedOrder", item)
+      this.$router.push({ name })
     },
     handleClick (event) {
       // If you don't want click extra trigger collapse, you can prevent this:
       event.stopPropagation();
     },
-    async initData(){
+    async initData () {
       let gql = {
         query: `
           {
@@ -100,21 +112,29 @@ export default {
         `
       }
       let res = await HttpGql(gql)
-      console.log(res)
       this.orderList = res.data.userOrder
       this.orderList.forEach(item => {
-        item.foodList.forEach(item1=>{
-          item1.cartskus =  item1.cartskus.split('_')
+        item.foodList.forEach(item1 => {
+          item1.skus = item1.cartskus.split('_')
         })
-       
       });
+      this.$store.commit('initorderList', this.orderList)
     },
-    removeOrder(id){
-      Http('/removeorder',{
+    removeOrder (id, index) {
+      Http('/removeorder', {
         id,
-        userid:getCacheVal('userid'),
+        userid: getCacheVal('userid'),
       })
-      this.initData()
+      this.$store.commit('delorderitem', index)
+    },
+    changestatus (id, index, status) {
+      this.orderList[index].status = status
+      this.$store.commit('initorderList', this.orderList)
+      Http('/changestatus', {
+        id,
+        userid: getCacheVal('userid'),
+        status
+      })
     }
   },
   components: {
@@ -127,12 +147,12 @@ export default {
     },
   },
   computed: {
-    imgStyle(){
-      return (url)=>{
+    imgStyle () {
+      return (url) => {
         return {
-          backgroundImage:`url(${url})`,
-          backgroundSize:'cover',
-          backgroundPosition:'center center'
+          backgroundImage: `url(${url})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center'
         }
       }
     }
@@ -171,15 +191,21 @@ export default {
   background-color: #fff;
   position: relative;
 }
-.del{
+.del {
   position: absolute;
   top: 10px;
   right: 10px;
+}
+.quikly {
+  position: absolute;
+  top: 10px;
+  right: 20px;
 }
 .order-item-box {
   display: flex;
   overflow-x: auto;
   margin-top: 16px;
+  padding-top: 40px;
 }
 .text-order {
   padding: 10px 16px;

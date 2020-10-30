@@ -22,6 +22,10 @@ gql_server.applyMiddleware({
   path: config.gql_url,
 })
 
+app.use("/html", express.static("./pages"))
+
+app.use('/uploads', express.static('./assets/uploads'))
+
 app.use('/imgs', express.static('./assets/imgs'))
 
 router(app)

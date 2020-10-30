@@ -2,11 +2,7 @@
   <div>
     <top-bar>
       <div slot="left">
-        <span
-          class="iconfont icon-fanhui"
-          style="font-size: 30px; line-height: 60px"
-          @click="goback"
-        ></span>
+        <span class="iconfont icon-fanhui" style="font-size: 30px; line-height: 60px" @click="goback"></span>
       </div>
       <div slot="middle">
         <div style="font-weight: blod; font-size: 18px; line-height: 60px">
@@ -64,26 +60,26 @@ import { getCacheVal, getArray, clearCache } from "@/kits/LocalStorage";
 import { ImgUrl } from "@/kits/Http";
 export default {
   name: "Setting",
-  data() {
+  data () {
     return {
       userName: "",
       userAva: "",
       userId: "",
     };
   },
-  created() {
+  created () {
     this.userName = getCacheVal("username")
       ? getCacheVal("username")
       : "咖啡小强";
-    this.userAva = getCacheVal("userAva")
-      ? ImgUrl + getCacheVal("userAva")
+    this.userAva = getCacheVal("imgpath")
+      ? getCacheVal("imgpath")
       : "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=476262993,2239475519&fm=11&gp=0.jpg";
     this.userId = getCacheVal("userId")
       ? getCacheVal("userId")
       : "coffeeClub@qq.com";
   },
   computed: {
-    imgStyle() {
+    imgStyle () {
       return {
         backgroundImage: `url(${this.userAva})`,
         backgroundSize: "cover",
@@ -92,10 +88,10 @@ export default {
   },
   methods: {
     // 点击返回
-    goback() {
+    goback () {
       this.$router.go(-1);
     },
-    logout() {
+    logout () {
       clearCache();
       this.$router.push({ path: "/login" });
     },

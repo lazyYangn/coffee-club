@@ -1,25 +1,28 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Main from '@/components/pages/Main.vue'
-import Home from '@/components/pages/tabs/Home'
-import Like from '@/components/pages/tabs/Like.vue'
-import Account from '@/components/pages/tabs/Account.vue'
-import Cart from '@/components/pages/tabs/Cart.vue'
-import Search from '@/components/pages/Search.vue'
-import ProductShow from '@/components/display/ProductShow.vue'
-import ProductDetails from '@/components/display/ProductDetails.vue'
-import CategoryDetails from '@/components/categorydetails/CategoryDetails.vue'
-import SearchResult from '@/components/pages/SearchResult.vue'
-import Login from '@/components/pages/Login.vue'
-import Register from '@/components/pages/Register.vue'
-import Setting from '@/components/pages/Setting.vue'
-import SelectCoffee from '@/components/pages/SelectCoffee.vue'
-import Order from '@/components/order/Order.vue'
-import OrderDetail from '@/components/order/OrderDetail.vue'
-import ProblemBack from '@/components/pages/ProblemBack.vue'
-import OrderAffirm from '@/components/order/OrderAffirm.vue'
-import Payment from '@/components/pages/Payment.vue'
-Vue.use(VueRouter)
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+
+const Main = () => import('@/components/pages/Main.vue');
+const Home = () => import('@/components/pages/tabs/Home');
+const Like = () => import('@/components/pages/tabs/Like.vue');
+const Account = () => import('@/components/pages/tabs/Account.vue');
+const Cart = () => import('@/components/pages/tabs/Cart.vue');
+const Search = () => import('@/components/pages/Search.vue');
+const ProductShow = () => import('@/components/display/ProductShow.vue');
+const ProductDetails = () => import('@/components/display/ProductDetails.vue');
+const CategoryDetails = () => import('@/components/categorydetails/CategoryDetails.vue');
+const SearchResult = () => import('@/components/pages/SearchResult.vue');
+const Login = () => import('@/components/pages/Login.vue');
+const Register = () => import('@/components/pages/Register.vue');
+const Setting = () => import('@/components/pages/Setting.vue');
+const SelectCoffee = () => import('@/components/pages/SelectCoffee.vue');
+const Order = () => import('@/components/order/Order.vue');
+const OrderDetail = () => import('@/components/order/OrderDetail.vue');
+const ProblemBack = () => import('@/components/pages/ProblemBack.vue');
+const OrderAffirm = () => import('@/components/order/OrderAffirm.vue');
+const Payment = () => import('@/components/pages/Payment.vue');
+const UploadImg = () => import('@/components/pages/UploadImg.vue');
+const About = () => import('@/components/pages/About.vue');
+Vue.use(VueRouter);
 
 // 分配路由
 const routes = [
@@ -48,10 +51,12 @@ const routes = [
   { path: '/problemback', name: 'problemback', component: ProblemBack },
   { path: '/orderaffirm', name: 'orderaffirm', component: OrderAffirm },
   { path: '/payment', name: 'payment', component: Payment },
-]
+  { path: '/uploadimg', name: 'uploadimg', component: UploadImg },
+  { path: '/about', name: 'about', component: About },
+];
 
 const router = new VueRouter({
   routes,
-})
+});
 // 导出路由
-export default router
+export default router;

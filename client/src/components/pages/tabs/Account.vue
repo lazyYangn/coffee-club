@@ -2,68 +2,25 @@
   <div>
     <top-bar class="top-bar">
       <div slot="middle">
-        <div style="font-weight: blod; font-size: 20px; line-height: 60px">
-          菜单
+        <div style="font-weight: blod; font-size: 20px; line-height: 60px;">
         </div>
       </div>
     </top-bar>
     <my-content class="my-content">
       <div class="img-content">
-        <div class="user_ava" :style="imgPath">
-          <!-- <a-avatar
-            :size="180"
-            icon="user"
-            class="user_ava"
-            v-if="imageUrl"
-            :src="userAva"
-          />
-          <a-avatar icon="user" class="user_ava" v-else>
-            <a-icon :type="loading ? 'loading' : 'plus'" />
-            <div class="ant-upload-text">Upload</div>
-          </a-avatar> -->
+        <div class="user_ava">
+          <a-avatar v-if="imgpath == ''" :size="150" icon="user" @click="goto('/uploadimg')" />
+          <a-avatar v-else :size="150" :src="imgpath" @click="goto('/uploadimg')" />
         </div>
         <div class="user">
           <div class="user-name">{{ userName }}</div>
           <div class="user-desc">{{ userId }}</div>
         </div>
         <div class="zx-box">
-          <span
-            class="iconfont icon-zhaoxiangji"
-            style="font-size: 56px"
-            @click="showModal"
-          ></span>
-          <a-modal :visible="visible" @ok="handleOk" @cancel="handleCancel">
-            <div
-              v-for="(item, index) in imgs"
-              :key="item + index"
-              class="ava-list"
-            >
-              <img :src="item" alt="" />
-            </div>
-          </a-modal>
+          <span class="iconfont icon-zhaoxiangji" style="font-size: 56px" @click="goto('/uploadimg')"></span>
         </div>
       </div>
       <div class="btn-content">
-        <div class="user-menu">
-          <div class="menu-item">
-            <div class="item-num">0 元</div>
-            <div class="item-title">账户余额</div>
-          </div>
-          <div class="menu-item">
-            <div class="item-num">0 张</div>
-            <div class="item-title">咖啡钱包</div>
-          </div>
-          <div class="menu-item">
-            <div class="item-num">4 张</div>
-            <div class="item-title">优惠券</div>
-          </div>
-          <div class="menu-item">
-            <div class="item-num">0 张</div>
-            <div class="item-title">礼品卡</div>
-          </div>
-        </div>
-        <div class="user-desc-box"></div>
-        <!-- <div class="btn-box">关注</div> -->
       </div>
     </my-content>
   </div>
@@ -75,99 +32,36 @@ import TopBar from "@/components/topbar/TopBar";
 import MyContent from "@/components/content/MyContent";
 import { getCacheVal, getArray, clearCache } from "@/kits/LocalStorage";
 import { ImgUrl } from "@/kits/Http";
-function getBase64(img, callback) {
+function getBase64 (img, callback) {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result));
   reader.readAsDataURL(img);
 }
-let imgs = [
-  "http://127.0.0.1:3002/imgs/ava01.png",
-  "http://127.0.0.1:3002/imgs/ava02.png",
-  "http://127.0.0.1:3002/imgs/ava03.png",
-];
 export default {
   name: "Account",
-  data() {
+  data () {
     return {
-      imgs,
       loading: false,
-      imageUrl: "",
       ModalText: "Content of the modal",
       visible: false,
       confirmLoading: false,
       userName: "",
-      userAva: "",
+      imgpath: getCacheVal("imgpath") ? getCacheVal("imgpath") : "",
       userId: "",
     };
   },
-  created() {
-    this.userName = getCacheVal("username")
-      ? getCacheVal("username")
-      : "咖啡小强";
-    this.userAva = getCacheVal("userAva")
-      ? ImgUrl + getCacheVal("userAva")
-      : "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=476262993,2239475519&fm=11&gp=0.jpg";
-
-    this.userId = getCacheVal("userId")
-      ? getCacheVal("userId")
-      : "coffeeClub@qq.com";
+  created () {
+    this.userName = getCacheVal("username") ? getCacheVal("username") : "咖啡小强";
+    this.userId = getCacheVal("userId") ? getCacheVal("userId") : "coffeeClub@qq.com";
   },
   methods: {
-    showModal() {
-      this.visible = true;
-    },
-    handleOk(e) {
-      this.ModalText = "The modal will be closed after two seconds";
-      this.confirmLoading = true;
-      setTimeout(() => {
-        this.visible = false;
-        this.confirmLoading = false;
-      }, 2000);
-    },
-    handleCancel(e) {
-      console.log("Clicked cancel button");
-      this.visible = false;
-    },
-    handleChange(info) {
-      if (info.file.status === "uploading") {
-        this.loading = true;
-        return;
-      }
-      if (info.file.status === "done") {
-        // Get this url from response in real world.
-        getBase64(info.file.originFileObj, (imageUrl) => {
-          this.imageUrl = imageUrl;
-          this.loading = false;
-        });
-      }
-    },
-    beforeUpload(file) {
-      const isJpgOrPng =
-        file.type === "image/jpeg" || file.type === "image/png";
-      if (!isJpgOrPng) {
-        this.$message.error("You can only upload JPG file!");
-      }
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isLt2M) {
-        this.$message.error("Image must smaller than 2MB!");
-      }
-      return isJpgOrPng && isLt2M;
-    },
-    goSetting() {
-      this.$router.push({ name: "setting" });
-    },
+    goto (path) {
+      this.$router.push({ path })
+    }
   },
   components: {
     TopBar,
     MyContent,
-  },
-  computed: {
-    imgPath() {
-      return {
-        backgroundImage: `url(${this.userAva})`,
-        backgroundSize: "cover",
-      };
-    },
   },
 };
 </script>
@@ -214,8 +108,8 @@ export default {
 .user_ava {
   width: 180px;
   height: 180px;
-  border-radius: 50%;
-  background-color: #e3e3e3;
+  display: flex;
+  justify-content: center;
 }
 .user-name {
   font-size: 24px;

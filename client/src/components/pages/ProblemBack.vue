@@ -64,16 +64,6 @@
           <div class="problemback-commit-text">
             <a-textarea placeholder="某个功能无法使用、页面白屏/卡顿/闪退、或其它产品建议(5个字以上)" :rows="4" v-model="commit.textareaVal" />
           </div>
-          <div class="problemback-commit-pic">
-            <a-upload action="https://www.mocky.io/v2/5cc8019d300000980a055e76" list-type="picture-card" :file-list="commit.fileList" @preview="handlePreview" @change="handleChange">
-              <div v-if="commit.fileList.length < 8">
-                <a-icon type="plus" />
-              </div>
-            </a-upload>
-            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-              <img alt="example" style="width: 100%" :src="previewImage" />
-            </a-modal>
-          </div>
           <div class="problemback-commit-btn" @click="sub">提交</div>
         </a-drawer>
       </div>
@@ -94,16 +84,12 @@ export default {
       userimg: '',
       visible: false,
       placement: 'bottom',
-      previewVisible: false,
-      previewImage: '',
       //输入框中的内容
       commit: {
         // 用户提交的文字内容
         textareaVal: '',
         // 用户id
         userid: getCacheVal("userid"),
-        // 用户上传的图片
-        fileList: [],
       }
     }
   },
@@ -120,27 +106,20 @@ export default {
     onChange (e) {
       this.placement = e.target.value;
     },
-    handleCancel () {
-      this.previewVisible = false;
-    },
-    async handlePreview (file) {
-      if (!file.url && !file.preview) {
-        file.preview = await getBase64(file.originFileObj);
-      }
-      this.previewImage = file.url || file.preview;
-      this.previewVisible = true;
-    },
-    handleChange ({ fileList }) {
-      this.commit.fileList = fileList;
-    },
     async sub () {
-      console.log(this.commit);
       let res = await Http("/usercommittext", this.commit);
-      console.log(res);
+      if (res.code === 1) {
+        this.$message.success({ content: res.msg, duration: 2 });
+        this.visible = false
+        this.commit.textareaVal = ''
+      } else {
+        this.$message.error({ content: res.msg, duration: 2 });
+      }
+
     },
   },
   created () {
-    this.userimg = ImgUrl + getCacheVal('userAva')
+    this.userimg = getCacheVal('imgpath')
   },
 
   components: {

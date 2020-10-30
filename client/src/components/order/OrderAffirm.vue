@@ -12,7 +12,7 @@
           <order-com-item-card v-for="item in orderlist" :key="item.food_id" :food="item"></order-com-item-card>
         </div>
         <div class="warn-box">
-          <div style="background-color:rgb(2 209 38 /.2);padding:0 5px;border-radius:5px;"><span style="color:#02d126">取餐前请确认数量</span></div>
+          <div style="background-color:rgb(2 209 38 /.2);padding:0 5px;border-radius:5px;"><span style="color:#k">取餐前请确认数量</span></div>
         </div>
         <div class="order-box">
           <div class="num-box">
@@ -53,12 +53,11 @@ export default {
   name: "Order",
   data () {
     return {
-      orderlist:[]
+      orderlist: []
     }
   },
-  created() {
+  created () {
     this.orderlist = this.$store.state.cartData
-    console.log(this.orderlist)
   },
   methods: {
     goback () {
@@ -67,20 +66,20 @@ export default {
     goto (path) {
       this.$router.push(path)
     },
-     async order(){
-        let res = await this.$store.dispatch("order")
-        if(res.code === 1){
-            this.$router.push({path:'/payment'})
-        }else{
-            this.$message.error(res.msg)
-        }
-            
-        }
+    async order () {
+      let res = await this.$store.dispatch("order")
+      if (res.code === 1) {
+        this.$router.push({ path: '/payment' })
+      } else {
+        this.$message.error(res.msg)
+      }
+
+    }
   },
   components: { TopBar, MyContent, OrderComItemCard },
   computed: {
-    priceSum(){
-      return (this.$store.getters.priceSum + 2.0 *1).toFixed(2)
+    priceSum () {
+      return (this.$store.getters.priceSum + 2.0 * 1).toFixed(2)
     }
   }
 }

@@ -10,12 +10,10 @@
     <my-content class="mycontent">
       <div class="main-box">
         <a-list :grid="{ gutter: 16, column: 1 }" :data-source="$store.state.cartData">
-        <a-list-item slot="renderItem" slot-scope="item,index">
-           <cart-product-card  
-        :index="index"
-        :product="item"></cart-product-card>
-        </a-list-item>
-      </a-list>
+          <a-list-item slot="renderItem" slot-scope="item,index">
+            <cart-product-card :index="index" :product="item"></cart-product-card>
+          </a-list-item>
+        </a-list>
       </div>
       <div class="cart-footer">
         <div class="price-box">
@@ -42,18 +40,18 @@ import { getCacheVal } from '@/kits/LocalStorage'
 import { HttpGql, ImgUrl } from '@/kits/Http'
 
 export default {
-  data() {
+  data () {
     return {}
   },
   methods: {
-    goto() {
+    goto () {
       this.$router.go(-1)
     },
-   async initData(){
-       if(getCacheVal("token") && getCacheVal("token").length > 0 ){
+    async initData () {
+      if (getCacheVal("token") && getCacheVal("token").length > 0) {
         let userid = getCacheVal('userid')
         let gql = {
-        query: `
+          query: `
                 {
                     usercart(u_id:"${userid}"){
                     food_name
@@ -65,25 +63,25 @@ export default {
                   }
                 }
             `
-      }
-      let res = await HttpGql(gql)
-      this.$store.commit("initCart",res.data.usercart ? res.data.usercart.map((item)=>{
+        }
+        let res = await HttpGql(gql)
+        this.$store.commit("initCart", res.data.usercart ? res.data.usercart.map((item) => {
           item.food_pic = ImgUrl + item.food_pic
-          item.cartskus =  item.cartskus.split('_')
+          item.skus = item.cartskus.split('_')
           return item
         }) : [])
-      }else{
+      } else {
         console.log('请登录')
       }
-      
+
     },
-     order(){
-       if(this.$store.state.cartData.length<=0){
-         this.$message.info('您还没有选择任何商品')
-       }else{
-        this.$router.push({name:'orderaffirm'})
-       }
-     }
+    order () {
+      if (this.$store.state.cartData.length <= 0) {
+        this.$message.info('您还没有选择任何商品')
+      } else {
+        this.$router.push({ name: 'orderaffirm' })
+      }
+    }
   },
   components: {
     TopBar,
@@ -94,14 +92,14 @@ export default {
     this.initData()
   },
   computed: {
-    bgcStyle(){
-      if(this.$store.state.cartData.length<=0){
+    bgcStyle () {
+      if (this.$store.state.cartData.length <= 0) {
         return {
           backgroundColor: "#e5e5e5",
         }
-      }else{
-         return {
-           backgroundColor: " #02d126",
+      } else {
+        return {
+          backgroundColor: " #02d126",
         }
       }
     }
@@ -109,7 +107,7 @@ export default {
 }
 </script>
 <style scoped>
-.mycontent{
+.mycontent {
   position: relative;
 }
 .price-box {
@@ -149,11 +147,11 @@ export default {
   font-size: 20px;
   font-weight: bold;
 }
-.cart-footer{
+.cart-footer {
   width: 100%;
   position: fixed;
   bottom: 65px;
-  left:0px;
+  left: 0px;
   right: 0px;
   padding: 10px 24px;
 }

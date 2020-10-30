@@ -9,7 +9,7 @@
           {{product.food_name}}
         </div>
         <div class="text-desc" >
-          <div class="desc-item" v-for="(item,index) in product.cartskus" :key="item+index">
+          <div class="desc-item" v-for="(item,index) in product.skus" :key="item+index">
             {{item}}
           </div>
         </div>
