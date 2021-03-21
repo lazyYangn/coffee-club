@@ -15,7 +15,7 @@ export default {
     },
     activeColor: {
       type: String,
-      default: '#02D126',
+      default: '#DC143C',
     },
     path: String,
   },
@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     avtiveStyle() {
-      return this.$route.path.indexOf(this.path) > -1 ? { color: '#02D126' } : null
+      return this.$route.path.indexOf(this.path) > -1 ? { color: '#DC143C' } : null
     },
   },
 }

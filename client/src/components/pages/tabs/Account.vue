@@ -20,7 +20,21 @@
           <span class="iconfont icon-zhaoxiangji" style="font-size: 56px" @click="goto('/uploadimg')"></span>
         </div>
       </div>
-      <div class="btn-content">
+      <div class="main-content">
+        <div class="main-top-content">
+          <div class="top-content-item" @click="goto('/main/like')">
+            <div style="font-weight:bold;">{{likeNum}}</div>
+            <div>收藏</div>
+          </div>
+          <div class="top-content-item" @click="goto('/main/cart')">
+            <div style="font-weight:bold;">{{cartNum}}</div>
+            <div>购物车</div>
+          </div>
+          <div class="top-content-item" @click="goto('/order')">
+            <div style="font-weight:bold;">{{orderNum}}</div>
+            <div>订单</div>
+          </div>
+        </div>
       </div>
     </my-content>
   </div>
@@ -48,11 +62,21 @@ export default {
       userName: "",
       imgpath: getCacheVal("imgpath") ? getCacheVal("imgpath") : "",
       userId: "",
+      // 收藏数量
+      likeNum: 0,
+      // 购物车数量
+      cartNum: 0,
+      // 订单数量
+      orderNum: 0
     };
   },
   created () {
     this.userName = getCacheVal("username") ? getCacheVal("username") : "咖啡小强";
     this.userId = getCacheVal("userId") ? getCacheVal("userId") : "coffeeClub@qq.com";
+    this.likeNum = this.$store.state.likeList.length;
+    console.log(this.$store.state.likeList);
+    this.cartNum = this.$store.state.cartData.length;
+    this.orderNum = this.$store.state.orderList.length;
   },
   methods: {
     goto (path) {
@@ -92,7 +116,7 @@ export default {
   bottom: 0;
   width: 100%;
 }
-.btn-content {
+.main-content {
   background-color: #f7f7ff;
   border-radius: 25px 25px 0 0;
   height: 50%;
@@ -178,5 +202,24 @@ export default {
   width: 33.33%;
   box-sizing: border-box;
   padding: 10px;
+}
+.img-box {
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  font-size: 20px;
+}
+.main-top-content {
+  display: flex;
+  justify-content: space-around;
+  font-size: 16px;
+}
+.top-content-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>

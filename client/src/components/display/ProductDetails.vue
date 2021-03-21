@@ -155,11 +155,6 @@ export default {
       let res = await HttpGql(gql);
       res.data.food.food_pic = ImgUrl + res.data.food.food_pic;
       this.product = res.data.food;
-      res.data.user.favorite.forEach((item) => {
-        if (item.food_id == this.foodId) {
-          this.isLike = true;
-        }
-      });
       res.data.food.skus.forEach(item => {
         this.skus.push({ id: item.dict_son[0].id, name: item.name, Cname: item.dict_son[0].Cname })
       })

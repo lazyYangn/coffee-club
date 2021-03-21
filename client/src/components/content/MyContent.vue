@@ -106,6 +106,7 @@ export default {
   padding: 10px 24px;
   height: 100vh;
   margin-top: 60px;
+  margin-bottom: 60px !important;
   overflow-x: hidden;
   transition: all 0.3s linear;
   overflow-y: auto;

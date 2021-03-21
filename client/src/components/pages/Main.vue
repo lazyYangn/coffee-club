@@ -7,7 +7,7 @@
           <div class="iconfont icon-shouye" :style="{ fontSize: '24px' }"></div>
         </div>
       </tab-bar-item>
-      <tab-bar-item path="/main/like">
+      <tab-bar-item path="/main/category">
         <div slot="icon">
           <div class="iconfont icon-aixin" :style="{ fontSize: '24px' }"></div>
         </div>

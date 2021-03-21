@@ -150,7 +150,7 @@ export const delfoodcart = async (req: any, resp: any) => {
 
   }
 }
-
+  
 export const resetcart = async (req: any, resp: any) => {
   let p = req.body
   try {

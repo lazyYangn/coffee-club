@@ -2,8 +2,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 const Main = () => import('@/components/pages/Main.vue');
-const Home = () => import('@/components/pages/tabs/Home');
-const Like = () => import('@/components/pages/tabs/Like.vue');
+// const Home = () => import('@/components/pages/tabs/Home');
+const Home = () => import('@/components/pages/tabs/HomeCopy');
+const Category = () => import('@/components/pages/tabs/Category.vue');
 const Account = () => import('@/components/pages/tabs/Account.vue');
 const Cart = () => import('@/components/pages/tabs/Cart.vue');
 const Search = () => import('@/components/pages/Search.vue');
@@ -32,7 +33,7 @@ const routes = [
     component: Main,
     children: [
       { path: 'home', component: Home },
-      { path: 'like', component: Like },
+      { path: 'category', component: Category },
       { path: 'account', component: Account },
       { path: 'cart', component: Cart },
     ],
